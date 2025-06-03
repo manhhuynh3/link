@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mạnh Huỳnh | GRAPHIC DESIGNER | 3D Artist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Thay đổi ảnh nền tại đây */
+            /* Sử dụng đường dẫn tương đối đến ảnh trong thư mục 'images' */
+            background-image: url('images/background.jpg'); /* Thay thế 'background.jpg' bằng tên tệp ảnh nền của bạn */
+            background-size: cover; /* Đảm bảo ảnh nền phủ toàn bộ */
+            background-position: center; /* Căn giữa ảnh nền */
+            background-attachment: fixed; /* Giữ ảnh nền cố định khi cuộn */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px; /* Thêm khoảng đệm cho màn hình nhỏ hơn */
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 500px; /* Chiều rộng tối đa cho nội dung */
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95); /* Nền trắng hơi trong suốt để thấy ảnh nền */
+            border-radius: 1.5rem; /* Góc bo tròn hơn */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Bóng mềm hơn cho theme tối */
+            padding: 2.5rem 2rem; /* Tăng khoảng đệm */
+            text-align: center;
+            backdrop-filter: blur(5px); /* Hiệu ứng làm mờ nền phía sau */
+        }
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem; /* Căn giữa và khoảng cách bên dưới */
+            border: 4px solid #333333; /* Viền màu xám đậm */
+        }
+        .link-button {
+            display: flex; /* Sử dụng flexbox để căn chỉnh icon và text */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            width: 100%;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            background-color: #333333; /* Nút màu xám đậm */
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 0.75rem; /* Góc bo tròn cho nút */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .link-button:hover {
+            background-color: #000000; /* Màu đen tuyền khi di chuột */
+            transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ */
+        }
+        .link-button i {
+            margin-right: 0.75rem; /* Khoảng cách giữa icon và text */
+            font-size: 1.25rem; /* Kích thước icon */
+        }
+        .link-button:last-child {
+            margin-bottom: 0; /* No margin for the last button */
+        }
+
+        /* Styles for the prominent Portfolio section */
+        .portfolio-section {
+            position: relative; /* Quan trọng: để nút con có thể định vị tuyệt đối */
+            width: 100%;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem; /* Khoảng cách với các nút khác */
+            overflow: hidden; /* Đảm bảo ảnh và nút không tràn ra ngoài góc bo tròn */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0; /* Viền cho toàn bộ phần portfolio */
+        }
+        .portfolio-cover-image {
+            width: 100%;
+            height: 180px; /* Chiều cao cố định cho ảnh bìa */
+            object-fit: cover; /* Đảm bảo ảnh phủ đầy khung */
+            display: block; /* Loại bỏ khoảng trắng dưới ảnh */
+        }
+        .portfolio-button {
+            position: absolute; /* Định vị tuyệt đối */
+            bottom: 0; /* Nằm ở dưới cùng */
+            left: 0;
+            right: 0;
+            /* Nền gradient mờ dần */
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+            color: #ffffff;
+            padding: 1.25rem 1.5rem; /* Lớn hơn một chút */
+            font-size: 1.1rem; /* Chữ lớn hơn */
+            border-radius: 0; /* Loại bỏ bo tròn để khớp với chiều rộng */
+            margin-bottom: 0; /* Không có lề dưới */
+            transition: background 0.3s ease; /* Chuyển động mượt mà khi hover */
+            box-shadow: none; /* Loại bỏ bóng riêng của nút */
+        }
+        .portfolio-button:hover {
+            /* Nền gradient đậm hơn khi hover */
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1));
+            transform: none; /* Loại bỏ hiệu ứng nhấc */
+        }
+
+        /* Styles for the social icons row */
+        .social-icons-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem; /* Khoảng cách giữa các icon */
+            margin-top: 1.5rem; /* Khoảng cách với Bio */
+            margin-bottom: 2.5rem; /* Khoảng cách với phần liên kết chính */
+        }
+        .social-icon-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 48px; /* Kích thước icon */
+            height: 48px;
+            border-radius: 50%; /* Hình tròn */
+            background-color: #333333; /* Nền icon */
+            color: #ffffff; /* Màu icon */
+            font-size: 1.5rem; /* Kích thước biểu tượng Font Awesome */
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .social-icon-link:hover {
+            background-color: #000000; /* Màu đen tuyền khi di chuột */
+            transform: translateY(-3px); /* Hiệu ứng nhấc nhẹ */
+        }
+        .social-icon-link img {
+            width: 100%; /* Đảm bảo ảnh Zalo vừa với kích thước */
+            height: 100%;
+            object-fit: contain; /* Giữ tỷ lệ ảnh */
+            border-radius: 50%; /* Đảm bảo ảnh Zalo cũng tròn */
+            padding: 8px; /* Thêm padding để logo không bị sát viền */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="images/avata.png" alt="Ảnh đại diện Mạnh Huỳnh" class="profile-image">
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Mạnh Huỳnh</h1>
+        <p class="text-lg text-gray-600">GRAPHIC DESIGNER | 3D Artist</p>
+
+        <div class="social-icons-row">
+            <a href="mailto:manhhuynh.designer@gmail.com" class="social-icon-link">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://zalo.me/0359312806" target="_blank" class="social-icon-link">
+                <img src="images/Zalo_logo.svg" alt="Zalo Icon" onerror="this.onerror=null;this.src='https://placehold.co/48x48/333333/ffffff?text=Zalo';">
+            </a>
+            <a href="viber://chat?number=+84359312806" class="social-icon-link">
+                <i class="fab fa-viber"></i>
+            </a>
+        </div>
+
+        <div class="space-y-4">
+            <div class="portfolio-section">
+                <img src="images/portfolio-cover.jpg" alt="Ảnh bìa Portfolio" class="portfolio-cover-image">
+                <a href="https://www.behance.net/manhhuynh323b3" target="_blank" class="link-button portfolio-button">
+                    <i class="fab fa-behance"></i> MY PORTFOLIO
+                </a>
+            </div>
+
+            <a href="https://www.linkedin.com/in/manh-huynh-designer/" target="_blank" class="link-button">
+                <i class="fab fa-linkedin-in"></i> LINKEDIN
+            </a>
+            <a href="https://www.tiktok.com/@manhhuynh.designer" target="_blank" class="link-button">
+                <i class="fab fa-tiktok"></i> TikTok
+            </a>
+            <a href="https://www.instagram.com/manh.des.98" target="_blank" class="link-button">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
+        </div>
+    </div>
+</body>
+</html>
