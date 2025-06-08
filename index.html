@@ -823,6 +823,96 @@
         #resetAnimationButton:hover {
             background-color: rgba(0, 0, 0, 0.9);
         }
+        .preloader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Thay đổi background-color để có độ trong suốt */
+            background-color: rgba(0, 0, 0, 0.7); /* Nền đen với độ trong suốt 70% */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1; /* Mặc định hiển thị */
+            /* Thêm hiệu ứng Glassmorphism */
+            backdrop-filter: blur(10px); /* Làm mờ nền phía sau 10px */
+            -webkit-backdrop-filter: blur(10px); /* Hỗ trợ Safari */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Viền mờ */
+        }
+
+        .preloader-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .preloader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Đảm bảo nội dung không bị mờ bởi backdrop-filter */
+            z-index: 10000; /* Cao hơn preloader-wrapper một chút nếu cần */
+            background-color: rgba(255, 255, 255, 0.05); /* Lớp nền nhẹ cho nội dung */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Hiệu ứng bóng đổ */
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .preloader-video {
+            width: 150px; /* Điều chỉnh kích thước video */
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%; /* Làm tròn video */
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 3px solid #2563eb; /* Viền video với màu primary */
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.7); /* Hiệu ứng tỏa sáng */
+        }
+
+        .preloader-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .progress-bar-container {
+            width: 200px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.2); /* Nền thanh tiến độ trong suốt nhẹ */
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Viền nhẹ */
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #2563eb; /* Màu primary của bạn */
+            border-radius: 5px;
+            transition: width 0.1s linear;
+        }
+
+        .contact-button {
+            padding: 10px 20px;
+            background-color: #2563eb; /* Màu primary của bạn */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .contact-button:hover {
+            background-color: #1d4ed8; /* Màu đậm hơn của primary (ví dụ: blue-700 từ Tailwind) */
+            transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ khi hover */
+        }
     </style>
     <script type="importmap">
         {
