@@ -770,7 +770,68 @@
         .thumbnail-indicators span.active {
             background-color: var(--color-button-primary); /* Use primary button color for active indicator */
         }
+        .aspect-ratio-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9; /* ✅ quan trọng nhất */
+  background: transparent;
+  overflow: hidden;
+}
+
+.three-container {
+  position: absolute;
+  inset: 0;
+}
+
+         /* Đảm bảo canvas chiếm toàn bộ container */
+        #three-js-container canvas {
+            display: block;
+            width: 100% !important; 
+            height: 100% !important;
+        }
+        /* Đảm bảo không có nền đen cứng từ Tailwind */
+        #three-js-container {
+            background-color: transparent; /* Hoặc bỏ hoàn toàn class bg-black của Tailwind */
+        }
+        
+
+
+        #error {
+            color: red;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+        }
+        #resetAnimationButton {
+            position: fixed; /* Giữ nút cố định trên màn hình */
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            padding: 8px 12px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+        #resetAnimationButton:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
     </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.177.0/build/three.module.js"
+            }
+        }
+    </script>
+    
 </head>
 <body class="overflow-x-hidden" data-theme="dark">
     <!-- Header/Navigation -->
@@ -926,36 +987,23 @@
                 </div>
 
                 <!-- Software Section -->
-                <div class="bg-card p-8 rounded-xl shadow-xl mb-12 scroll-reveal delay-150">
-                    <h3 class="text-3xl font-bold text-main mb-6" data-lang-key="software_heading">Software</h3>
-                    <div class="flex flex-wrap justify-center items-center gap-6">
-                        <!-- Adobe Photoshop -->
-                        <div class="flex flex-col items-center text-center">
-                            <img src="assets/images/Adobe_Photoshop_CC.png" alt="Adobe Photoshop" class="rounded-lg mb-2 w-16 h-16">
-                            <span class="text-sm text-gray-normal">Photoshop</span>
-                        </div>
-                        <!-- Adobe Illustrator -->
-                        <div class="flex flex-col items-center text-center">
-                            <img src="assets/images/Adobe_Illustrator_CC.png" alt="Adobe Illustrator" class="rounded-lg mb-2 w-16 h-16">
-                            <span class="text-sm text-gray-normal">Illustrator</span>
-                        </div>
-                        <!-- Adobe After Effects -->
-                        <div class="flex flex-col items-center text-center">
-                            <img src="assets/images/Adobe_After_Effects_CC.png" alt="Adobe After Effects" class="rounded-lg mb-2 w-16 h-16">
-                            <span class="text-sm text-gray-normal">After Effects</span>
-                        </div>
-                        <!-- Blender 3D -->
-                        <div class="flex flex-col items-center text-center">
-                            <img src="assets/images/Blender_icon.png" alt="Blender 3D" class="rounded-lg mb-2 w-16 h-16">
-                            <span class="text-sm text-gray-normal">Blender 3D</span>
-                        </div>
-                        <!-- AI Tools -->
-                        <div class="flex flex-col items-center text-center">
-                            <img src="assets/images/AI_icon.png" alt="AI Tools" class="rounded-lg mb-2 w-16 h-16">
-                            <span class="text-sm text-gray-normal">AI Tools</span>
-                        </div>
-                    </div>
-                </div>
+               
+<div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl shadow-xl bg-card" style="margin-bottom: 48px">
+    <h3 id="toolsTitle"  class="absolute top-6 left-1/2 -translate-x-1/2 text-3xl font-bold text-main cursor-pointer z-20">Tools</h3>
+
+    <div id="three-js-container" class="absolute inset-0 z-0" ></div> 
+    
+    </div>
+
+<script type="module">
+    import { initThreeJSViewer } from './assets/script/threeJsViewer.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Khởi tạo viewer cho container 'three-js-container'
+        initThreeJSViewer('three-js-container');
+    });
+</script>
+
 
                 <!-- Work Process Section -->
                 <h3 class="text-3xl font-bold text-main mb-6 scroll-reveal delay-150" data-lang-key="work_process_heading">Quy Trình Làm Việc</h3>
