@@ -48,7 +48,7 @@ export function initThreeJSViewer(containerId) {
         enablePhysicsVisuals: false,
         enablePhysics: true,
         enableDragAndDrop: true,
-        showHDRIBackground:false, // Đặt thành true để hiển thị HDRI làm nền
+        showHDRIBackground: false, // Đặt thành true để hiển thị HDRI làm nền
         hdriInitialRotationY: Math.PI * -0.1
     };
 
@@ -161,8 +161,6 @@ export function initThreeJSViewer(containerId) {
 
             // Đặt kích thước ban đầu, sẽ được điều chỉnh bởi onWindowResize
             renderer.setSize(container.clientWidth, container.clientHeight);
-            // Canvas sẽ được định vị và thay đổi kích thước bởi onWindowResize
-            // Không cần absolute/top/left ở đây vì onWindowResize sẽ xử lý
             container.appendChild(renderer.domElement); // Gắn vào container được truyền vào
 
             world = new CANNON.World();
@@ -191,30 +189,28 @@ export function initThreeJSViewer(containerId) {
             directionalLight.shadow.camera.near = 0.1;
             directionalLight.shadow.camera.far = 50;
 
-            shadowHelperMesh = new THREE.CameraHelper( directionalLight.shadow.camera );
+            shadowHelperMesh = new THREE.CameraHelper(directionalLight.shadow.camera);
             if (appConfig.showShadowHelper) {
-                scene.add( shadowHelperMesh );
+                scene.add(shadowHelperMesh);
                 shadowHelperMesh.update();
             }
 
             scene.add(directionalLight);
 
             const rgbeLoader = new RGBELoader();
-            // CẬP NHẬT ĐƯỜNG DẪN HDRI MỚI
             rgbeLoader.load('assets/3d/brown_photostudio_01_1k.hdr', function (texture) {
                 hdriTexture = texture;
                 hdriTexture.mapping = THREE.EquirectangularReflectionMapping;
                 scene.environment = hdriTexture;
                 scene.environment.intensity = 1.5;
 
-                // Áp dụng rotation cho môi trường và nền
                 scene.environmentRotation.y = appConfig.hdriInitialRotationY;
 
                 if (appConfig.showHDRIBackground) {
                     scene.background = hdriTexture;
                     scene.backgroundIntensity = 1.5;
                     if (scene.background && scene.background.isTexture) {
-                         scene.backgroundRotation.y = appConfig.hdriInitialRotationY; 
+                        scene.backgroundRotation.y = appConfig.hdriInitialRotationY; 
                     }
                 } else {
                     scene.background = null;
@@ -232,15 +228,13 @@ export function initThreeJSViewer(containerId) {
             const groundShape = new CANNON.Plane();
             const groundBody = new CANNON.Body({ mass: 0, material: groundMaterial });
             groundBody.addShape(groundShape);
-            groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2); // Xoay mặt đất
-            groundYPosition = 0; // Đảm bảo groundBody.position.y là 0
+            groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+            groundYPosition = 0;
             groundBody.position.y = groundYPosition;
             world.addBody(groundBody);
 
-
             // Tải mô hình GLB
             const loader = new GLTFLoader();
-            // Đường dẫn mô hình GLB cũng tương đối từ index.html
             loader.load('assets/3d/SOFTWARE.glb', function (gltf) {
                 const model = gltf.scene;
 
@@ -349,8 +343,7 @@ export function initThreeJSViewer(containerId) {
                                 groundYPosition = worldPosition.y;
                                 console.log(`Ground Y position set to: ${groundYPosition}`);
                             }
-                        }
-                        else {
+                        } else {
                             mass = physicsMass !== undefined ? physicsMass : 1;
 
                             switch (physicsShapeType) {
@@ -418,13 +411,11 @@ export function initThreeJSViewer(containerId) {
                     }
                 });
 
-                // Camera handling logic
                 if (gltf.cameras && gltf.cameras.length > 0) {
                     camera = gltf.cameras[0];
                     console.log('Camera found in GLB and set:', camera);
                     if (camera.isPerspectiveCamera) {
-                        camera.fov = 18; // Giữ FOV nếu bạn muốn
-                        // Aspect ratio sẽ được điều chỉnh bởi onWindowResize để giữ 16:10
+                        camera.fov = 18;
                         camera.updateProjectionMatrix();
                     }
                     initialCameraState = {
@@ -436,7 +427,6 @@ export function initThreeJSViewer(containerId) {
                     };
                 } else {
                     console.warn('No camera found in GLB, using default camera');
-                    // Sử dụng TARGET_ASPECT cho camera ban đầu
                     camera = new THREE.PerspectiveCamera(75, TARGET_ASPECT, 0.1, 1000);
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
@@ -463,20 +453,20 @@ export function initThreeJSViewer(containerId) {
                     controls.maxPolarAngle = Math.PI / 2;
                     const modelCenter = new THREE.Vector3();
                     if (model) {
-                         const box = new THREE.Box3().setFromObject(model);
-                         box.getCenter(modelCenter);
-                         controls.target.copy(modelCenter);
+                        const box = new THREE.Box3().setFromObject(model);
+                        box.getCenter(modelCenter);
+                        controls.target.copy(modelCenter);
                     } else {
-                        controls.target.set(0,0,0);
+                        controls.target.set(0, 0, 0);
                     }
                     controls.update();
                 }
 
-                setupDragControls(); // Call setupDragControls after scene and camera are ready
+                setupDragControls();
 
-                onWindowResize(); // Initial resize
-                window.addEventListener('resize', onWindowResize); // Attach resize listener to window
-                animate(); // Start animation loop
+                onWindowResize();
+                window.addEventListener('resize', onWindowResize);
+                animate();
             }, undefined, function (error) {
                 console.error('Error loading GLB:', error);
                 document.getElementById('error').innerText = 'Error: Failed to load GLB model';
@@ -496,7 +486,7 @@ export function initThreeJSViewer(containerId) {
             const dt = (currentTime - lastTime) / 1000;
 
             if (dt > 0 && dt < 0.1) {
-                 world.step(timeStep, dt, 3);
+                world.step(timeStep, dt, 3);
             } else if (dt >= 0.1) {
                 world.step(timeStep);
                 console.warn('Large delta time detected, capping physics step to fixed time step.');
@@ -506,7 +496,6 @@ export function initThreeJSViewer(containerId) {
 
             for (let i = 0; i < meshesWithPhysics.length; i++) {
                 const { mesh, body, visual } = meshesWithPhysics[i];
-                // Chỉ cập nhật vị trí/quaternion của mesh nếu nó không đang được kéo
                 if (!isDragging || draggedObject !== mesh) {
                     mesh.position.copy(body.position);
                     mesh.quaternion.copy(body.quaternion);
@@ -517,11 +506,10 @@ export function initThreeJSViewer(containerId) {
                     visual.quaternion.copy(body.quaternion);
                 }
 
-                // Cập nhật hiển thị visualizer của Trimesh (nếu enablePhysicsVisuals là true)
                 if (appConfig.enablePhysicsVisuals && body.shapes[0] instanceof CANNON.Trimesh) {
-                     if (mesh.material && mesh.material.uuid !== meshesWithPhysics[i].originalMaterial.uuid) {
-                         // Nếu vật liệu đã là visual, không làm gì cả
-                     } else {
+                    if (mesh.material && mesh.material.uuid !== meshesWithPhysics[i].originalMaterial.uuid) {
+                        // Nếu vật liệu đã là visual, không làm gì cả
+                    } else {
                         const visualColor = (body.mass === 0) ? 0x0000ff : 0x00ff00;
                         mesh.material = new THREE.MeshBasicMaterial({
                             color: visualColor,
@@ -530,9 +518,8 @@ export function initThreeJSViewer(containerId) {
                             opacity: 0.5,
                             side: THREE.DoubleSide
                         });
-                     }
+                    }
                 } else if (!appConfig.enablePhysicsVisuals && body.shapes[0] instanceof CANNON.Trimesh) {
-                    // Khôi phục vật liệu gốc nếu không hiển thị visualizer
                     if (mesh.material && meshesWithPhysics[i].originalMaterial) {
                         mesh.material = meshesWithPhysics[i].originalMaterial;
                     }
@@ -557,28 +544,26 @@ export function initThreeJSViewer(containerId) {
             renderer.render(scene, camera);
         }
     }
-function onWindowResize() {
-    if (!camera || !renderer || !container) return;
 
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+    function onWindowResize() {
+        if (!camera || !renderer || !container) return;
 
-    // 👉 Thay đổi ở đây: dùng aspect thật của container
-    const aspect = containerWidth / containerHeight;
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
 
-    // ✅ Cập nhật camera theo đúng kích thước thật
-    camera.aspect = aspect;
-    camera.updateProjectionMatrix();
+        const aspect = containerWidth / containerHeight;
 
-    renderer.setSize(containerWidth, containerHeight);
+        camera.aspect = aspect;
+        camera.updateProjectionMatrix();
 
-    // Loại bỏ logic canh giữa vì không còn cần thiết nữa
-    renderer.domElement.style.position = 'absolute';
-    renderer.domElement.style.left = '0';
-    renderer.domElement.style.top = '0';
+        renderer.setSize(containerWidth, containerHeight);
 
-    console.log(`Resized to: ${containerWidth}x${containerHeight}, Aspect: ${aspect}`);
-}
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.left = '0';
+        renderer.domElement.style.top = '0';
+
+        console.log(`Resized to: ${containerWidth}x${containerHeight}, Aspect: ${aspect}`);
+    }
 
     // === LOGIC KÉO THẢ ĐỐI TƯỢNG ===
     let raycaster = new THREE.Raycaster();
@@ -591,19 +576,22 @@ function onWindowResize() {
 
     function setupDragControls() {
         if (appConfig.enableDragAndDrop) {
-            // Lắng nghe sự kiện trên renderer.domElement (canvas)
             renderer.domElement.addEventListener('mousedown', onMouseDown, false);
             renderer.domElement.addEventListener('mousemove', onMouseMove, false);
             renderer.domElement.addEventListener('mouseup', onMouseUp, false);
             renderer.domElement.addEventListener('mouseleave', onMouseUp, false);
+
+            // Thêm sự kiện cảm ứng
+            renderer.domElement.addEventListener('touchstart', onTouchStart, false);
+            renderer.domElement.addEventListener('touchmove', onTouchMove, false);
+            renderer.domElement.addEventListener('touchend', onTouchEnd, false);
+            renderer.domElement.addEventListener('touchcancel', onTouchEnd, false);
         }
     }
 
     function onMouseDown(event) {
         if (!appConfig.enableDragAndDrop) return;
-        if (appConfig.enableOrbitControls) { // Tránh xung đột với OrbitControls
-            return;
-        }
+        if (appConfig.enableOrbitControls) return;
 
         const canvasBounds = renderer.domElement.getBoundingClientRect();
         mouse.x = ((event.clientX - canvasBounds.left) / canvasBounds.width) * 2 - 1;
@@ -618,23 +606,21 @@ function onWindowResize() {
         const intersects = raycaster.intersectObjects(draggableMeshes, true);
 
         if (intersects.length > 0) {
-            // Tìm đối tượng cấp cao nhất trong meshesWithPhysics
             let currentMesh = intersects[0].object;
-            while(currentMesh.parent && !meshesWithPhysics.some(item => item.mesh === currentMesh)) {
+            while (currentMesh.parent && !meshesWithPhysics.some(item => item.mesh === currentMesh)) {
                 currentMesh = currentMesh.parent;
-                if(currentMesh.isScene) break;
+                if (currentMesh.isScene) break;
             }
-            if(meshesWithPhysics.some(item => item.mesh === currentMesh)) {
+            if (meshesWithPhysics.some(item => item.mesh === currentMesh)) {
                 draggedObject = currentMesh;
                 console.log("Kéo đối tượng:", draggedObject.name);
 
                 const physicsItem = meshesWithPhysics.find(item => item.mesh === draggedObject);
                 if (physicsItem && physicsItem.body) {
-                    physicsItem.body.type = CANNON.Body.STATIC; // Chuyển sang STATIC khi kéo
+                    physicsItem.body.type = CANNON.Body.STATIC;
                     physicsItem.body.allowSleep = false;
                 }
 
-                // Đánh thức các body khác để chúng có thể tương tác với đối tượng đang kéo
                 world.bodies.forEach(body => {
                     if (body.mass > 0 && body !== physicsItem.body) {
                         body.wakeUp();
@@ -650,6 +636,62 @@ function onWindowResize() {
             } else {
                 draggedObject = null;
                 isDragging = false;
+            }
+        }
+    }
+
+    function onTouchStart(event) {
+        if (!appConfig.enableDragAndDrop) return;
+        if (appConfig.enableOrbitControls) return;
+
+        event.preventDefault();
+
+        if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            const canvasBounds = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((touch.clientX - canvasBounds.left) / canvasBounds.width) * 2 - 1;
+            mouse.y = -((touch.clientY - canvasBounds.top) / canvasBounds.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            const draggableMeshes = meshesWithPhysics
+                .filter(item => item.body.mass > 0)
+                .map(item => item.mesh);
+
+            const intersects = raycaster.intersectObjects(draggableMeshes, true);
+
+            if (intersects.length > 0) {
+                let currentMesh = intersects[0].object;
+                while (currentMesh.parent && !meshesWithPhysics.some(item => item.mesh === currentMesh)) {
+                    currentMesh = currentMesh.parent;
+                    if (currentMesh.isScene) break;
+                }
+                if (meshesWithPhysics.some(item => item.mesh === currentMesh)) {
+                    draggedObject = currentMesh;
+                    console.log('Kéo đối tượng bằng cảm ứng:', draggedObject.name);
+
+                    const physicsItem = meshesWithPhysics.find(item => item.mesh === draggedObject);
+                    if (physicsItem && physicsItem.body) {
+                        physicsItem.body.type = CANNON.Body.STATIC;
+                        physicsItem.body.allowSleep = false;
+                    }
+
+                    world.bodies.forEach(body => {
+                        if (body.mass > 0 && body !== physicsItem.body) {
+                            body.wakeUp();
+                        }
+                    });
+
+                    plane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(plane.normal).negate(), draggedObject.position);
+
+                    raycaster.ray.intersectPlane(plane, intersection);
+                    offset.copy(draggedObject.position).sub(intersection);
+                    isDragging = true;
+                    renderer.domElement.style.cursor = 'grabbing';
+                } else {
+                    draggedObject = null;
+                    isDragging = false;
+                }
             }
         }
     }
@@ -675,11 +717,11 @@ function onWindowResize() {
                 } else if (physicsItem.body.shapes[0] instanceof CANNON.Sphere) {
                     objectHalfHeight = physicsItem.body.shapes[0].radius;
                 } else if (physicsItem.body.shapes[0] instanceof CANNON.Trimesh) {
-                    const aabb = physicsItem.body.shapes[0].computeAABB();
+                    const aabb = physicsItem.body.computeAABB();
                     objectHalfHeight = (aabb.upperBound.y - aabb.lowerBound.y) / 2;
                 }
                 
-                const minAllowedY = groundYPosition + objectHalfHeight; // Đảm bảo đối tượng không xuyên qua mặt đất
+                const minAllowedY = groundYPosition + objectHalfHeight;
 
                 if (intersection.y + offset.y < minAllowedY) {
                     intersection.y = minAllowedY - offset.y;
@@ -690,8 +732,52 @@ function onWindowResize() {
 
             if (physicsItem && physicsItem.body) {
                 physicsItem.body.position.copy(draggedObject.position);
-                physicsItem.body.velocity.set(0, 0, 0); // Đảm bảo không có vận tốc khi kéo
+                physicsItem.body.velocity.set(0, 0, 0);
                 physicsItem.body.angularVelocity.set(0, 0, 0);
+            }
+        }
+    }
+
+    function onTouchMove(event) {
+        if (!appConfig.enableDragAndDrop || !isDragging || !draggedObject) return;
+
+        event.preventDefault();
+
+        if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            const canvasBounds = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((touch.clientX - canvasBounds.left) / canvasBounds.width) * 2 - 1;
+            mouse.y = -((touch.clientY - canvasBounds.top) / canvasBounds.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            if (raycaster.ray.intersectPlane(plane, intersection)) {
+                const physicsItem = meshesWithPhysics.find(item => item.mesh === draggedObject);
+                if (physicsItem && physicsItem.body) {
+                    let objectHalfHeight = 0;
+                    if (physicsItem.body.shapes[0] instanceof CANNON.Box) {
+                        objectHalfHeight = physicsItem.body.shapes[0].halfExtents.y;
+                    } else if (physicsItem.body.shapes[0] instanceof CANNON.Sphere) {
+                        objectHalfHeight = physicsItem.body.shapes[0].radius;
+                    } else if (physicsItem.body.shapes[0] instanceof CANNON.Trimesh) {
+                        const aabb = physicsItem.body.computeAABB();
+                        objectHalfHeight = (aabb.upperBound.y - aabb.lowerBound.y) / 2;
+                    }
+                    
+                    const minAllowedY = groundYPosition + objectHalfHeight;
+
+                    if (intersection.y + offset.y < minAllowedY) {
+                        intersection.y = minAllowedY - offset.y;
+                    }
+                }
+
+                draggedObject.position.copy(intersection).add(offset);
+
+                if (physicsItem && physicsItem.body) {
+                    physicsItem.body.position.copy(draggedObject.position);
+                    physicsItem.body.velocity.set(0, 0, 0);
+                    physicsItem.body.angularVelocity.set(0, 0, 0);
+                }
             }
         }
     }
@@ -705,25 +791,43 @@ function onWindowResize() {
             if (physicsItem && physicsItem.body) {
                 const initialState = initialPhysicsStates.get(physicsItem.body.id);
                 if (initialState) {
-                    physicsItem.body.type = initialState.type; // Trở lại kiểu ban đầu (DYNAMIC/STATIC)
-                    physicsItem.body.mass = initialState.mass; // Trở lại khối lượng ban đầu
-                    physicsItem.body.allowSleep = initialState.type === CANNON.Body.DYNAMIC; // Cho phép ngủ nếu là dynamic
+                    physicsItem.body.type = initialState.type;
+                    physicsItem.body.mass = initialState.mass;
+                    physicsItem.body.allowSleep = initialState.type === CANNON.Body.DYNAMIC;
                 }
-                physicsItem.body.velocity.set(0, -0.01, 0); // Tạo một lực nhỏ để nó rơi nếu là dynamic
+                physicsItem.body.velocity.set(0, -0.01, 0);
                 physicsItem.body.wakeUp();
             }
             draggedObject = null;
             isDragging = false;
-            renderer.domElement.style.cursor = 'auto'; // Khôi phục con trỏ chuột
+            renderer.domElement.style.cursor = 'auto';
         }
     }
 
-   // === LOGIC NÚT ĐIỀU KHIỂN GIA DIỆN CÒN LẠI ===
-    // const resetAnimationButton = document.getElementById('resetAnimationButton'); // Dòng này không cần nữa
+    function onTouchEnd() {
+        if (!appConfig.enableDragAndDrop) return;
 
-    const toolsTitleElement = document.getElementById('toolsTitle'); // Lấy thẻ h3 theo ID mới
+        if (isDragging && draggedObject) {
+            const physicsItem = meshesWithPhysics.find(item => item.mesh === draggedObject);
+            if (physicsItem && physicsItem.body) {
+                const initialState = initialPhysicsStates.get(physicsItem.body.id);
+                if (initialState) {
+                    physicsItem.body.type = initialState.type;
+                    physicsItem.body.mass = initialState.mass;
+                    physicsItem.body.allowSleep = initialState.type === CANNON.Body.DYNAMIC;
+                }
+                physicsItem.body.velocity.set(0, -0.01, 0);
+                physicsItem.body.wakeUp();
+            }
+            draggedObject = null;
+            isDragging = false;
+            renderer.domElement.style.cursor = 'auto';
+        }
+    }
 
-    // Di chuyển hàm reset animation ra ngoài để có thể tái sử dụng
+    // === LOGIC NÚT ĐIỀU KHIỂN GIA DIỆN CÒN LẠI ===
+    const toolsTitleElement = document.getElementById('toolsTitle');
+
     function resetSceneAnimation() {
         console.log('Resetting animation...');
         meshesWithPhysics.forEach(({ mesh, body }) => {
@@ -748,7 +852,6 @@ function onWindowResize() {
     }
 
     if (toolsTitleElement) {
-        // Gán sự kiện click cho tiêu đề "Tools"
         toolsTitleElement.addEventListener('click', resetSceneAnimation);
         console.log('Reset animation listener attached to Tools title.');
     }
