@@ -823,14 +823,14 @@
         #resetAnimationButton:hover {
             background-color: rgba(0, 0, 0, 0.9);
         }
-        .preloader-wrapper {
+             .preloader-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Thay đổi background-color để có độ trong suốt */
-            background-color: rgba(0, 0, 0, 0.7); /* Nền đen với độ trong suốt 70% */
+            /* Nền hơi trong suốt để hiệu ứng Glassmorphism hoạt động */
+            background-color: rgba(0, 0, 0, 0.7); /* Màu nền đen 70% opacity */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -838,10 +838,11 @@
             z-index: 9999;
             transition: opacity 0.5s ease-in-out;
             opacity: 1; /* Mặc định hiển thị */
-            /* Thêm hiệu ứng Glassmorphism */
-            backdrop-filter: blur(10px); /* Làm mờ nền phía sau 10px */
+            /* Hiệu ứng Glassmorphism */
+            backdrop-filter: blur(10px); /* Làm mờ nền phía sau */
             -webkit-backdrop-filter: blur(10px); /* Hỗ trợ Safari */
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Viền mờ */
+            /* Có thể thêm border nhẹ để nhấn mạnh hiệu ứng kính */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Viền mờ nhẹ */
         }
 
         .preloader-hidden {
@@ -854,13 +855,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Đảm bảo nội dung không bị mờ bởi backdrop-filter */
-            z-index: 10000; /* Cao hơn preloader-wrapper một chút nếu cần */
-            background-color: rgba(255, 255, 255, 0.05); /* Lớp nền nhẹ cho nội dung */
+            /* Nền của phần nội dung để tạo hiệu ứng trong suốt cho riêng nó */
+            background-color: rgba(255, 255, 255, 0.05); /* Nền trắng 5% opacity */
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Hiệu ứng bóng đổ */
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            /* Thêm hiệu ứng Glassmorphism cho container nội dung */
+            backdrop-filter: blur(5px); /* Có thể làm mờ nhẹ thêm */
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Bóng đổ để tạo chiều sâu */
+            border: 1px solid rgba(255, 255, 255, 0.18); /* Viền mờ nhẹ */
         }
 
         .preloader-video {
@@ -871,13 +874,20 @@
             overflow: hidden;
             margin-bottom: 20px;
             border: 3px solid #2563eb; /* Viền video với màu primary */
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.7); /* Hiệu ứng tỏa sáng */
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.7); /* Hiệu ứng tỏa sáng nhẹ với màu primary */
         }
 
         .preloader-video video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .progress-indicator {
+            font-size: 1.2em;
+            color: white; /* Màu chữ trắng */
+            margin-bottom: 10px; /* Khoảng cách với thanh tiến độ */
+            text-shadow: 0 0 5px rgba(0,0,0,0.5); /* Tạo bóng đổ cho chữ dễ đọc */
         }
 
         .progress-bar-container {
@@ -910,7 +920,7 @@
         }
 
         .contact-button:hover {
-            background-color: #1d4ed8; /* Màu đậm hơn của primary (ví dụ: blue-700 từ Tailwind) */
+            background-color: #1d4ed8; /* Một sắc thái xanh đậm hơn (#1d4ed8 tương ứng với blue-700 trong Tailwind) */
             transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ khi hover */
         }
     </style>
@@ -924,6 +934,25 @@
     
 </head>
 <body class="overflow-x-hidden" data-theme="dark">
+
+ <div id="preloader" class="preloader-wrapper">
+        <div class="preloader-content">
+            <div class="preloader-video">
+                <video id="loadingVideo" autoplay loop muted playsinline>
+                    <source src="assets/videos/loading-animation.webm" type="video/webm">
+                    Trình duyệt của bạn không hỗ trợ thẻ video.
+                </video>
+            </div>
+            <div id="progressText" class="progress-indicator">0%</div> <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <button id="contactButton" class="contact-button">Liên hệ ngay</button>
+        </div>
+    </div>
+    <main class="main-content">
+
+
+
     <!-- Header/Navigation -->
     <header class="shadow-lg py-4 px-6 md:px-12 fixed w-full z-50 rounded-b-lg top-0">
         <div class="flex items-center justify-between max-w-7xl mx-auto md:ml-auto md:mr-auto">
@@ -1302,7 +1331,7 @@
     <footer class="py-8 px-6 md:px-12 text-center rounded-t-lg">
         <p data-lang-key="footer_copyright">&copy; 2025 Mạnh Huỳnh. Tất cả quyền được bảo lưu.</p>
     </footer>
-
+</main>
     <script>
         // Language data
         const languages = {
@@ -2160,5 +2189,6 @@
             }
         });
     </script>
+    <script src="assets/script/preloader.js"></script>
 </body>
 </html>
