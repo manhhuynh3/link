@@ -12,6 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Biến cờ để kiểm tra xem đã click nút "Contact Now" chưa
     let contactButtonClicked = false;
 
+    // Hàm để tính toán và đặt chiều cao viewport thực tế
+    function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--app-height', `${vh * 100}px`);
+    }
+
+    // Gọi hàm một lần khi khởi tạo
+    setViewportHeight();
+    // Lắng nghe sự kiện thay đổi kích thước và xoay màn hình để cập nhật lại chiều cao
+    window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', setViewportHeight);
+
+
     // Hàm để ẩn màn hình chờ
     function hidePreloader() {
         if (contactButtonClicked) {
@@ -48,12 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateProgressBar(loadedCount, totalCount) {
         if (totalCount === 0) {
             progressText.textContent = '100%';
-            // Khi tổng tài nguyên là 0, đặt nó ở vị trí cao nhất (gần đỉnh)
-            // Tính toán dynamic maxBottom dựa trên kích thước font thực tế của progressText
-            const progressTextHeight = progressText.offsetHeight; // Lấy chiều cao pixel của phần tử
-            const viewportHeight = window.innerHeight;
-            const maxBottom = (viewportHeight - progressTextHeight - (5 * viewportHeight / 100)); // 5vh padding từ trên cùng
-            progressText.style.bottom = `${maxBottom}px`; // Đặt vị trí bằng pixel
+            // Trên di động, không cần tính toán bottom động, chỉ đặt nội dung
+            if (window.innerWidth >= 768) { // Chỉ áp dụng logic di chuyển trên màn hình lớn
+                const progressTextHeight = progressText.offsetHeight;
+                const viewportHeight = window.innerHeight;
+                const maxBottom = (viewportHeight - progressTextHeight - (5 * viewportHeight / 100));
+                progressText.style.bottom = `${maxBottom}px`;
+            }
             return;
         }
 
@@ -62,10 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const elapsedSinceStart = currentTime - startTime;
 
         if (actualLoadCompleteTime === null) {
-            // Tải chưa hoàn thành, tính toán % dựa trên tài nguyên thực tế
             currentPercentage = Math.min(100, Math.round((loadedCount / totalCount) * 100));
         } else {
-            // Tải đã hoàn thành, nhưng cần kéo dài tiến độ đến minDisplayTime
             const timeToReach100Percent = minDisplayTime;
             const progressRatio = Math.min(1, elapsedSinceStart / timeToReach100Percent);
             currentPercentage = Math.round(progressRatio * 100);
@@ -74,33 +86,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         progressText.textContent = `${currentPercentage}%`;
 
-        // Tính toán vị trí 'bottom' cho số % dựa trên currentPercentage
-        const minBottomVh = 5; // vh (0% ở 5vh từ đáy)
-        const maxTopPaddingVh = 5; // vh (5vh padding từ đỉnh)
+        // CHỈ cập nhật vị trí 'bottom' nếu ở trên màn hình lớn
+        if (window.innerWidth >= 768) {
+            const minBottomVh = 5;
+            const maxTopPaddingVh = 5;
 
-        // Lấy chiều cao của viewport tính bằng pixel
-        const viewportHeightPx = window.innerHeight;
+            const viewportHeightPx = window.innerHeight;
+            const progressTextHeightPx = progressText.offsetHeight;
 
-        // Lấy chiều cao của phần tử progressText tính bằng pixel
-        // Cần đảm bảo rằng font-size đã được áp dụng khi đo
-        const progressTextHeightPx = progressText.offsetHeight;
+            const targetTopPx = maxTopPaddingVh * viewportHeightPx / 100;
+            const maxBottomPx = viewportHeightPx - (progressTextHeightPx + targetTopPx);
 
-        // Tính toán vị trí bottom tối đa cho 100% để chữ không bị cắt ở đỉnh
-        // maxBottomPx = (viewportHeightPx - progressTextHeightPx - (maxTopPaddingVh * viewportHeightPx / 100))
-        // Đơn giản hóa: khoảng cách từ đỉnh màn hình đến đỉnh của chữ khi 100% là 5vh
-        // Vậy, vị trí bottom (tính từ đáy màn hình) của chữ khi 100% là:
-        // total height - (height of text + 5vh from top)
-        const targetTopPx = maxTopPaddingVh * viewportHeightPx / 100;
-        const maxBottomPx = viewportHeightPx - (progressTextHeightPx + targetTopPx);
+            const minBottomPx = minBottomVh * viewportHeightPx / 100;
 
+            const newBottomPx = minBottomPx + (currentPercentage / 100) * (maxBottomPx - minBottomPx);
 
-        // Vị trí bottom cho 0% (tính bằng pixel)
-        const minBottomPx = minBottomVh * viewportHeightPx / 100;
-
-        // Tính toán vị trí 'bottom' hiện tại bằng cách nội suy
-        const newBottomPx = minBottomPx + (currentPercentage / 100) * (maxBottomPx - minBottomPx);
-
-        progressText.style.bottom = `${newBottomPx}px`;
+            progressText.style.bottom = `${newBottomPx}px`;
+        }
+        // Nếu là màn hình nhỏ hơn 768px, CSS media query sẽ quản lý vị trí tĩnh của progress-indicator
 
         if (actualLoadCompleteTime !== null && (elapsedSinceStart >= minDisplayTime || contactButtonClicked)) {
             hidePreloader();
@@ -179,9 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function animateProgress() {
+        // Chỉ gọi updateProgressBar để cập nhật % (không phải vị trí) nếu đang ở màn hình nhỏ
+        // hoặc nếu đang ở màn hình lớn và cần kéo dài thời gian
         if (actualLoadCompleteTime !== null && !contactButtonClicked) {
-            updateProgressBar(assetsLoaded, totalAssets);
-            if (performance.now() - startTime < minDisplayTime) {
+             updateProgressBar(assetsLoaded, totalAssets); // Cập nhật %
+            if (performance.now() - startTime < minDisplayTime || window.innerWidth < 768) {
                 requestAnimationFrame(animateProgress);
             }
         } else if (actualLoadCompleteTime === null) {

@@ -1,0 +1,206 @@
+/* assets/css/preloader.css */
+
+.preloader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: var(--app-height); /* Biến này sẽ được JS cập nhật */
+    background-color: rgba(37, 99, 235, 0.99);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Căn video giữa màn hình mặc định */
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1; /* Mặc định hiển thị */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+}
+
+.preloader-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Giữ vị trí trung tâm cho video mặc định */
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    width: auto;
+}
+
+.preloader-video {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: none;
+}
+
+.preloader-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Default styles for larger screens (Desktop/Tablet landscape) */
+.progress-indicator {
+    position: absolute;
+    left: 1vw; /* Sát lề trái hơn nữa */
+    bottom: 5vh;
+    font-size: 33vh; /* Chiếm khoảng 1/3 chiều cao viewport */
+    line-height: 1;
+    font-weight: 200; /* Font chữ mỏng hơn nữa */
+    color: #ffffff;
+    text-shadow: none;
+    transition: bottom 0.3s ease-out; /* Giữ transition cho màn hình lớn */
+    z-index: 10000;
+    max-width: 98vw;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Style cho text "Loading..." */
+.loading-text {
+    position: absolute;
+    left: 5vw; /* Đặt cách lề trái một khoảng để không chồng lên % */
+    bottom: 5vh; /* Đặt cùng vị trí bottom ban đầu với % */
+    transform: translateY(100%); /* Dịch xuống dưới để không chồng lên 0% */
+    color: #ffffff;
+    font-size: 1.5em; /* Kích thước font */
+    font-weight: 300; /* Font mỏng */
+    letter-spacing: 0.05em; /* Khoảng cách chữ */
+    z-index: 9999; /* Đảm bảo nằm trên cùng */
+    white-space: nowrap; /* Ngăn xuống dòng */
+    opacity: 0.7; /* Làm mờ một chút */
+}
+
+/* Hiệu ứng ba chấm nhấp nháy */
+.dots span {
+    opacity: 0;
+    animation: blink-dots 1.5s infinite steps(1, start);
+    animation-fill-mode: forwards;
+}
+
+.dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+.dots span:nth-child(2) {
+    animation-delay: 0.5s;
+}
+.dots span:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes blink-dots {
+    0% { opacity: 0; }
+    33% { opacity: 1; }
+    66% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.contact-button {
+    position: absolute;
+    right: 5vw;
+    bottom: 5vh;
+    padding: 15px 30px;
+    background-color: #60a5fa;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 10000;
+}
+
+.contact-button:hover {
+    background-color: #3b82f6;
+    transform: scale(1.1);
+}
+
+/* Media Queries for smaller screens (Mobile/Tablet portrait) */
+@media (max-width: 768px) {
+    /* Video chiếm phần trên */
+    .preloader-content {
+        position: absolute; /* Đặt video ở vị trí tuyệt đối */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70%; /* Chiếm 70% chiều cao màn hình phía trên */
+        justify-content: center; /* Căn giữa video theo chiều dọc trong khu vực 70% */
+        align-items: center; /* Căn giữa video theo chiều ngang */
+    }
+
+    .preloader-video {
+        width: 120px; /* Tăng kích thước video một chút so với trước trên di động */
+        height: 120px;
+        margin-bottom: 0; /* Bỏ margin-bottom */
+    }
+
+    /* Số % tiến độ tĩnh */
+    .progress-indicator {
+        position: absolute; /* Vẫn là absolute để dễ đặt vị trí */
+        left: 5vw; /* Sát lề trái */
+        bottom: 12vh; /* Vị trí tĩnh, nằm trên text "Loading..." */
+        font-size: 20vh; /* Điều chỉnh kích thước cho phù hợp hơn với 1/3 phần dưới */
+        transition: none; /* RẤT QUAN TRỌNG: Không có transition cho bottom trên di động */
+    }
+
+    /* Text "Loading..." tĩnh, nằm dưới % tiến độ */
+    .loading-text {
+        left: 5vw; /* Cùng lề trái với % */
+        bottom: 8vh; /* Nằm dưới số % */
+        transform: none; /* Bỏ transform */
+        font-size: 1.1em; /* Kích thước font */
+        opacity: 1; /* Rõ hơn trên di động */
+    }
+
+    .contact-button {
+        right: 5vw; /* Đặt lại vị trí nút */
+        bottom: 8vh; /* Đặt cùng hàng với text "Loading..." nhưng ở bên phải */
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+}
+
+/* Optional: Even smaller screens (e.g., iPhone SE) - tinh chỉnh thêm nếu cần */
+@media (max-width: 480px) {
+    .preloader-video {
+        width: 100px;
+        height: 100px;
+    }
+
+    .progress-indicator {
+        left: 5vw;
+        bottom: 15vh; /* Tăng khoảng cách nếu cần */
+        font-size: 18vh;
+    }
+
+    .loading-text {
+        left: 5vw;
+        bottom: 10vh;
+        font-size: 1em;
+    }
+
+    .contact-button {
+        right: 5vw;
+        bottom: 10vh;
+        padding: 8px 18px;
+        font-size: 0.8em;
+    }
+}
