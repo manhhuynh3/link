@@ -13,7 +13,8 @@
     justify-content: center; /* Căn video giữa màn hình mặc định */
     align-items: center;
     z-index: 9999;
-    transition: opacity 0.5s ease-in-out;
+    /* Tăng thời gian transition để hiệu ứng mờ dần mượt hơn cho toàn bộ preloader */
+    transition: opacity 0.7s ease-in-out;
     opacity: 1; /* Mặc định hiển thị */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -39,6 +40,7 @@
     width: auto;
 }
 
+/* Các style cho video preloader */
 .preloader-video {
     width: 150px;
     height: 150px;
@@ -48,12 +50,22 @@
     margin-bottom: 20px;
     border: none;
     box-shadow: none;
+    /* Thêm transition cho hiệu ứng biến mất của video */
+    transition: transform 0.7s ease-in-out, opacity 0.7s ease-in-out;
 }
 
 .preloader-video video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Thêm hiệu ứng zoom nhẹ khi đang chạy (tùy chọn) */
+    animation: pulse-zoom 2s infinite alternate ease-in-out;
+}
+
+/* Keyframes cho hiệu ứng zoom nhẹ của video */
+@keyframes pulse-zoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
 }
 
 /* Default styles for larger screens (Desktop/Tablet landscape) */
@@ -66,7 +78,8 @@
     font-weight: 200; /* Font chữ mỏng hơn nữa */
     color: #ffffff;
     text-shadow: none;
-    transition: bottom 0.3s ease-out; /* Giữ transition cho màn hình lớn */
+    /* Giữ transition cho bottom cho màn hình lớn, thêm cho opacity và transform */
+    transition: bottom 0.3s ease-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
     z-index: 10000;
     max-width: 98vw;
     overflow: hidden;
@@ -86,13 +99,15 @@
     z-index: 9999; /* Đảm bảo nằm trên cùng */
     white-space: nowrap; /* Ngăn xuống dòng */
     opacity: 0.7; /* Làm mờ một chút */
+    /* Thêm transition cho opacity của text loading */
+    transition: opacity 0.5s ease-in-out;
 }
 
 /* Hiệu ứng ba chấm nhấp nháy */
 .dots span {
     opacity: 0;
     animation: blink-dots 1.5s infinite steps(1, start);
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards; /* Giữ trạng thái cuối cùng */
 }
 
 .dots span:nth-child(1) {
@@ -124,7 +139,8 @@
     cursor: pointer;
     font-weight: 700;
     font-size: 1.1em;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    /* Thêm transition cho opacity của nút */
+    transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.5s ease-in-out;
     z-index: 10000;
 }
 
@@ -132,6 +148,23 @@
     background-color: #3b82f6;
     transform: scale(1.1);
 }
+
+/* Khi preloader ẩn, các phần tử con cũng ẩn đi với hiệu ứng */
+.preloader-hidden .preloader-video {
+    opacity: 0;
+    transform: scale(0.5); /* Thu nhỏ video khi ẩn */
+}
+
+.preloader-hidden .progress-indicator {
+    opacity: 0;
+    transform: scale(1.2); /* Phóng to nhẹ rồi mờ dần */
+}
+
+.preloader-hidden .loading-text,
+.preloader-hidden .contact-button { /* Nút contact cũng mờ dần */
+    opacity: 0;
+}
+
 
 /* Media Queries for smaller screens (Mobile/Tablet portrait) */
 @media (max-width: 768px) {
@@ -150,6 +183,10 @@
         width: 120px; /* Tăng kích thước video một chút so với trước trên di động */
         height: 120px;
         margin-bottom: 0; /* Bỏ margin-bottom */
+        /* Đảm bảo transition ở đây cũng được áp dụng nếu cần */
+        transition: transform 0.7s ease-in-out, opacity 0.7s ease-in-out;
+        /* Giữ animation pulse-zoom nếu muốn trên di động */
+        animation: pulse-zoom 2s infinite alternate ease-in-out;
     }
 
     /* Số % tiến độ tĩnh */
@@ -158,7 +195,7 @@
         left: 5vw; /* Sát lề trái */
         bottom: 12vh; /* Vị trí tĩnh, nằm trên text "Loading..." */
         font-size: 20vh; /* Điều chỉnh kích thước cho phù hợp hơn với 1/3 phần dưới */
-        transition: none; /* RẤT QUAN TRỌNG: Không có transition cho bottom trên di động */
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Bỏ transition cho bottom */
     }
 
     /* Text "Loading..." tĩnh, nằm dưới % tiến độ */
@@ -168,6 +205,7 @@
         transform: none; /* Bỏ transform */
         font-size: 1.1em; /* Kích thước font */
         opacity: 1; /* Rõ hơn trên di động */
+        transition: opacity 0.5s ease-in-out;
     }
 
     .contact-button {
@@ -175,6 +213,21 @@
         bottom: 8vh; /* Đặt cùng hàng với text "Loading..." nhưng ở bên phải */
         padding: 10px 20px;
         font-size: 0.9em;
+        transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.5s ease-in-out;
+    }
+
+    /* Khi preloader ẩn, các phần tử con cũng ẩn đi với hiệu ứng (media query) */
+    .preloader-hidden .preloader-video {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    .preloader-hidden .progress-indicator {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+    .preloader-hidden .loading-text,
+    .preloader-hidden .contact-button {
+        opacity: 0;
     }
 }
 
