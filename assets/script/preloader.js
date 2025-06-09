@@ -1,146 +1,194 @@
 document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
-    const progressBar = document.getElementById('progressBar');
     const loadingVideo = document.getElementById('loadingVideo');
     const contactButton = document.getElementById('contactButton');
-    const progressText = document.getElementById('progressText'); // Lấy tham chiếu đến phần tử hiển thị %
+    const progressText = document.getElementById('progressText');
     let assetsLoaded = 0;
     let totalAssets = 0;
+    const minDisplayTime = 3000; // Thời gian hiển thị tối thiểu của màn hình chờ (3 giây)
+    let startTime = performance.now(); // Ghi lại thời gian bắt đầu tải
+    let actualLoadCompleteTime = null; // Thời gian thực tế khi tất cả tài nguyên đã tải xong
 
+    // Biến cờ để kiểm tra xem đã click nút "Contact Now" chưa
+    let contactButtonClicked = false;
+
+    // Hàm để ẩn màn hình chờ
     function hidePreloader() {
-        preloader.classList.add('preloader-hidden');
-        document.body.style.overflow = 'auto'; // Cho phép cuộn trang sau khi tải xong
+        if (contactButtonClicked) {
+            preloader.classList.add('preloader-hidden');
+            document.body.style.overflow = 'auto';
+            return;
+        }
+
+        const elapsedTime = performance.now() - startTime;
+        const remainingTime = minDisplayTime - elapsedTime;
+
+        if (remainingTime > 0) {
+            setTimeout(() => {
+                preloader.classList.add('preloader-hidden');
+                document.body.style.overflow = 'auto';
+            }, remainingTime);
+        } else {
+            preloader.classList.add('preloader-hidden');
+            document.body.style.overflow = 'auto';
+        }
     }
 
-    // Lắng nghe sự kiện click trên nút "Liên hệ ngay"
+    // Lắng nghe sự kiện click trên nút "Contact Now"
     contactButton.addEventListener('click', () => {
+        contactButtonClicked = true;
         hidePreloader();
-        // Cuộn đến phần liên hệ với ID là 'contact'
         const contactSection = document.getElementById('contact');
         if (contactSection) {
             contactSection.scrollIntoView({ behavior: 'smooth' });
         }
     });
 
-    // Hàm cập nhật thanh tiến độ VÀ hiển thị phần trăm
+    // Hàm cập nhật tiến độ VÀ vị trí của số %
     function updateProgressBar(loadedCount, totalCount) {
-        if (totalCount === 0) { // Tránh chia cho 0 nếu không có tài nguyên nào được theo dõi
-            progressBar.style.width = '100%';
+        if (totalCount === 0) {
             progressText.textContent = '100%';
+            // Khi tổng tài nguyên là 0, đặt nó ở vị trí cao nhất (gần đỉnh)
+            // Tính toán dynamic maxBottom dựa trên kích thước font thực tế của progressText
+            const progressTextHeight = progressText.offsetHeight; // Lấy chiều cao pixel của phần tử
+            const viewportHeight = window.innerHeight;
+            const maxBottom = (viewportHeight - progressTextHeight - (5 * viewportHeight / 100)); // 5vh padding từ trên cùng
+            progressText.style.bottom = `${maxBottom}px`; // Đặt vị trí bằng pixel
             return;
         }
-        const percentage = Math.min(100, Math.round((loadedCount / totalCount) * 100)); // Đảm bảo không vượt quá 100%
-        progressBar.style.width = `${percentage}%`;
-        progressText.textContent = `${percentage}%`; // Cập nhật text hiển thị %
+
+        let currentPercentage;
+        const currentTime = performance.now();
+        const elapsedSinceStart = currentTime - startTime;
+
+        if (actualLoadCompleteTime === null) {
+            // Tải chưa hoàn thành, tính toán % dựa trên tài nguyên thực tế
+            currentPercentage = Math.min(100, Math.round((loadedCount / totalCount) * 100));
+        } else {
+            // Tải đã hoàn thành, nhưng cần kéo dài tiến độ đến minDisplayTime
+            const timeToReach100Percent = minDisplayTime;
+            const progressRatio = Math.min(1, elapsedSinceStart / timeToReach100Percent);
+            currentPercentage = Math.round(progressRatio * 100);
+            currentPercentage = Math.min(100, currentPercentage);
+        }
+
+        progressText.textContent = `${currentPercentage}%`;
+
+        // Tính toán vị trí 'bottom' cho số % dựa trên currentPercentage
+        const minBottomVh = 5; // vh (0% ở 5vh từ đáy)
+        const maxTopPaddingVh = 5; // vh (5vh padding từ đỉnh)
+
+        // Lấy chiều cao của viewport tính bằng pixel
+        const viewportHeightPx = window.innerHeight;
+
+        // Lấy chiều cao của phần tử progressText tính bằng pixel
+        // Cần đảm bảo rằng font-size đã được áp dụng khi đo
+        const progressTextHeightPx = progressText.offsetHeight;
+
+        // Tính toán vị trí bottom tối đa cho 100% để chữ không bị cắt ở đỉnh
+        // maxBottomPx = (viewportHeightPx - progressTextHeightPx - (maxTopPaddingVh * viewportHeightPx / 100))
+        // Đơn giản hóa: khoảng cách từ đỉnh màn hình đến đỉnh của chữ khi 100% là 5vh
+        // Vậy, vị trí bottom (tính từ đáy màn hình) của chữ khi 100% là:
+        // total height - (height of text + 5vh from top)
+        const targetTopPx = maxTopPaddingVh * viewportHeightPx / 100;
+        const maxBottomPx = viewportHeightPx - (progressTextHeightPx + targetTopPx);
+
+
+        // Vị trí bottom cho 0% (tính bằng pixel)
+        const minBottomPx = minBottomVh * viewportHeightPx / 100;
+
+        // Tính toán vị trí 'bottom' hiện tại bằng cách nội suy
+        const newBottomPx = minBottomPx + (currentPercentage / 100) * (maxBottomPx - minBottomPx);
+
+        progressText.style.bottom = `${newBottomPx}px`;
+
+        if (actualLoadCompleteTime !== null && (elapsedSinceStart >= minDisplayTime || contactButtonClicked)) {
+            hidePreloader();
+        } else if (actualLoadCompleteTime === null && loadedCount >= totalAssets) {
+            actualLoadCompleteTime = performance.now();
+            requestAnimationFrame(() => updateProgressBar(assetsLoaded, totalAssets));
+        }
     }
 
-    // Ước tính tổng số tài nguyên nặng.
-    // Đây là phần quan trọng cần bạn điều chỉnh.
-    // Bạn cần tính toán số lượng ảnh, video, file 3D, font, v.v., mà bạn biết sẽ tải.
-    // VD: 5 ảnh, 2 video, 1 file 3D.
-    // KHÔNG ĐẶT GIÁ TRỊ NÀY BẰNG 0 NẾU BẠN MUỐN THANH TIẾN ĐỘ HOẠT ĐỘNG.
-    // CÁCH TỐT NHẤT LÀ ĐẾM TẤT CẢ CÁC TÀI NGUYÊN NẶNG TRÊN TRANG CỦA BẠN.
-    const totalEstimatedAssets = 5 + 2 + 1; // Ví dụ, hãy điều chỉnh con số này!
+    // --- LOGIC THEO DÕI TÀI NGUYÊN ---
 
-    // Sử dụng một đối tượng để theo dõi trạng thái tải của các tài nguyên
-    const resourceLoadingStatus = {
-        images: [],
-        videos: [],
-        // Thêm các loại tài nguyên khác nếu cần (ví dụ: 'models': [])
-    };
+    // 1 video + 19 ảnh (bao gồm gif) + 2 file js + 1 file 3d = 23 tài nguyên
+    const trackedResources = [
+        { type: 'video', element: document.querySelector('video:not(#loadingVideo)'), loaded: false },
+        ...Array.from(document.querySelectorAll('img')).map(img => ({ type: 'image', element: img, loaded: false })),
+        { type: 'script', name: 'assets/js/main.js', loaded: false },
+        { type: 'script', name: 'assets/js/lottie.min.js', loaded: false },
+        { type: '3d-model', name: 'your_3d_model.glb', loaded: false }, // Placeholder
+    ].filter(resource => resource.element || resource.name);
 
-    // Lấy tất cả các thẻ hình ảnh trên trang và thêm vào danh sách theo dõi
-    document.querySelectorAll('img').forEach(img => {
-        resourceLoadingStatus.images.push({ element: img, loaded: false });
-    });
+    totalAssets = trackedResources.length;
 
-    // Lấy tất cả các thẻ video trên trang và thêm vào danh sách theo dõi
-    document.querySelectorAll('video').forEach(vid => {
-        if (vid.id !== 'loadingVideo') { // Bỏ qua video loading animation
-            resourceLoadingStatus.videos.push({ element: vid, loaded: false });
-        }
-    });
-
-    // Đếm tổng số tài nguyên cần theo dõi
-    totalAssets = resourceLoadingStatus.images.length + resourceLoadingStatus.videos.length;
-    // Nếu bạn có các tài nguyên khác (ví dụ: file 3D được tải bằng loader JS), bạn cần tăng totalAssets
-    // và thêm logic để theo dõi tải xong của chúng, sau đó gọi assetsLoaded++ và updateProgressBar.
-
-    // Khởi tạo thanh tiến độ (hiển thị 0% ban đầu)
     updateProgressBar(assetsLoaded, totalAssets);
 
-    // Lắng nghe sự kiện tải cho từng hình ảnh
-    resourceLoadingStatus.images.forEach(imgData => {
-        const img = imgData.element;
-        if (img.complete) { // Nếu hình ảnh đã tải xong (trong cache)
-            assetsLoaded++;
-            imgData.loaded = true;
-        } else {
-            img.addEventListener('load', () => {
-                if (!imgData.loaded) { // Đảm bảo chỉ tăng một lần
+    trackedResources.forEach(resource => {
+        if (!resource.loaded) {
+            if (resource.type === 'image') {
+                if (resource.element.complete) {
                     assetsLoaded++;
-                    imgData.loaded = true;
-                    updateProgressBar(assetsLoaded, totalAssets);
-                    if (assetsLoaded >= totalAssets) {
-                        hidePreloader();
-                    }
+                    resource.loaded = true;
+                } else {
+                    resource.element.addEventListener('load', () => {
+                        if (!resource.loaded) {
+                            assetsLoaded++;
+                            resource.loaded = true;
+                            updateProgressBar(assetsLoaded, totalAssets);
+                        }
+                    });
+                    resource.element.addEventListener('error', () => {
+                        if (!resource.loaded) {
+                            assetsLoaded++;
+                            resource.loaded = true;
+                            updateProgressBar(assetsLoaded, totalAssets);
+                        }
+                    });
                 }
-            });
-            img.addEventListener('error', () => { // Xử lý lỗi tải cũng như tải xong
-                if (!imgData.loaded) {
+            } else if (resource.type === 'video') {
+                if (resource.element.readyState >= 3) {
                     assetsLoaded++;
-                    imgData.loaded = true;
-                    updateProgressBar(assetsLoaded, totalAssets);
-                    if (assetsLoaded >= totalAssets) {
-                        hidePreloader();
-                    }
+                    resource.loaded = true;
+                } else {
+                    resource.element.addEventListener('loadeddata', () => {
+                        if (!resource.loaded) {
+                            assetsLoaded++;
+                            resource.loaded = true;
+                            updateProgressBar(assetsLoaded, totalAssets);
+                        }
+                    });
+                    resource.element.addEventListener('error', () => {
+                        if (!resource.loaded) {
+                            assetsLoaded++;
+                            resource.loaded = true;
+                            updateProgressBar(assetsLoaded, totalAssets);
+                        }
+                    });
                 }
-            });
+            }
         }
     });
 
-    // Lắng nghe sự kiện tải cho từng video
-    resourceLoadingStatus.videos.forEach(vidData => {
-        const vid = vidData.element;
-        // Kiểm tra readyState để xem video đã sẵn sàng phát chưa
-        if (vid.readyState >= 3) { // readyState 3 (HAVE_ENOUGH_DATA) or 4 (HAVE_FUTURE_DATA)
-            assetsLoaded++;
-            vidData.loaded = true;
-        } else {
-            vid.addEventListener('loadeddata', () => { // Khi đủ dữ liệu để bắt đầu phát
-                if (!vidData.loaded) {
-                    assetsLoaded++;
-                    vidData.loaded = true;
-                    updateProgressBar(assetsLoaded, totalAssets);
-                    if (assetsLoaded >= totalAssets) {
-                        hidePreloader();
-                    }
-                }
-            });
-            vid.addEventListener('error', () => { // Xử lý lỗi tải cũng như tải xong
-                if (!vidData.loaded) {
-                    assetsLoaded++;
-                    vidData.loaded = true;
-                    updateProgressBar(assetsLoaded, totalAssets);
-                    if (assetsLoaded >= totalAssets) {
-                        hidePreloader();
-                    }
-                }
-            });
-        }
-    });
-
-
-    // Fallback: Nếu mọi thứ không hoạt động như mong đợi hoặc các tài nguyên khác không được theo dõi
-    // Điều này sẽ ẩn preloader sau khi toàn bộ DOM và tất cả tài nguyên (bao gồm ảnh, video, script) đã tải xong.
     window.addEventListener('load', () => {
-        // Đảm bảo rằng thanh tiến độ đạt 100% khi tất cả tài nguyên đã tải
+        if (actualLoadCompleteTime === null) {
+            actualLoadCompleteTime = performance.now();
+        }
         updateProgressBar(totalAssets, totalAssets);
-        setTimeout(() => {
-            hidePreloader();
-        }, 500); // Thêm một độ trễ nhỏ để người dùng thấy thanh tiến độ đầy
     });
 
-    // Ngăn chặn cuộn trang trong khi màn hình chờ đang hiển thị
+    function animateProgress() {
+        if (actualLoadCompleteTime !== null && !contactButtonClicked) {
+            updateProgressBar(assetsLoaded, totalAssets);
+            if (performance.now() - startTime < minDisplayTime) {
+                requestAnimationFrame(animateProgress);
+            }
+        } else if (actualLoadCompleteTime === null) {
+            requestAnimationFrame(animateProgress);
+        }
+    }
+    animateProgress();
+
     document.body.style.overflow = 'hidden';
 });

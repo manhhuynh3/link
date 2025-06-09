@@ -845,6 +845,26 @@
             border: 1px solid rgba(255, 255, 255, 0.1); /* Viền mờ nhẹ */
         }
 
+      .preloader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Nền màu xanh primary với 99% opacity */
+            background-color: rgba(37, 99, 235, 0.99); /* #2563eb với 99% opacity */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Căn video giữa màn hình */
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1; /* Mặc định hiển thị */
+            backdrop-filter: none; /* Bỏ backdrop-filter */
+            -webkit-backdrop-filter: none;
+            border: none; /* Bỏ viền */
+        }
+
         .preloader-hidden {
             opacity: 0;
             visibility: hidden;
@@ -855,26 +875,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Nền của phần nội dung để tạo hiệu ứng trong suốt cho riêng nó */
-            background-color: rgba(255, 255, 255, 0.05); /* Nền trắng 5% opacity */
-            padding: 30px;
-            border-radius: 15px;
-            /* Thêm hiệu ứng Glassmorphism cho container nội dung */
-            backdrop-filter: blur(5px); /* Có thể làm mờ nhẹ thêm */
-            -webkit-backdrop-filter: blur(5px);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Bóng đổ để tạo chiều sâu */
-            border: 1px solid rgba(255, 255, 255, 0.18); /* Viền mờ nhẹ */
+            /* Giữ vị trí trung tâm cho video */
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
+            width: auto; /* Để nội dung tự điều chỉnh chiều rộng */
         }
 
         .preloader-video {
             width: 150px; /* Điều chỉnh kích thước video */
             height: 150px;
             object-fit: cover;
-            border-radius: 50%; /* Làm tròn video */
+            border-radius: 50%; /* Giữ bo tròn video */
             overflow: hidden;
             margin-bottom: 20px;
-            border: 3px solid #2563eb; /* Viền video với màu primary */
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.7); /* Hiệu ứng tỏa sáng nhẹ với màu primary */
+            border: none; /* Bỏ khung tròn bao quanh video */
+            box-shadow: none; /* Bỏ bóng đổ */
         }
 
         .preloader-video video {
@@ -883,45 +901,47 @@
             object-fit: cover;
         }
 
+        /* Style cho số % tiến độ ở góc trái màn hình */
         .progress-indicator {
-            font-size: 1.2em;
-            color: white; /* Màu chữ trắng */
-            margin-bottom: 10px; /* Khoảng cách với thanh tiến độ */
-            text-shadow: 0 0 5px rgba(0,0,0,0.5); /* Tạo bóng đổ cho chữ dễ đọc */
-        }
-
-        .progress-bar-container {
-            width: 200px;
-            height: 10px;
-            background-color: rgba(255, 255, 255, 0.2); /* Nền thanh tiến độ trong suốt nhẹ */
-            border-radius: 5px;
+            position: absolute;
+            left: 1vw; /* Sát lề trái hơn nữa: 1% của viewport width */
+            bottom: 5vh; /* Khởi đầu ở dưới cùng, cách lề dưới 5% của viewport height */
+            font-size: 33vh; /* Chiếm khoảng 1/3 chiều cao viewport - Điều chỉnh theo ý muốn */
+            line-height: 1; /* Đảm bảo chữ không bị cắt */
+            font-weight: 200; /* Font chữ mỏng hơn nữa (ExtraLight hoặc Thin nếu Inter hỗ trợ) */
+            color: #ffffff; /* Màu chữ trắng */
+            text-shadow: none; /* Bỏ bóng đổ */
+            transition: bottom 0.3s ease-out; /* Hiệu ứng chuyển động mượt mà */
+            z-index: 10000; /* Đảm bảo nó nằm trên cùng */
+            /* Đảm bảo chữ không vượt quá chiều rộng của màn hình */
+            max-width: 98vw; /* Giảm max-width để tránh tràn lề phải khi số lớn */
             overflow: hidden;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Viền nhẹ */
+            white-space: nowrap; /* Ngăn chữ xuống dòng */
+            /* Điều chỉnh các thuộc tính này để chữ không bị cắt ở đỉnh */
+            /* Ví dụ: nếu 100% là 95vh, và chữ cao 33vh, thì đỉnh chữ là 95+33 = 128vh > 100vh */
+            /* Chúng ta cần tính toán lại `bottom` trong JS để đảm bảo nó nằm trong khoảng từ `5vh` đến `100vh - font-size` */
         }
 
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: #2563eb; /* Màu primary của bạn */
-            border-radius: 5px;
-            transition: width 0.1s linear;
-        }
-
+        /* Style cho nút "Contact Now" */
         .contact-button {
-            padding: 10px 20px;
-            background-color: #2563eb; /* Màu primary của bạn */
+            position: absolute; /* Vị trí tuyệt đối */
+            right: 5vw; /* Cách lề phải 5% của viewport width */
+            bottom: 5vh; /* Cách lề dưới 5% của viewport height */
+            padding: 15px 30px; /* Padding lớn hơn */
+            background-color: #60a5fa; /* Màu xanh sáng hơn nền (blue-400 từ Tailwind) */
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 9999px; /* Bo góc hoàn toàn */
             cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 700; /* Chữ đậm hơn */
+            font-size: 1.1em; /* Kích thước chữ lớn hơn */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Thêm transform cho hiệu ứng scale */
+            z-index: 10000; /* Đảm bảo nằm trên cùng */
         }
 
         .contact-button:hover {
-            background-color: #1d4ed8; /* Một sắc thái xanh đậm hơn (#1d4ed8 tương ứng với blue-700 trong Tailwind) */
-            transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ khi hover */
+            background-color: #3b82f6; /* Màu xanh sáng đậm hơn khi hover (blue-500) */
+            transform: scale(1.1); /* Phóng to 10% khi hover */
         }
     </style>
     <script type="importmap">
@@ -934,8 +954,7 @@
     
 </head>
 <body class="overflow-x-hidden" data-theme="dark">
-
- <div id="preloader" class="preloader-wrapper">
+< <div id="preloader" class="preloader-wrapper">
         <div class="preloader-content">
             <div class="preloader-video">
                 <video id="loadingVideo" autoplay loop muted playsinline>
@@ -943,11 +962,11 @@
                     Trình duyệt của bạn không hỗ trợ thẻ video.
                 </video>
             </div>
-            <div id="progressText" class="progress-indicator">0%</div> <div class="progress-bar-container">
-                <div id="progressBar" class="progress-bar"></div>
             </div>
-            <button id="contactButton" class="contact-button">Liên hệ ngay</button>
-        </div>
+
+        <div id="progressText" class="progress-indicator">0%</div>
+
+        <button id="contactButton" class="contact-button">Contact Now</button>
     </div>
     <main class="main-content">
 
