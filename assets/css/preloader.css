@@ -12,7 +12,7 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    transition: opacity 0.7s ease-in-out;
+    transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
     opacity: 1; /* Mặc định hiển thị */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -25,7 +25,7 @@
     pointer-events: none;
 }
 
-/* Container mới cho video */
+/* Container cho video */
 .preloader-video-container {
     position: absolute;
     /* Mặc định cho màn hình lớn: 2/3 bên phải */
@@ -34,11 +34,11 @@
     right: 0; /* Đặt ở bên phải */
     top: 0;
     display: flex;
-    justify-content: center; /* Căn giữa video trong container của nó */
-    align-items: center;
+    /* Căn phải video trong container của nó trên màn hình lớn */
+    justify-content: flex-end;
+    align-items: center; /* Căn giữa theo chiều dọc */
     overflow: hidden; /* Đảm bảo video không tràn ra ngoài */
-    /* Đảm bảo z-index của container này không thấp hơn các phần tử khác */
-    z-index: 999; /* Đặt thấp hơn các phần tử text/nút để chúng luôn trên video */
+    z-index: 999; /* Đảm bảo z-index của container này không thấp hơn các phần tử khác */
 }
 
 /* Các style cho video preloader */
@@ -49,25 +49,16 @@
     max-width: 60%; /* Giới hạn kích thước để không quá lớn trên màn hình siêu rộng */
     max-height: 80%; /* Giới hạn kích thước theo chiều cao */
     object-fit: cover;
-    border-radius: 50%; /* Giữ hình tròn */
-    overflow: hidden;
     margin: 0;
     border: none;
     box-shadow: none;
-    transition: transform 0.7s ease-in-out, opacity 0.7s ease-in-out;
+    transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
 }
 
 .preloader-video video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    animation: pulse-zoom 2s infinite alternate ease-in-out;
-}
-
-/* Keyframes cho hiệu ứng zoom nhẹ của video */
-@keyframes pulse-zoom {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.05); }
 }
 
 /* Default styles for larger screens (Desktop/Tablet landscape) */
@@ -75,19 +66,14 @@
     position: absolute;
     left: 1vw;
     bottom: 5vh;
-    /* Giảm font-size để tránh tràn */
-    font-size: 20vh; /* Giảm từ 33vh */
+    font-size: 20vh;
     line-height: 1;
     font-weight: 200;
     color: #ffffff;
     text-shadow: none;
-    transition: bottom 0.3s ease-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-    z-index: 10000; /* Đảm bảo nằm trên cùng */
-    max-width: 30vw; /* Giới hạn chiều rộng để không tràn ra phần video */
-    /* Loại bỏ overflow: hidden và white-space: nowrap nếu bạn muốn text co lại thay vì bị cắt */
-    /* Tuy nhiên, với font-size lớn, nó sẽ xuống dòng hoặc bị cắt nếu không đủ chỗ */
-    /* Để đảm bảo không bị cắt, có thể cần font-size nhỏ hơn hoặc cách định vị khác */
-    /* Nếu vẫn muốn cắt khi quá dài, hãy giữ lại hai thuộc tính dưới */
+    transition: bottom 0.3s ease-out, opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
+    z-index: 10000;
+    max-width: 30vw;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -105,7 +91,7 @@
     z-index: 9999;
     white-space: nowrap;
     opacity: 0.7;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.9s ease-in-out;
 }
 
 /* Hiệu ứng ba chấm nhấp nháy */
@@ -144,7 +130,7 @@
     cursor: pointer;
     font-weight: 700;
     font-size: 1.1em;
-    transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.5s ease-in-out;
+    transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.9s ease-in-out;
     z-index: 10000;
 }
 
@@ -180,14 +166,17 @@
         top: 0;
         left: 0;
         right: auto;
-        z-index: 999; /* Đảm bảo z-index tương tự desktop */
+        justify-content: center; /* Đảm bảo căn giữa */
+        align-items: center; /* Đảm bảo căn giữa */
+        z-index: 999;
     }
 
     .preloader-video {
-        width: 1024px;;
-        height: 1024px;
+        /* Tăng gấp đôi kích thước video trên mobile */
+        width: 240px; /* Từ 120px lên 240px */
+        height: 240px; /* Từ 120px lên 240px */
         margin: 0;
-        
+        transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
     }
 
     /* Số % tiến độ tĩnh */
@@ -195,10 +184,10 @@
         left: 5vw;
         bottom: 12vh;
         font-size: 20vh;
-        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
         max-width: 90vw;
-        overflow: hidden; /* Giữ nếu muốn cắt */
-        white-space: nowrap; /* Giữ nếu muốn cắt */
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     /* Text "Loading..." tĩnh, nằm dưới % tiến độ */
@@ -208,7 +197,7 @@
         transform: none;
         font-size: 1.1em;
         opacity: 1;
-        transition: opacity 0.5s ease-in-out;
+        transition: opacity 0.9s ease-in-out;
     }
 
     .contact-button {
@@ -216,7 +205,7 @@
         bottom: 8vh;
         padding: 10px 20px;
         font-size: 0.9em;
-        transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.5s ease-in-out;
+        transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.9s ease-in-out;
     }
 
     /* Khi preloader ẩn, các phần tử con cũng ẩn đi với hiệu ứng (media query) */
@@ -237,8 +226,9 @@
 /* Optional: Even smaller screens (e.g., iPhone SE) - tinh chỉnh thêm nếu cần */
 @media (max-width: 480px) {
     .preloader-video {
-        width: 100px;
-        height: 100px;
+        /* Điều chỉnh kích thước cho màn hình siêu nhỏ hơn */
+        width: 180px; /* Từ 100px lên 180px, vẫn gấp đôi so với ban đầu */
+        height: 180px; /* Từ 100px lên 180px */
     }
 
     .progress-indicator {
