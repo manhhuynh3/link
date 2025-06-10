@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
-    const loadingVideo = document.getElementById('loadingVideo');
+    const loadingAnimationImage = document.getElementById('loadingAnimationImage');
     const contactButton = document.getElementById('contactButton');
     const progressText = document.getElementById('progressText');
-    let assetsLoaded = 0;
-    let totalAssets = 0;
+
     const minDisplayTime = 3000; // Thời gian hiển thị tối thiểu của màn hình chờ (3 giây)
-    let startTime = performance.now(); // Ghi lại thời gian bắt đầu tải
-    let actualLoadCompleteTime = null; // Thời gian thực tế khi tất cả tài nguyên đã tải xong
+    let startTime = performance.now(); // Ghi lại thời gian DOMContentLoaded
+    let actualLoadCompleteTime = null; // Thời gian thực tế khi window.onload bắn
+    let preloaderImageReady = false; // Cờ cho biết ảnh preloader đã tải xong
+    let allPageAssetsLoaded = false; // Cờ cho biết window.onload đã bắn
+    let preloaderHidden = false; // Cờ để tránh ẩn nhiều lần
 
     // Biến cờ để kiểm tra xem đã click nút "Contact Now" chưa
     let contactButtonClicked = false;
@@ -24,176 +26,118 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', setViewportHeight);
     window.addEventListener('orientationchange', setViewportHeight);
 
-
     // Hàm để ẩn màn hình chờ
     function hidePreloader() {
-        if (contactButtonClicked) {
+        if (preloader && !preloaderHidden) { // Kiểm tra để tránh ẩn nhiều lần
+            preloaderHidden = true; // Đặt cờ đã ẩn
             preloader.classList.add('preloader-hidden');
-            document.body.style.overflow = 'auto';
-            return;
-        }
-
-        const elapsedTime = performance.now() - startTime;
-        const remainingTime = minDisplayTime - elapsedTime;
-
-        if (remainingTime > 0) {
-            setTimeout(() => {
-                preloader.classList.add('preloader-hidden');
-                document.body.style.overflow = 'auto';
-            }, remainingTime);
-        } else {
-            preloader.classList.add('preloader-hidden');
-            document.body.style.overflow = 'auto';
+            // Xóa preloader khỏi DOM sau khi transition kết thúc
+            preloader.addEventListener('transitionend', () => {
+                preloader.remove();
+                document.body.style.overflow = 'auto'; // Cho phép cuộn trang lại
+                // Kích hoạt animation của trang chính sau khi preloader biến mất
+                // Ví dụ: gsap.to('.main-content', { opacity: 1, y: 0, duration: 1 });
+            }, { once: true }); // Chỉ lắng nghe một lần
         }
     }
 
-    // Lắng nghe sự kiện click trên nút "Contact Now"
-    contactButton.addEventListener('click', () => {
-        contactButtonClicked = true;
-        hidePreloader();
-        const contactSection = document.getElementById('contact');
-        if (contactSection) {
-            contactSection.scrollIntoView({ behavior: 'smooth' });
+    // Hàm để cập nhật phần trăm tiến độ
+    function updateProgressBar(percentage) {
+        if (progressText) {
+            progressText.textContent = `${Math.round(percentage)}%`;
         }
-    });
+    }
 
-    // Hàm cập nhật tiến độ VÀ vị trí của số %
-    function updateProgressBar(loadedCount, totalCount) {
-        if (totalCount === 0) {
-            progressText.textContent = '100%';
-            // Trên di động, không cần tính toán bottom động, chỉ đặt nội dung
-            if (window.innerWidth >= 768) { // Chỉ áp dụng logic di chuyển trên màn hình lớn
-                const progressTextHeight = progressText.offsetHeight;
-                const viewportHeight = window.innerHeight;
-                const maxBottom = (viewportHeight - progressTextHeight - (5 * viewportHeight / 100));
-                progressText.style.bottom = `${maxBottom}px`;
-            }
-            return;
-        }
-
-        let currentPercentage;
-        const currentTime = performance.now();
-        const elapsedSinceStart = currentTime - startTime;
-
-        if (actualLoadCompleteTime === null) {
-            currentPercentage = Math.min(100, Math.round((loadedCount / totalCount) * 100));
-        } else {
-            const timeToReach100Percent = minDisplayTime;
-            const progressRatio = Math.min(1, elapsedSinceStart / timeToReach100Percent);
-            currentPercentage = Math.round(progressRatio * 100);
-            currentPercentage = Math.min(100, currentPercentage);
-        }
-
-        progressText.textContent = `${currentPercentage}%`;
-
-        // CHỈ cập nhật vị trí 'bottom' nếu ở trên màn hình lớn
-        if (window.innerWidth >= 768) {
-            const minBottomVh = 5;
-            const maxTopPaddingVh = 5;
-
-            const viewportHeightPx = window.innerHeight;
-            const progressTextHeightPx = progressText.offsetHeight;
-
-            const targetTopPx = maxTopPaddingVh * viewportHeightPx / 100;
-            const maxBottomPx = viewportHeightPx - (progressTextHeightPx + targetTopPx);
-
-            const minBottomPx = minBottomVh * viewportHeightPx / 100;
-
-            const newBottomPx = minBottomPx + (currentPercentage / 100) * (maxBottomPx - minBottomPx);
-
-            progressText.style.bottom = `${newBottomPx}px`;
-        }
-        // Nếu là màn hình nhỏ hơn 768px, CSS media query sẽ quản lý vị trí tĩnh của progress-indicator
-
-        if (actualLoadCompleteTime !== null && (elapsedSinceStart >= minDisplayTime || contactButtonClicked)) {
+    // Hàm kiểm tra tất cả điều kiện để ẩn preloader
+    function checkAndHidePreloaderConditions() {
+        // Điều kiện 1: Tất cả tài nguyên của trang đã tải (window.onload)
+        // Điều kiện 2: Ảnh động của preloader đã sẵn sàng
+        // Điều kiện 3: Thời gian hiển thị tối thiểu đã trôi qua HOẶC nút Contact đã được click
+        if (allPageAssetsLoaded && preloaderImageReady && 
+           (performance.now() - startTime >= minDisplayTime || contactButtonClicked)) {
             hidePreloader();
-        } else if (actualLoadCompleteTime === null && loadedCount >= totalAssets) {
-            actualLoadCompleteTime = performance.now();
-            requestAnimationFrame(() => updateProgressBar(assetsLoaded, totalAssets));
+        } else if (allPageAssetsLoaded && preloaderImageReady && !contactButtonClicked) {
+            // Nếu đã tải xong nhưng chưa đủ thời gian tối thiểu,
+            // đặt một timeout để ẩn sau khi đủ thời gian
+            const remainingTime = minDisplayTime - (performance.now() - startTime);
+            if (remainingTime > 0) {
+                setTimeout(hidePreloader, remainingTime);
+            }
         }
     }
 
-    // --- LOGIC THEO DÕI TÀI NGUYÊN ---
-
-    // 1 video + 19 ảnh (bao gồm gif) + 2 file js + 1 file 3d = 23 tài nguyên
-    const trackedResources = [
-        { type: 'video', element: document.querySelector('video:not(#loadingVideo)'), loaded: false },
-        ...Array.from(document.querySelectorAll('img')).map(img => ({ type: 'image', element: img, loaded: false })),
-        { type: 'script', name: 'assets/js/main.js', loaded: false },
-        { type: 'script', name: 'assets/js/lottie.min.js', loaded: false },
-        { type: '3d-model', name: 'your_3d_model.glb', loaded: false }, // Placeholder
-    ].filter(resource => resource.element || resource.name);
-
-    totalAssets = trackedResources.length;
-
-    updateProgressBar(assetsLoaded, totalAssets);
-
-    trackedResources.forEach(resource => {
-        if (!resource.loaded) {
-            if (resource.type === 'image') {
-                if (resource.element.complete) {
-                    assetsLoaded++;
-                    resource.loaded = true;
-                } else {
-                    resource.element.addEventListener('load', () => {
-                        if (!resource.loaded) {
-                            assetsLoaded++;
-                            resource.loaded = true;
-                            updateProgressBar(assetsLoaded, totalAssets);
-                        }
-                    });
-                    resource.element.addEventListener('error', () => {
-                        if (!resource.loaded) {
-                            assetsLoaded++;
-                            resource.loaded = true;
-                            updateProgressBar(assetsLoaded, totalAssets);
-                        }
-                    });
-                }
-            } else if (resource.type === 'video') {
-                if (resource.element.readyState >= 3) {
-                    assetsLoaded++;
-                    resource.loaded = true;
-                } else {
-                    resource.element.addEventListener('loadeddata', () => {
-                        if (!resource.loaded) {
-                            assetsLoaded++;
-                            resource.loaded = true;
-                            updateProgressBar(assetsLoaded, totalAssets);
-                        }
-                    });
-                    resource.element.addEventListener('error', () => {
-                        if (!resource.loaded) {
-                            assetsLoaded++;
-                            resource.loaded = true;
-                            updateProgressBar(assetsLoaded, totalAssets);
-                        }
-                    });
-                }
+    // Bắt sự kiện khi ảnh động preloader đã tải xong
+    if (loadingAnimationImage) {
+        const imageLoadPromise = new Promise(resolve => {
+            if (loadingAnimationImage.complete && loadingAnimationImage.naturalHeight !== 0) { 
+                // Kiểm tra naturalHeight để đảm bảo ảnh không lỗi
+                resolve();
+            } else {
+                loadingAnimationImage.addEventListener('load', resolve);
+                loadingAnimationImage.addEventListener('error', resolve); 
             }
-        }
-    });
+        });
 
+        imageLoadPromise.then(() => {
+            preloaderImageReady = true;
+            checkAndHidePreloaderConditions();
+        });
+    } else {
+        preloaderImageReady = true; // Nếu không có ảnh preloader, coi như đã sẵn sàng
+        checkAndHidePreloaderConditions(); // Vẫn kiểm tra nếu không có ảnh
+    }
+
+    // Bắt sự kiện khi toàn bộ trang (bao gồm tài nguyên ngoài) đã tải xong
     window.addEventListener('load', () => {
-        if (actualLoadCompleteTime === null) {
-            actualLoadCompleteTime = performance.now();
-        }
-        updateProgressBar(totalAssets, totalAssets);
+        actualLoadCompleteTime = performance.now();
+        allPageAssetsLoaded = true;
+        updateProgressBar(100); // Cập nhật 100% khi tất cả tài nguyên đã tải
+        checkAndHidePreloaderConditions(); // Gọi lại để kiểm tra ẩn preloader
     });
 
-    function animateProgress() {
-        // Chỉ gọi updateProgressBar để cập nhật % (không phải vị trí) nếu đang ở màn hình nhỏ
-        // hoặc nếu đang ở màn hình lớn và cần kéo dài thời gian
-        if (actualLoadCompleteTime !== null && !contactButtonClicked) {
-             updateProgressBar(assetsLoaded, totalAssets); // Cập nhật %
-            if (performance.now() - startTime < minDisplayTime || window.innerWidth < 768) {
-                requestAnimationFrame(animateProgress);
-            }
-        } else if (actualLoadCompleteTime === null) {
-            requestAnimationFrame(animateProgress);
-        }
-    }
-    animateProgress();
+    // Lắng nghe sự kiện click nút Contact Now
+    if (contactButton) {
+        contactButton.addEventListener('click', (event) => {
+            event.preventDefault(); 
+            contactButtonClicked = true;
+            
+            // Đảm bảo nút không biến mất cùng preloader
+            contactButton.style.position = 'fixed';
+            contactButton.style.zIndex = '10001'; 
+            contactButton.style.right = '5vw';
+            contactButton.style.bottom = '5vh';
 
+            hidePreloader(); // Ẩn preloader ngay lập tức khi nút được click
+
+            // Chuyển hướng đến phần contact (ví dụ: dùng ScrollTo hoặc thay đổi URL)
+            const targetSectionId = contactButton.dataset.target || 'contact'; 
+            const targetSection = document.getElementById(targetSectionId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                window.location.href = `#${targetSectionId}`;
+            }
+        });
+    }
+
+    // Logic cập nhật tiến độ giả định
+    let currentFictionalProgress = 0;
+    const fictionalProgressInterval = setInterval(() => {
+        // Chỉ cập nhật tiến độ giả nếu trang chưa tải xong (chưa đạt 100%)
+        if (!allPageAssetsLoaded && currentFictionalProgress < 99) {
+            currentFictionalProgress += Math.random() * 5; 
+            if (currentFictionalProgress >= 99) {
+                currentFictionalProgress = 99; 
+                clearInterval(fictionalProgressInterval);
+            }
+            updateProgressBar(currentFictionalProgress);
+        } else if (allPageAssetsLoaded) {
+            // Nếu đã tải xong, dừng interval ngay lập tức nếu chưa dừng
+            clearInterval(fictionalProgressInterval);
+            // updateProgressBar(100) đã được gọi trong window.onload
+        }
+    }, 100); 
+
+    // Đảm bảo body có overflow: hidden khi preloader hiển thị
     document.body.style.overflow = 'hidden';
 });
