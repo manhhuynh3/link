@@ -7,7 +7,7 @@
     width: 100%;
     height: 100vh;
     height: var(--app-height); /* Biến này sẽ được JS cập nhật */
-    background-color: rgba(37, 99, 235, 0.99);
+    background-color: #F6F6F6;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,48 +28,49 @@
 /* Container cho video */
 .preloader-video-container {
     position: absolute;
-    /* Mặc định cho màn hình lớn: 2/3 bên phải */
-    width: 66.66%; /* Chiếm khoảng 2/3 chiều rộng */
-    height: 100%; /* Chiếm toàn bộ chiều cao của preloader-wrapper */
-    right: 0; /* Đặt ở bên phải */
+    width: 66.66%;
+    height: 100%;
+    right: 0;
     top: 0;
     display: flex;
-    /* Căn phải video trong container của nó trên màn hình lớn */
     justify-content: flex-end;
-    align-items: center; /* Căn giữa theo chiều dọc */
-    overflow: hidden; /* Đảm bảo video không tràn ra ngoài */
-    z-index: 999; /* Đảm bảo z-index của container này không thấp hơn các phần tử khác */
+    align-items: center;
+    overflow: hidden;
+    z-index: 999;
 }
 
 /* Các style cho video preloader */
 .preloader-video {
-    /* Đảm bảo video đủ lớn để lấp đầy không gian */
-    width: 70vh; /* Sử dụng vh để nó tỉ lệ theo chiều cao màn hình */
-    height: 70vh; /* Đảm bảo video vuông */
-    max-width: 60%; /* Giới hạn kích thước để không quá lớn trên màn hình siêu rộng */
-    max-height: 80%; /* Giới hạn kích thước theo chiều cao */
+    width: 70vh;
+    height: 70vh;
+    max-width: 60%;
+    max-height: 80%;
     object-fit: cover;
     margin: 0;
     border: none;
     box-shadow: none;
+    overflow: hidden;
     transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
 }
 
-.preloader-video video {
+.preloader-video img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scale(1.02);
+    transition: transform 0.3s ease-in-out;
 }
 
 /* Default styles for larger screens (Desktop/Tablet landscape) */
 .progress-indicator {
     position: absolute;
-    left: 1vw;
+    /* Cập nhật left để sát lề trái hơn */
+    left: 1vw; /* Thay đổi từ 5vw sang 1vw */
     bottom: 5vh;
     font-size: 20vh;
     line-height: 1;
     font-weight: 200;
-    color: #ffffff;
+    color: #000000;
     text-shadow: none;
     transition: bottom 0.3s ease-out, opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
     z-index: 10000;
@@ -81,16 +82,17 @@
 /* Style cho text "Loading..." */
 .loading-text {
     position: absolute;
-    left: 5vw;
+    /* Cập nhật left để sát lề trái hơn */
+    left: 1vw; /* Thay đổi từ 5vw sang 1vw */
     bottom: 5vh;
     transform: translateY(100%);
-    color: #ffffff;
+    color: #000000;
     font-size: 1.5em;
     font-weight: 300;
     letter-spacing: 0.05em;
     z-index: 9999;
     white-space: nowrap;
-    opacity: 0.7;
+    opacity: 1;
     transition: opacity 0.9s ease-in-out;
 }
 
@@ -123,7 +125,7 @@
     right: 5vw;
     bottom: 5vh;
     padding: 15px 30px;
-    background-color: #60a5fa;
+    background-color: #2563EB;
     color: white;
     border: none;
     border-radius: 9999px;
@@ -135,19 +137,19 @@
 }
 
 .contact-button:hover {
-    background-color: #3b82f6;
+    background-color: #1D4ED8;
     transform: scale(1.1);
 }
 
 /* Khi preloader ẩn, các phần tử con cũng ẩn đi với hiệu ứng */
 .preloader-hidden .preloader-video-container .preloader-video {
     opacity: 0;
-    transform: scale(0.5); /* Thu nhỏ video khi ẩn */
+    transform: scale(0.5);
 }
 
 .preloader-hidden .progress-indicator {
     opacity: 0;
-    transform: scale(1.2); /* Phóng to nhẹ rồi mờ dần */
+    transform: scale(1.2);
 }
 
 .preloader-hidden .loading-text,
@@ -158,30 +160,36 @@
 
 /* Media Queries for smaller screens (Mobile/Tablet portrait) */
 @media (max-width: 768px) {
-    /* Video nằm giữa màn hình phía trên */
     .preloader-video-container {
         position: absolute;
         width: 100%;
-        height: 70%; /* Chiếm 70% chiều cao màn hình phía trên */
+        height: 70%;
         top: 0;
         left: 0;
         right: auto;
-        justify-content: center; /* Đảm bảo căn giữa */
-        align-items: center; /* Đảm bảo căn giữa */
+        justify-content: center;
+        align-items: center;
         z-index: 999;
     }
 
     .preloader-video {
-        /* Tăng gấp đôi kích thước video trên mobile */
-        width: 240px; /* Từ 120px lên 240px */
-        height: 240px; /* Từ 120px lên 240px */
+        width: 240px;
+        height: 240px;
         margin: 0;
+        overflow: hidden;
         transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
     }
 
-    /* Số % tiến độ tĩnh */
+    .preloader-video img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.02);
+        transition: transform 0.3s ease-in-out;
+    }
+
     .progress-indicator {
-        left: 5vw;
+        left: 5vw; /* Giữ nguyên cho mobile */
         bottom: 12vh;
         font-size: 20vh;
         transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
@@ -190,9 +198,8 @@
         white-space: nowrap;
     }
 
-    /* Text "Loading..." tĩnh, nằm dưới % tiến độ */
     .loading-text {
-        left: 5vw;
+        left: 5vw; /* Giữ nguyên cho mobile */
         bottom: 8vh;
         transform: none;
         font-size: 1.1em;
@@ -208,7 +215,6 @@
         transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.9s ease-in-out;
     }
 
-    /* Khi preloader ẩn, các phần tử con cũng ẩn đi với hiệu ứng (media query) */
     .preloader-hidden .preloader-video-container .preloader-video {
         opacity: 0;
         transform: scale(0.5);
@@ -226,19 +232,27 @@
 /* Optional: Even smaller screens (e.g., iPhone SE) - tinh chỉnh thêm nếu cần */
 @media (max-width: 480px) {
     .preloader-video {
-        /* Điều chỉnh kích thước cho màn hình siêu nhỏ hơn */
-        width: 180px; /* Từ 100px lên 180px, vẫn gấp đôi so với ban đầu */
-        height: 180px; /* Từ 100px lên 180px */
+        width: 180px;
+        height: 180px;
+        overflow: hidden;
+    }
+
+    .preloader-video img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.02);
+        transition: transform 0.3s ease-in-out;
     }
 
     .progress-indicator {
-        left: 5vw;
+        left: 5vw; /* Giữ nguyên cho mobile */
         bottom: 15vh;
         font-size: 18vh;
     }
 
     .loading-text {
-        left: 5vw;
+        left: 5vw; /* Giữ nguyên cho mobile */
         bottom: 10vh;
         font-size: 1em;
     }
