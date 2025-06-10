@@ -22,7 +22,175 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome for Social Media Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0PzGcVq/p/rW+9r/h/i6Qn/L1k/yG7CjY0sD4LwFpL+hL2gOQ2/yU2fJ+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-     <link rel="stylesheet" href="assets/css/preloader.css">
+     <style>
+        /* Đảm bảo toàn bộ trang bị ẩn cho đến khi preloader sẵn sàng */
+        body.is-loading main.main-content {
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            /* hoặc đơn giản là display: none; nếu bạn không dùng transition cho main-content */
+        }
+        body.is-loading #header,
+        body.is-loading #footer,
+        body.is-loading section:not(#preloader) { /* Ẩn tất cả section trừ preloader */
+             visibility: hidden;
+             opacity: 0;
+             pointer-events: none;
+             /* hoặc display: none; */
+        }
+        
+        /* CSS cốt lõi cho preloader phải ở đây */
+        .preloader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* Sử dụng 100vh mặc định */
+            height: var(--app-height, 100vh); /* Biến này sẽ được JS cập nhật */
+            background-color: #F6F6F6; /* Màu nền preloader */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
+            opacity: 1; 
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: none;
+            /* Thêm các style để đảm bảo nó che phủ hoàn toàn */
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .preloader-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Các style khác của preloader (ví dụ: video container, progress text) */
+        /* Bạn có thể để lại trong preloader.css và chỉ inline những gì cần thiết để hiển thị ngay lập tức */
+        /* Tuy nhiên, để đảm bảo tuyệt đối, bạn có thể inline toàn bộ preloader.css tại đây */
+        /* Hoặc chỉ những phần quan trọng nhất để chống FOUC */
+
+        /* Ví dụ về inline các style quan trọng khác nếu cần */
+        .preloader-video-container { /* ví dụ, để video đúng vị trí ngay lập tức */
+            position: absolute;
+            width: 66.66%;
+            height: 100%;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            overflow: hidden;
+            z-index: 999;
+        }
+        .preloader-video {
+            width: 70vh;
+            height: 70vh;
+            max-width: 60%;
+            max-height: 80%;
+            object-fit: cover;
+            margin: 0;
+            border: none;
+            box-shadow: none;
+            overflow: hidden;
+            transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
+        }
+        .preloader-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.02);
+            transition: transform 0.3s ease-in-out;
+        }
+        /* Style cho % tiến độ và Loading... */
+        .progress-indicator {
+            position: absolute;
+            left: 1vw; 
+            bottom: 5vh;
+            font-size: 20vh;
+            line-height: 1;
+            font-weight: 200;
+            color: #000000;
+            text-shadow: none;
+            transition: bottom 0.3s ease-out, opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
+            z-index: 10000;
+            max-width: 30vw;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .loading-text {
+            position: absolute;
+            left: 1vw; 
+            bottom: 5vh;
+            transform: translateY(100%);
+            color: #000000;
+            font-size: 1.5em;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            z-index: 9999;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.9s ease-in-out;
+        }
+        /* Nút Contact */
+        .contact-button {
+            position: absolute;
+            right: 5vw;
+            bottom: 5vh;
+            padding: 15px 30px;
+            background-color: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.9s ease-in-out;
+            z-index: 10000;
+        }
+        .contact-button:hover {
+            background-color: #1D4ED8;
+            transform: scale(1.1);
+        }
+        /* Media queries cho mobile cũng nên được inline nếu bạn muốn chúng được áp dụng ngay lập tức */
+        @media (max-width: 768px) {
+            .preloader-video-container {
+                width: 100%;
+                height: 70%;
+                top: 0;
+                left: 0;
+                right: auto;
+                justify-content: center;
+                align-items: center;
+            }
+            .preloader-video {
+                width: 240px;
+                height: 240px;
+            }
+            .progress-indicator {
+                left: 5vw;
+                bottom: 12vh;
+                font-size: 20vh;
+            }
+            .loading-text {
+                left: 5vw;
+                bottom: 8vh;
+                transform: none;
+                font-size: 1.1em;
+            }
+            .contact-button {
+                right: 5vw;
+                bottom: 8vh;
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+     
+    </style>
      <link rel="stylesheet" href="assets/css/main_theme.css">
     
     <script type="importmap">

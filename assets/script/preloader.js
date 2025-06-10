@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
-    const loadingAnimationImage = document.getElementById('loadingAnimationImage');
+    // Đã đổi tên biến từ loadingVideo thành loadingAnimationImage để khớp với HTML
+    const loadingAnimationImage = document.getElementById('loadingAnimationImage'); 
     const contactButton = document.getElementById('contactButton');
     const progressText = document.getElementById('progressText');
 
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let actualLoadCompleteTime = null; // Thời gian thực tế khi window.onload bắn
     let preloaderImageReady = false; // Cờ cho biết ảnh preloader đã tải xong
     let allPageAssetsLoaded = false; // Cờ cho biết window.onload đã bắn
-    let preloaderHidden = false; // Cờ để tránh ẩn nhiều lần
+    let preloaderHidden = false; // Cờ để tránh ẩn preloader nhiều lần
 
     // Biến cờ để kiểm tra xem đã click nút "Contact Now" chưa
     let contactButtonClicked = false;
@@ -28,80 +29,100 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hàm để ẩn màn hình chờ
     function hidePreloader() {
-        if (preloader && !preloaderHidden) { // Kiểm tra để tránh ẩn nhiều lần
+        // Chỉ ẩn preloader nếu nó chưa bị ẩn
+        if (preloader && !preloaderHidden) { 
             preloaderHidden = true; // Đặt cờ đã ẩn
+
+            // Thêm class để kích hoạt transition ẩn
             preloader.classList.add('preloader-hidden');
-            // Xóa preloader khỏi DOM sau khi transition kết thúc
+
+            // === QUAN TRỌNG: XÓA CLASS 'is-loading' KHỎI BODY ===
+            // Điều này sẽ hiển thị nội dung chính của trang
+            document.body.classList.remove('is-loading'); 
+            
+            // Cho phép cuộn trang trở lại
+            document.body.style.overflow = 'auto'; 
+
+            // Đảm bảo preloader được loại bỏ khỏi DOM sau khi animation kết thúc
+            // Điều này ngăn nó chiếm không gian hoặc gây ra các vấn đề về tương tác
             preloader.addEventListener('transitionend', () => {
                 preloader.remove();
-                document.body.style.overflow = 'auto'; // Cho phép cuộn trang lại
-                // Kích hoạt animation của trang chính sau khi preloader biến mất
-                // Ví dụ: gsap.to('.main-content', { opacity: 1, y: 0, duration: 1 });
-            }, { once: true }); // Chỉ lắng nghe một lần
+                // Nếu bạn có các animation khởi tạo cho trang chính (ví dụ với GSAP),
+                // bạn có thể kích hoạt chúng tại đây
+                // Ví dụ: gsap.to('.main-content', { opacity: 1, y: 0, duration: 1, ease: 'power2.out' });
+            }, { once: true }); // Chỉ lắng nghe sự kiện transitionend một lần
         }
     }
 
-    // Hàm để cập nhật phần trăm tiến độ
+    // Hàm để cập nhật phần trăm tiến độ hiển thị trên màn hình
     function updateProgressBar(percentage) {
         if (progressText) {
             progressText.textContent = `${Math.round(percentage)}%`;
         }
     }
 
-    // Hàm kiểm tra tất cả điều kiện để ẩn preloader
+    // Hàm kiểm tra các điều kiện để quyết định khi nào ẩn preloader
     function checkAndHidePreloaderConditions() {
-        // Điều kiện 1: Tất cả tài nguyên của trang đã tải (window.onload)
-        // Điều kiện 2: Ảnh động của preloader đã sẵn sàng
-        // Điều kiện 3: Thời gian hiển thị tối thiểu đã trôi qua HOẶC nút Contact đã được click
+        // Điều kiện để ẩn preloader:
+        // 1. Tất cả tài nguyên của trang đã tải xong (allPageAssetsLoaded)
+        // 2. Ảnh động của preloader đã sẵn sàng để hiển thị (preloaderImageReady)
+        // 3. Đã đủ thời gian hiển thị tối thiểu (minDisplayTime) HOẶC nút Contact đã được click
         if (allPageAssetsLoaded && preloaderImageReady && 
            (performance.now() - startTime >= minDisplayTime || contactButtonClicked)) {
             hidePreloader();
         } else if (allPageAssetsLoaded && preloaderImageReady && !contactButtonClicked) {
-            // Nếu đã tải xong nhưng chưa đủ thời gian tối thiểu,
-            // đặt một timeout để ẩn sau khi đủ thời gian
+            // Nếu trang và ảnh preloader đã tải xong, nhưng chưa đủ thời gian tối thiểu
+            // Đặt một hẹn giờ để ẩn preloader sau thời gian còn lại
             const remainingTime = minDisplayTime - (performance.now() - startTime);
             if (remainingTime > 0) {
                 setTimeout(hidePreloader, remainingTime);
+            } else {
+                // Trường hợp thời gian đã đủ hoặc đã vượt quá minDisplayTime nhưng chưa ẩn
+                // (ví dụ: do một lần gọi checkAndHidePreloaderConditions trước đó đã không thành công)
+                hidePreloader();
             }
         }
     }
 
     // Bắt sự kiện khi ảnh động preloader đã tải xong
     if (loadingAnimationImage) {
+        // Sử dụng Promise để xử lý việc tải ảnh một cách linh hoạt
         const imageLoadPromise = new Promise(resolve => {
+            // Nếu ảnh đã được tải (ví dụ: từ cache) và không bị lỗi
             if (loadingAnimationImage.complete && loadingAnimationImage.naturalHeight !== 0) { 
-                // Kiểm tra naturalHeight để đảm bảo ảnh không lỗi
                 resolve();
             } else {
+                // Nếu ảnh chưa tải, lắng nghe sự kiện 'load' hoặc 'error'
                 loadingAnimationImage.addEventListener('load', resolve);
                 loadingAnimationImage.addEventListener('error', resolve); 
             }
         });
 
         imageLoadPromise.then(() => {
-            preloaderImageReady = true;
-            checkAndHidePreloaderConditions();
+            preloaderImageReady = true; // Đặt cờ là ảnh đã sẵn sàng
+            checkAndHidePreloaderConditions(); // Kiểm tra điều kiện ẩn preloader
         });
     } else {
-        preloaderImageReady = true; // Nếu không có ảnh preloader, coi như đã sẵn sàng
-        checkAndHidePreloaderConditions(); // Vẫn kiểm tra nếu không có ảnh
+        preloaderImageReady = true; // Nếu không có ảnh preloader, coi như nó đã sẵn sàng ngay lập tức
+        checkAndHidePreloaderConditions(); // Vẫn kiểm tra điều kiện ẩn
     }
 
-    // Bắt sự kiện khi toàn bộ trang (bao gồm tài nguyên ngoài) đã tải xong
+    // Bắt sự kiện khi toàn bộ trang (bao gồm tất cả hình ảnh, CSS, JavaScript bên ngoài) đã tải xong
     window.addEventListener('load', () => {
-        actualLoadCompleteTime = performance.now();
-        allPageAssetsLoaded = true;
-        updateProgressBar(100); // Cập nhật 100% khi tất cả tài nguyên đã tải
-        checkAndHidePreloaderConditions(); // Gọi lại để kiểm tra ẩn preloader
+        actualLoadCompleteTime = performance.now(); // Ghi lại thời gian tải hoàn tất
+        allPageAssetsLoaded = true; // Đặt cờ là tất cả tài nguyên đã tải
+        updateProgressBar(100); // Cập nhật phần trăm tiến độ lên 100%
+        checkAndHidePreloaderConditions(); // Kiểm tra điều kiện ẩn preloader
     });
 
-    // Lắng nghe sự kiện click nút Contact Now
+    // Lắng nghe sự kiện click vào nút "Contact Now"
     if (contactButton) {
         contactButton.addEventListener('click', (event) => {
-            event.preventDefault(); 
-            contactButtonClicked = true;
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a> hoặc <button>
+            contactButtonClicked = true; // Đặt cờ là nút đã được click
             
-            // Đảm bảo nút không biến mất cùng preloader
+            // Điều chỉnh vị trí của nút Contact để nó không bị ẩn đi cùng preloader
+            // Đảm bảo nút vẫn hiển thị và có thể tương tác sau khi preloader ẩn
             contactButton.style.position = 'fixed';
             contactButton.style.zIndex = '10001'; 
             contactButton.style.right = '5vw';
@@ -109,35 +130,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             hidePreloader(); // Ẩn preloader ngay lập tức khi nút được click
 
-            // Chuyển hướng đến phần contact (ví dụ: dùng ScrollTo hoặc thay đổi URL)
+            // Chuyển hướng đến phần liên hệ (ví dụ: dùng ScrollTo hoặc thay đổi URL)
+            // Lấy ID của phần tử đích từ thuộc tính data-target (nếu có) hoặc mặc định là 'contact'
             const targetSectionId = contactButton.dataset.target || 'contact'; 
             const targetSection = document.getElementById(targetSectionId);
             if (targetSection) {
+                // Cuộn mượt mà đến phần tử đích
                 targetSection.scrollIntoView({ behavior: 'smooth' });
             } else {
+                // Fallback: nếu không tìm thấy phần tử đích, chuyển hướng đến URL có hash
                 window.location.href = `#${targetSectionId}`;
             }
         });
     }
 
-    // Logic cập nhật tiến độ giả định
+    // Logic cập nhật tiến độ giả định (để hiển thị % tăng dần một cách mượt mà)
     let currentFictionalProgress = 0;
     const fictionalProgressInterval = setInterval(() => {
         // Chỉ cập nhật tiến độ giả nếu trang chưa tải xong (chưa đạt 100%)
         if (!allPageAssetsLoaded && currentFictionalProgress < 99) {
-            currentFictionalProgress += Math.random() * 5; 
+            currentFictionalProgress += Math.random() * 5; // Tăng tiến độ ngẫu nhiên
             if (currentFictionalProgress >= 99) {
-                currentFictionalProgress = 99; 
-                clearInterval(fictionalProgressInterval);
+                currentFictionalProgress = 99; // Giới hạn ở 99% để chờ tải thực tế
+                clearInterval(fictionalProgressInterval); // Dừng cập nhật giả
             }
             updateProgressBar(currentFictionalProgress);
         } else if (allPageAssetsLoaded) {
-            // Nếu đã tải xong, dừng interval ngay lập tức nếu chưa dừng
+            // Nếu tất cả tài nguyên đã tải xong, đảm bảo interval dừng lại
             clearInterval(fictionalProgressInterval);
             // updateProgressBar(100) đã được gọi trong window.onload
         }
-    }, 100); 
-
-    // Đảm bảo body có overflow: hidden khi preloader hiển thị
-    document.body.style.overflow = 'hidden';
+    }, 100); // Cập nhật mỗi 100ms
 });
