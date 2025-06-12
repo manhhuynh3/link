@@ -35,7 +35,6 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    overflow: hidden;
     z-index: 999;
 }
 
@@ -49,7 +48,6 @@
     margin: 0;
     border: none;
     box-shadow: none;
-    overflow: hidden;
     transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
 }
 
@@ -75,7 +73,6 @@
     transition: bottom 0.3s ease-out, opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
     z-index: 10000;
     max-width: 30vw;
-    overflow: hidden;
     white-space: nowrap;
 }
 
@@ -176,7 +173,6 @@
         width: 240px;
         height: 240px;
         margin: 0;
-        overflow: hidden;
         transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
     }
 
@@ -194,7 +190,7 @@
         font-size: 20vh;
         transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
         max-width: 90vw;
-        overflow: hidden;
+       
         white-space: nowrap;
     }
 
@@ -234,7 +230,7 @@
     .preloader-video {
         width: 180px;
         height: 180px;
-        overflow: hidden;
+       
     }
 
     .preloader-video img {
