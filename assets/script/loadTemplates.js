@@ -5,8 +5,8 @@ export function loadTemplate(url, elementId) {
     return fetch(url)
         .then(response => {
             if (!response.ok) {
-                // Thêm thông báo chi tiết hơn cho lỗi 404
-                throw new Error(`Failed to load template from ${url}. Status: ${response.status} ${response.statusText}`);
+                // Improved error message for clarity
+                throw new Error(`Failed to load template from ${url}. HTTP Status: ${response.status} - ${response.statusText}`);
             }
             return response.text();
         })
@@ -14,16 +14,14 @@ export function loadTemplate(url, elementId) {
             const element = document.getElementById(elementId);
             if (element) {
                 element.innerHTML = html;
-                // console.log(`Template ${url} loaded and inserted into #${elementId}`);
             } else {
-                console.error(`Element with ID '${elementId}' not found for template ${url}.`);
-                // Ném lỗi để Promise.all trong loadAllTemplates có thể bắt được
-                throw new Error(`Placeholder element with ID '${elementId}' not found for template ${url}.`);
+                console.error(`Error: Element with ID '${elementId}' not found in the DOM.`);
+                throw new Error(`Placeholder element with ID '${elementId}' not found.`);
             }
         })
         .catch(error => {
-            console.error(`Error loading template ${url}:`, error);
-            throw error; // Quan trọng: ném lỗi lại để Promise.all có thể bắt được
+            console.error(`Error loading template from ${url}:`, error);
+            throw error; // Re-throw the error for higher-level handling
         });
 }
 
@@ -37,8 +35,8 @@ export async function loadAllTemplates() {
         ]);
         console.log('All templates loaded successfully.');
     } catch (error) {
-        console.error('Failed to load one or more templates:', error);
-        throw error; // Ném lỗi để main.js có thể xử lý
+        console.error('Error: One or more templates failed to load.', error);
+        throw error; // Re-throw the error for further handling
     }
 }
 

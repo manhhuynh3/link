@@ -42,18 +42,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupServiceDetailsToggle();
 
     // Smooth scrolling for internal links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  const targetId = anchor.getAttribute('href').substring(1);
-  const targetElement = document.getElementById(targetId);
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (event) {
+            event.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
 
-  // Chỉ gắn listener nếu phần tử target tồn tại
-  if (targetElement) {
-    anchor.addEventListener('click', function (event) {
-      event.preventDefault();
-      targetElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                console.error(`Element with ID '${targetId}' not found.`);
+            }
+        });
     });
-  }
 });
