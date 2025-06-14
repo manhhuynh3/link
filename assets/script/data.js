@@ -79,6 +79,9 @@ export const languages = {
         'project_coffee_illustration_skills': 'Minh họa, Branding, Packaging',
         'project_details_link': 'Xem chi tiết dự án &rarr;',
         'services_heading': 'Dịch Vụ Cung Cấp',
+        'vf3_title': 'Vinfast VF3 claw machine animation',
+        'vf3_desc': 'Dự án kết hợp cùng agency Chilli37 Degree làm animation cho xe Vinfast VF3.',
+   
         // Updated service keys
         'service_fooh_title': 'Sản xuất Video CGI FOOH',
         'service_fooh_desc': 'Sản xuất các video quảng cáo CGI ngắn (15-30 giây) cho các chiến dịch truyền thông.',
@@ -105,9 +108,11 @@ export const languages = {
         'contact_form_success': 'Cảm ơn bạn đã liên hệ! Tin nhắn của bạn đã được gửi.',
         'contact_or_connect': 'Hoặc kết nối qua:',
         'contact_location': 'Địa điểm: Thành phố Hồ Chí Minh, Việt Nam',
-        'no_projects': 'Không có dự án mẫu nào.'
+        'no_projects': 'Không có dự án mẫu nào.',
+        'lang_toggle_target': 'EN',
     },
     'en': {
+        'lang_toggle_target': 'VI',
         'title': 'Manh Huynh - Graphic Designer | 3D Artist',
         'nav_home': 'Home',
         'nav_about': 'About',
@@ -184,6 +189,9 @@ export const languages = {
         'project_coffee_illustration_skills': 'Illustration, Branding, Packaging',
         'project_details_link': 'View project details &rarr;',
         'services_heading': 'Services Offered',
+        'vf3_title': 'Vinfast VF3 claw machine animation',
+        'vf3_desc': 'Project collaborated with agency Chilli37 Degree for Vinfast VF3 car animation.',
+    
         // Updated service keys
         'service_fooh_title': 'Video CGI FOOH Production',
         'service_fooh_desc': 'Production of short CGI advertising videos (15-30 seconds) for media campaigns.',
@@ -216,6 +224,49 @@ export const languages = {
 
 // Centralized project data for easy updates
 export const portfolioProjects = [
+     {
+        id: 'cgi-fooh-videos',
+        title_key: 'project_cgi_fooh_title',
+        desc_key: 'project_cgi_fooh_desc',
+        skills_key: 'project_cgi_fooh_skills',
+        behance_link: 'https://www.behance.net/gallery/217807677/2024-CGI-Fake-OOH-videos-collection',
+        images: [
+            'assets/images/Project/FOOH_1.webm',
+            'assets/images/Project/FOOH_2.webm',
+            'assets/images/Project/FOOH_3.webm',
+            'assets/images/Project/FOOH_4.webm',
+            'assets/images/Project/FOOH_5.webm',
+        ],
+        card_layout_classes: 'lg:col-span-1 lg:row-span-2',
+    },
+    {
+        
+    id: 'project-vf3',
+    title_key: 'vf3_title',
+    desc_key: 'vf3_desc',
+    images: [
+        'assets/images/project/VF3_1.webm' 
+    ],
+    behance_link: '/Projects/VF3-clawmachine',
+        card_layout_classes: 'lg:col-span-2 lg:row-span-1',
+    },
+   
+    {
+        id: 'dove-tvc',
+        title_key: 'project_dove_tvc_title',
+        desc_key: 'project_dove_tvc_desc',
+        skills_key: 'project_dove_tvc_skills',
+        behance_link: 'https://www.behance.net/gallery/210560855/Dove-Deodorant-Night-serum-Product-TVC',
+        images: [
+            'assets/images/Project/DOVE_1.webm',
+            'assets/images/Project/DOVE_2.webm',
+            'assets/images/Project/DOVE_3.webm',
+            'assets/images/Project/DOVE_4.webm',
+            'assets/images/Project/DOVE_5.webm',
+        ],
+        card_layout_classes: 'lg:col-span-2 lg:row-span-1',
+    },
+    
     {
         id: 'maybelline-lifter-gloss',
         title_key: 'project_maybelline_lifter_title',
@@ -225,32 +276,9 @@ export const portfolioProjects = [
         images: [
             'assets/images/Project/MBL_1.jpg',
             'assets/images/Project/MBL_2.jpg',
-            'assets/images/Project/MBL_3.jpg'
-        ]
-    },
-    {
-        id: 'cgi-fooh-videos',
-        title_key: 'project_cgi_fooh_title',
-        desc_key: 'project_cgi_fooh_desc',
-        skills_key: 'project_cgi_fooh_skills',
-        behance_link: 'https://www.behance.net/gallery/217807677/2024-CGI-Fake-OOH-videos-collection',
-        images: [
-            'assets/images/Project/FOOH_1.gif',
-            'assets/images/Project/FOOH_2.gif',
-            'assets/images/Project/FOOH_3.gif'
-        ]
-    },
-    {
-        id: 'dove-tvc',
-        title_key: 'project_dove_tvc_title',
-        desc_key: 'project_dove_tvc_desc',
-        skills_key: 'project_dove_tvc_skills',
-        behance_link: 'https://www.behance.net/gallery/210560855/Dove-Deodorant-Night-serum-Product-TVC',
-        images: [
-            'assets/images/Project/DOVE_1.gif',
-            'assets/images/Project/DOVE_2.gif',
-            'assets/images/Project/DOVE_3.gif'
-        ]
+            'assets/images/Project/MBL_3.jpg',            
+        ],
+        card_layout_classes: 'lg:col-span-2 lg:row-span-1',
     },
     {
         id: 'aeon-tet',
@@ -259,22 +287,12 @@ export const portfolioProjects = [
         skills_key: 'project_aeon_tet_skills',
         behance_link: 'https://www.behance.net/gallery/221012599/Tt-chn-Aeon-Tt-Vui-trn-vn',
         images: [
-            'assets/images/Project/Aeon_1.gif',
-            'assets/images/Project/Aeon_2.gif',
-            'assets/images/Project/Aeon_3.gif'
-        ]
-    },
-    {
-        id: 'maybelline-lazmall',
-        title_key: 'project_maybelline_lazmall_title',
-        desc_key: 'project_maybelline_lazmall_desc',
-        skills_key: 'project_maybelline_lazmall_skills',
-        behance_link: 'https://www.behance.net/gallery/170566929/MAYBELLINE-LAZMALL-BSL-KEY-VISUAL-SHOP-IN-SHOP',
-        images: [
-            'assets/images/Project/MBL_laz_1.gif',
-            'assets/images/Project/MBL_laz_2.gif',
-
-        ]
+            
+            'assets/images/Project/Aeon_1.webm',
+            'assets/images/Project/Aeon_2.webm',
+            
+        ],
+        card_layout_classes: 'lg:col-span-1 lg:row-span-2',
     },
     {
         id: 'coffee-illustration',
@@ -286,8 +304,11 @@ export const portfolioProjects = [
             'assets/images/Project/soul_1.gif',
             'assets/images/Project/soul_2.gif',
             'assets/images/Project/soul_3.gif'
-        ]
-    }
+        ],
+        card_layout_classes: 'lg:col-span-2 lg:row-span-1',
+    },
+    
+       
 ];
 
 // Project images mapping for services with captions (existing services data)

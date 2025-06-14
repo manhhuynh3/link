@@ -63,6 +63,7 @@
             --color-skill-tag-bg: #94a3b8; /* slate-400 for a muted grey tag */
         }
 
+        
         /* Apply variables to base elements and sections */
         body {
             background-color: var(--color-bg-primary);
@@ -798,3 +799,4 @@
         #resetAnimationButton:hover {
             background-color: rgba(0, 0, 0, 0.9);
         }
+       
