@@ -301,9 +301,9 @@ export const portfolioProjects = [
         skills_key: 'project_coffee_illustration_skills',
         behance_link: 'https://www.behance.net/gallery/143434651/Coffee-processing-illustration-Soul-specialty-coffee',
         images: [
-            'assets/images/Project/soul_1.gif',
-            'assets/images/Project/soul_2.gif',
-            'assets/images/Project/soul_3.gif'
+            'assets/images/Project/soul_1.webm',
+            'assets/images/Project/soul_2.webm',
+            'assets/images/Project/soul_3.webm'
         ],
         card_layout_classes: 'lg:col-span-2 lg:row-span-1',
     },
