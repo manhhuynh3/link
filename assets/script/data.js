@@ -245,7 +245,7 @@ export const portfolioProjects = [
     title_key: 'vf3_title',
     desc_key: 'vf3_desc',
     images: [
-        'assets/images/project/VF3_1.webm' 
+        'assets/images/Project/VF3_1.webm' 
     ],
     behance_link: '/Projects/VF3-clawmachine',
         card_layout_classes: 'lg:col-span-2 lg:row-span-1',
@@ -288,8 +288,8 @@ export const portfolioProjects = [
         behance_link: 'https://www.behance.net/gallery/221012599/Tt-chn-Aeon-Tt-Vui-trn-vn',
         images: [
             
-            'assets/images/Project/Aeon_1.webm',
-            'assets/images/Project/Aeon_2.webm',
+            'assets/images/Project/AEON_1.webm',
+            'assets/images/Project/AEON_2.webm',
             
         ],
         card_layout_classes: 'lg:col-span-1 lg:row-span-2',
