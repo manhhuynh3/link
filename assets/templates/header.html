@@ -1,21 +1,18 @@
 <header class="shadow-lg py-4 px-6 md:px-12 fixed w-full z-50 rounded-b-lg top-0">
   <div class="flex items-center justify-between max-w-7xl mx-auto md:ml-auto md:mr-auto">
     <nav class="flex items-center justify-between w-full md:pl-0">
-      <!-- Logo -->
       <a href="#home" id="logo-link" class="text-3xl font-bold text-main tracking-tight">
         Mạnh Huỳnh<span class="text-accent-strong">.</span>
       </a>
 
-      <!-- Desktop Nav -->
       <ul class="hidden md:flex space-x-8">
         <li><a href="#home" id="nav-home-link" data-hash="home" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_home">Trang Chủ</a></li>
-        <li><a href="#about" data-hash="about" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_about">Giới Thiệu</a></li>
-        <li><a href="#portfolio" data-hash="portfolio" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_portfolio">Dự Án</a></li>
-        <li><a href="#services" data-hash="services" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_services">Dịch Vụ</a></li>
-        <li><a href="#contact" data-hash="contact" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_contact">Liên Hệ</a></li>
+        <li><a href="#about" id="nav-desktop-about-link" data-hash="about" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_about">Giới Thiệu</a></li>
+        <li><a href="#portfolio" id="nav-desktop-portfolio-link" data-hash="portfolio" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_portfolio">Dự Án</a></li>
+        <li><a href="#services" id="nav-desktop-services-link" data-hash="services" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_services">Dịch Vụ</a></li>
+        <li><a href="#contact" id="nav-desktop-contact-link" data-hash="contact" class="text-main hover:bg-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_contact">Liên Hệ</a></li>
       </ul>
 
-      <!-- Theme & Lang Toggle -->
       <div class="flex flex-col sm:flex-row items-center md:space-x-4 space-y-2 sm:space-y-0">
         <label class="switch" id="theme-toggle-label">
           <input type="checkbox" id="theme-toggle-checkbox">
@@ -28,55 +25,69 @@
     </nav>
   </div>
 
-  <!-- Script điều chỉnh tất cả các link nếu không ở trang root -->
   <script>
-    const pathname = window.location.pathname;
-    const isRoot = /^\/(index\.html)?$/.test(pathname);
+    document.addEventListener('DOMContentLoaded', () => {
+      const pathname = window.location.pathname;
+      // Chỉ coi '/' hoặc '/index.html' là trang root
+      const isRoot = pathname === '/' || pathname === '/index.html';
 
-    if (!isRoot) {
-      const origin = window.location.origin;
-      const logoLink = document.getElementById('logo-link');
+      // Nếu không phải là trang root (ví dụ: abc.com/xyz/index.html)
+      if (!isRoot) {
+        const origin = window.location.origin;
+        
+        // Tất cả các link có data-hash (desktop + mobile)
+        // Lặp qua tất cả các ID của link và cập nhật
+        const linkIds = [
+          'logo-link', // Logo link
+          'nav-home-link', 'nav-desktop-about-link', 'nav-desktop-portfolio-link', 
+          'nav-desktop-services-link', 'nav-desktop-contact-link', // Desktop nav links
+          'nav-mobile-home-link', 'nav-mobile-about-link', 'nav-mobile-portfolio-link',
+          'nav-mobile-services-link', 'nav-mobile-contact-link' // Mobile nav links
+        ];
 
-      // Tất cả các link có data-hash (desktop + mobile)
-      const allNavLinks = document.querySelectorAll('a[data-hash]');
-      allNavLinks.forEach(link => {
-        const hash = link.getAttribute('data-hash');
-        if (hash) {
-          link.setAttribute('href', origin + '/#' + hash);
-        }
-      });
-
-      if (logoLink) logoLink.setAttribute('href', origin + '/');
-    }
+        linkIds.forEach(id => {
+          const link = document.getElementById(id);
+          if (link) {
+            const hash = link.getAttribute('data-hash');
+            if (hash) {
+              // Chắc chắn các link trỏ về trang gốc (abc.com) với hash tương ứng
+              link.setAttribute('href', origin + '/#' + hash); 
+            } else if (id === 'logo-link') { 
+              // Link logo luôn trỏ về trang gốc (abc.com)
+              link.setAttribute('href', origin + '/');
+            }
+          }
+        });
+      }
+    });
   </script>
 </header>
 
-<!-- ✅ Mobile Nav: đã thêm data-hash -->
 <div id="mobile-toggle" class="md:hidden collapsed">
   <i class="fa-solid fa-chevron-right text-2xl text-white"></i>
   <ul class="mt-4 flex flex-col items-center">
     <li class="menu-item mb-6">
-      <a href="#home" data-hash="home" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+      <a href="#home" id="nav-mobile-home-link" data-hash="home" class="flex flex-col items-center text-white hover:text-white transition duration-300">
         <i class="fa-solid fa-house text-2xl"></i>
       </a>
     </li>
     <li class="menu-item mb-6">
-      <a href="#about" data-hash="about" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+      <a href="#about" id="nav-mobile-about-link" data-hash="about" class="flex flex-col items-center text-white hover:text-white transition duration-300">
         <i class="fa-solid fa-user text-2xl"></i>
       </a>
     </li>
     <li class="menu-item mb-6">
-      <a href="#portfolio" data-hash="portfolio" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+      <a href="#portfolio" id="nav-mobile-portfolio-link" data-hash="portfolio" class="flex flex-col items-center text-white hover:text-white transition duration-300">
         <i class="fa-solid fa-palette text-2xl"></i>
       </a>
     </li>
     <li class="menu-item mb-6">
-      <a href="#services" data-hash="services" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+      <a href="#services" id="nav-mobile-services-link" data-hash="services" class="flex flex-col items-center text-white hover:text-white transition duration-300">
         <i class="fa-solid fa-briefcase text-2xl"></i>
       </a>
     </li>
     <li class="menu-item">
-      <a href="#contact" data-hash="contact" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+      <a href="#contact" id="nav-mobile-contact-link" data-hash="contact" class="flex flex-col items-center text-white hover:text-white transition duration-300">
         <i class="fa-solid fa-envelope text-2xl"></i>
       </a>
     </li>
