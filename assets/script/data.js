@@ -224,33 +224,32 @@ export const languages = {
 
 // Centralized project data for easy updates
 export const portfolioProjects = [
-     {
+    {
         id: 'cgi-fooh-videos',
         title_key: 'project_cgi_fooh_title',
         desc_key: 'project_cgi_fooh_desc',
         skills_key: 'project_cgi_fooh_skills',
         behance_link: 'https://www.behance.net/gallery/217807677/2024-CGI-Fake-OOH-videos-collection',
         images: [
-            'assets/images/Project/FOOH_1.webm',
-            'assets/images/Project/FOOH_2.webm',
-            'assets/images/Project/FOOH_3.webm',
-            'assets/images/Project/FOOH_4.webm',
-            'assets/images/Project/FOOH_5.webm',
+            { url: 'assets/images/Project/FOOH_1.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
+            { url: 'assets/images/Project/FOOH_2.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
+            { url: 'assets/images/Project/FOOH_3.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
+            { url: 'assets/images/Project/FOOH_4.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
+            { url: 'assets/images/Project/FOOH_5.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
         ],
         card_layout_classes: 'lg:col-span-1 lg:row-span-2',
     },
     {
-        
-    id: 'project-vf3',
-    title_key: 'vf3_title',
-    desc_key: 'vf3_desc',
-    images: [
-        'assets/images/Project/VF3_1.webm' 
-    ],
-    behance_link: '/Projects/VF3-clawmachine',
+        id: 'project-vf3',
+        title_key: 'vf3_title',
+        desc_key: 'vf3_desc',
+        images: [
+            { url: 'assets/images/Project/VF3_1.webm', poster: 'assets/images/Project/VF3_1_poster.webp', },
+            { url: 'assets/images/Project/VF3_2.webm', poster: 'assets/images/Project/VF3_1_poster.webp' }
+        ],
+        behance_link: '/Projects/VF3-clawmachine',
         card_layout_classes: 'lg:col-span-2 lg:row-span-1',
     },
-   
     {
         id: 'dove-tvc',
         title_key: 'project_dove_tvc_title',
@@ -258,15 +257,14 @@ export const portfolioProjects = [
         skills_key: 'project_dove_tvc_skills',
         behance_link: 'https://www.behance.net/gallery/210560855/Dove-Deodorant-Night-serum-Product-TVC',
         images: [
-            'assets/images/Project/DOVE_1.webm',
-            'assets/images/Project/DOVE_2.webm',
-            'assets/images/Project/DOVE_3.webm',
-            'assets/images/Project/DOVE_4.webm',
-            'assets/images/Project/DOVE_5.webm',
+            { url: 'assets/images/Project/DOVE_1.webm', poster: 'assets/images/Project/dove_poster.webp' },
+            { url: 'assets/images/Project/DOVE_2.webm', poster: 'assets/images/Project/dove_poster.webp' },
+            { url: 'assets/images/Project/DOVE_3.webm', poster: 'assets/images/Project/dove_poster.webp' },
+            { url: 'assets/images/Project/DOVE_4.webm', poster: 'assets/images/Project/dove_poster.webp' },
+            { url: 'assets/images/Project/DOVE_5.webm', poster: 'assets/images/Project/dove_poster.webp' },
         ],
         card_layout_classes: 'lg:col-span-2 lg:row-span-1',
     },
-    
     {
         id: 'maybelline-lifter-gloss',
         title_key: 'project_maybelline_lifter_title',
@@ -274,12 +272,12 @@ export const portfolioProjects = [
         skills_key: 'project_maybelline_lifter_skills',
         behance_link: 'https://www.behance.net/gallery/224918323/Maybelline-LIFTER-GLOSS-POSM-Digital-Design',
         images: [
-            'assets/images/Project/MBL_1.jpg',
+            'assets/images/Project/MBL_1.jpg', // Dạng ảnh tĩnh không cần poster
             'assets/images/Project/MBL_2.jpg',
-            'assets/images/Project/MBL_3.jpg',            
+            'assets/images/Project/MBL_3.jpg',
         ],
         card_layout_classes: 'lg:col-span-2 lg:row-span-1',
-    },
+    },  
     {
         id: 'aeon-tet',
         title_key: 'project_aeon_tet_title',
@@ -287,10 +285,8 @@ export const portfolioProjects = [
         skills_key: 'project_aeon_tet_skills',
         behance_link: 'https://www.behance.net/gallery/221012599/Tt-chn-Aeon-Tt-Vui-trn-vn',
         images: [
-            
-            'assets/images/Project/AEON_1.webm',
-            'assets/images/Project/AEON_2.webm',
-            
+            { url: 'assets/images/Project/AEON_1.webm', poster: 'assets/images/Project/aeon_poster.webp' },
+            { url: 'assets/images/Project/AEON_2.webm', poster: 'assets/images/Project/aeon_poster.webp' },
         ],
         card_layout_classes: 'lg:col-span-1 lg:row-span-2',
     },
@@ -301,14 +297,12 @@ export const portfolioProjects = [
         skills_key: 'project_coffee_illustration_skills',
         behance_link: 'https://www.behance.net/gallery/143434651/Coffee-processing-illustration-Soul-specialty-coffee',
         images: [
-            'assets/images/Project/soul_1.webm',
-            'assets/images/Project/soul_2.webm',
-            'assets/images/Project/soul_3.webm'
+            { url: 'assets/images/Project/soul_1.webm', poster: 'assets/images/Project/soul_1_poster.webp' },
+            { url: 'assets/images/Project/soul_2.webm', poster: 'assets/images/Project/soul_1_poster.webp' },
+            { url: 'assets/images/Project/soul_3.webm', poster: 'assets/images/Project/soul_1_poster.webp' }
         ],
         card_layout_classes: 'lg:col-span-2 lg:row-span-1',
     },
-    
-       
 ];
 
 // Project images mapping for services with captions (existing services data)

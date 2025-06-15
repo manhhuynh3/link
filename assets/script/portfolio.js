@@ -18,7 +18,9 @@ export function createPortfolioCards() {
 }
 
 // Helper function to determine file type based on extension
-function getFileType(url) {
+// Now expects mediaItem to be an object {url: '...', poster: '...'} or just a string URL
+function getFileType(mediaItem) {
+    const url = typeof mediaItem === 'object' && mediaItem !== null ? mediaItem.url : mediaItem;
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg'];
     const extension = url.substring(url.lastIndexOf('.')).toLowerCase();
@@ -33,6 +35,19 @@ function getFileType(url) {
 
 function createDesktopPortfolioCards(portfolioGrid) {
     portfolioProjects.forEach((project, index) => {
+        // THAY ĐỔI TẠI ĐÂY: Tìm poster mặc định cho dự án này
+        let projectDefaultVideoPoster = 'https://placehold.co/600x400/1e293b/f8fafc?text=Project+Media'; // Poster dự phòng chung nếu không tìm thấy
+
+        // Duyệt qua các media item của dự án để tìm poster của video đầu tiên
+        for (const mediaItem of project.images) {
+            const mediaType = getFileType(mediaItem);
+            // Kiểm tra xem item có phải là video, là đối tượng và có thuộc tính poster hay không
+            if (mediaType === 'video' && typeof mediaItem === 'object' && mediaItem !== null && mediaItem.poster) {
+                projectDefaultVideoPoster = mediaItem.poster;
+                break; // Đã tìm thấy poster của video đầu tiên, thoát vòng lặp
+            }
+        }
+
         const card = document.createElement('div');
         card.id = `project-card-${project.id}`;
         card.classList.add(
@@ -59,21 +74,30 @@ function createDesktopPortfolioCards(portfolioGrid) {
         imageStack.appendChild(innerStack);
 
         const imgElements = [];
-        project.images.forEach((mediaSrc, mediaIndex) => { // Đổi tên biến thành mediaSrc
-            const mediaType = getFileType(mediaSrc);
+        project.images.forEach((mediaItem, mediaIndex) => { // mediaItem can be string or object
+            const mediaType = getFileType(mediaItem);
             let mediaElement;
+            const mediaUrl = typeof mediaItem === 'object' && mediaItem !== null ? mediaItem.url : mediaItem;
+            // Lấy poster từ dữ liệu, nếu không có thì để trống
+            const mediaPoster = typeof mediaItem === 'object' && mediaItem !== null && mediaType === 'video' ? mediaItem.poster : '';
+
 
             if (mediaType === 'video') {
                 mediaElement = document.createElement('video');
-                mediaElement.src = mediaSrc;
+                mediaElement.src = mediaUrl;
                 mediaElement.loop = true;
                 mediaElement.muted = true;
-                mediaElement.autoplay = true;
-                mediaElement.playsInline = true; // Essential for autoplay on mobile
-                mediaElement.preload = 'auto'; // Preload video data
+                mediaElement.playsInline = true;
+                mediaElement.preload = 'auto';
+                // THAY ĐỔI TẠI ĐÂY: Sử dụng mediaPoster hoặc projectDefaultVideoPoster
+                if (mediaPoster) {
+                    mediaElement.poster = mediaPoster; // Sử dụng poster riêng nếu có
+                } else {
+                    mediaElement.poster = projectDefaultVideoPoster; // Sử dụng poster mặc định của dự án
+                }
             } else {
                 mediaElement = document.createElement('img');
-                mediaElement.src = mediaSrc;
+                mediaElement.src = mediaUrl;
             }
 
             mediaElement.onerror = function () {
@@ -117,8 +141,16 @@ function createDesktopPortfolioCards(portfolioGrid) {
                 'shadow-md'
             );
             dot.addEventListener('click', () => {
+                // Tạm dừng video hiện tại trước khi chuyển
+                const prevMedia = imgElements[currentProjectIndex];
+                if (prevMedia && prevMedia.tagName === 'VIDEO') {
+                    prevMedia.pause();
+                    prevMedia.currentTime = 0; // Đặt lại về đầu để hiển thị poster
+                    prevMedia.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
+                }
+
                 currentProjectIndex = i;
-                updatePortfolioCarouselDisplay();
+                updatePortfolioCarouselDisplay(true); // Truyền true để kích hoạt autoplay nếu là video
             });
             progressBarContainer.appendChild(dot);
             progressBars.push(dot);
@@ -137,7 +169,7 @@ function createDesktopPortfolioCards(portfolioGrid) {
             'p-2', 'sm:p-6',
             'pb-1', 'sm:pb-1',
             'text-left',
-            'opacity-0', 'group-hover:opacity-100', // Điều chỉnh: ẩn overlay mặc định, hiện khi hover
+            'opacity-0', 'group-hover:opacity-100',
             'pointer-events-none'
         );
 
@@ -145,8 +177,8 @@ function createDesktopPortfolioCards(portfolioGrid) {
         overlayContent.classList.add(
             'w-full', 'h-full', 'flex', 'flex-col', 'justify-end', 'relative',
             'transition-opacity', 'duration-300',
-            'pointer-events-none', // Nội dung overlay mặc định không nhận sự kiện
-            'opacity-0', 'group-hover:opacity-100' // Nội dung chỉ hiển thị khi hover trên card cha
+            'pointer-events-none',
+            'opacity-0', 'group-hover:opacity-100'
         );
 
         overlay.appendChild(overlayContent);
@@ -166,7 +198,7 @@ function createDesktopPortfolioCards(portfolioGrid) {
         const description = document.createElement('p');
         description.classList.add(
             'text-white', 'text-sm', 'mb-4', 'project-description',
-            'hidden', 'md:block' // Hiển thị mô tả trên desktop
+            'hidden', 'md:block'
         );
         description.setAttribute('data-lang-key', project.desc_key);
         description.textContent = languages?.[currentLanguage]?.[project.desc_key] || '';
@@ -199,19 +231,21 @@ function createDesktopPortfolioCards(portfolioGrid) {
 
         // --- Desktop Specific Interactions ---
         let isDragging = false;
+        let isHovering = false; // Biến theo dõi trạng thái hover
 
         imageStack.addEventListener('mousedown', () => {
             isDragging = true;
-            linkButton.style.pointerEvents = 'none'; // Vô hiệu hóa nút khi bắt đầu kéo
+            linkButton.style.pointerEvents = 'none';
         });
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
-            linkButton.style.pointerEvents = 'auto'; // Kích hoạt lại nút khi nhả chuột
+            linkButton.style.pointerEvents = 'auto';
         });
 
         // Hàm cập nhật hiển thị carousel ảnh
-        const updatePortfolioCarouselDisplay = () => {
+        // Thêm tham số shouldAutoplay để kiểm soát việc phát video ngay lập tức
+        const updatePortfolioCarouselDisplay = (shouldAutoplay = false) => {
             const totalProjects = project.images.length;
             if (totalProjects === 0) {
                 innerStack.style.transform = `translateX(0%)`;
@@ -229,16 +263,19 @@ function createDesktopPortfolioCards(portfolioGrid) {
                 bar.classList.add(idx === currentProjectIndex ? 'bg-blue-500' : 'bg-white');
             });
 
-            // Tạm dừng/phát video nếu có
             imgElements.forEach((mediaElement, idx) => {
                 if (mediaElement.tagName === 'VIDEO') {
-                    if (idx === currentProjectIndex) {
-                        mediaElement.play().catch(e => console.error("Video play failed:", e)); // Bắt lỗi play()
+                    // Cập nhật logic: video chỉ play khi đang hover VÀ là media hiện tại
+                    if (idx === currentProjectIndex && isHovering && shouldAutoplay) {
+                        mediaElement.play().catch(e => {
+                            console.warn("Video play failed:", e);
+                        });
                     } else {
                         mediaElement.pause();
+                        mediaElement.currentTime = 0; // Đặt lại về đầu để hiển thị poster
+                        mediaElement.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster khi không phát
                     }
                 } else if (mediaElement.tagName === 'IMG') {
-                     // Scaling for images only, videos often handle their own scaling
                     mediaElement.style.transform = idx === currentProjectIndex ? 'scale(1.05)' : 'scale(1)';
                 }
             });
@@ -252,6 +289,13 @@ function createDesktopPortfolioCards(portfolioGrid) {
             const totalProjects = project.images.length;
 
             if (totalProjects <= 1) {
+                // Tạm dừng video hiện tại nếu có
+                const prevMedia = imgElements[currentProjectIndex];
+                if (prevMedia && prevMedia.tagName === 'VIDEO') {
+                    prevMedia.pause();
+                    prevMedia.currentTime = 0;
+                    prevMedia.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
+                }
                 currentProjectIndex = 0;
                 updatePortfolioCarouselDisplay();
                 return;
@@ -262,37 +306,58 @@ function createDesktopPortfolioCards(portfolioGrid) {
             newIndex = Math.max(0, Math.min(totalProjects - 1, newIndex));
 
             if (newIndex !== currentProjectIndex) {
+                // Tạm dừng video cũ trước khi chuyển sang cái mới
+                const prevMedia = imgElements[currentProjectIndex];
+                if (prevMedia && prevMedia.tagName === 'VIDEO') {
+                    prevMedia.pause();
+                    prevMedia.currentTime = 0; // Đặt lại về đầu để hiển thị poster
+                    prevMedia.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
+                }
+
                 currentProjectIndex = newIndex;
-                updatePortfolioCarouselDisplay();
+                updatePortfolioCarouselDisplay(true); // Kích hoạt autoplay cho video mới nếu có
             }
         };
 
         // Gộp các sự kiện mousemove vào thẻ cha 'card' để tránh xung đột pointer-events
         card.addEventListener('mousemove', (e) => {
+            // Chỉ xử lý nếu đang hover
+            if (!isHovering) return;
+
             // 1. Di chuyển nút "View" theo chuột
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             linkButton.style.left = `${x}px`;
             linkButton.style.top = `${y}px`;
-            linkButton.style.transform = 'translate(-100%, -100%)'; // Căn giữa nút chính xác
+            linkButton.style.transform = 'translate(-100%, -100%)';
             linkButton.style.opacity = '1';
             linkButton.style.pointerEvents = 'auto';
 
-            // 2. Kích hoạt slide hình thumbnail dựa trên vị trí chuột trên thẻ (không phải chỉ trên imageStack)
+            // 2. Kích hoạt slide hình thumbnail dựa trên vị trí chuột trên thẻ
             handlePortfolioImageMouseMove(e);
+        });
+
+        card.addEventListener('mouseenter', () => {
+            isHovering = true;
+            updatePortfolioCarouselDisplay(true); // Kích hoạt autoplay khi bắt đầu hover
         });
 
         card.addEventListener('mouseleave', () => {
             isDragging = false;
+            isHovering = false; // Đặt lại trạng thái hover
             linkButton.style.opacity = '0';
             linkButton.style.pointerEvents = 'none';
-            // Pause all videos when mouse leaves the card
+            // THAY ĐỔI TẠI ĐÂY: Dừng tất cả video và đặt lại currentTime về 0
             imgElements.forEach(mediaElement => {
                 if (mediaElement.tagName === 'VIDEO') {
                     mediaElement.pause();
+                    mediaElement.currentTime = 0; // Reset video to the beginning (poster frame)
+                    mediaElement.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
                 }
             });
+            // Không cần gọi updatePortfolioCarouselDisplay(false) ở đây vì vòng lặp trên đã xử lý việc dừng video.
+            // updatePortfolioCarouselDisplay() sẽ được gọi tự động khi mouseenter lại.
         });
 
         updatePortfolioCarouselDisplay(); // Khởi tạo hiển thị ban đầu
@@ -301,6 +366,18 @@ function createDesktopPortfolioCards(portfolioGrid) {
 
 function createMobilePortfolioCards(portfolioGrid) {
     portfolioProjects.forEach((project, index) => {
+        // THAY ĐỔI TẠY ĐÂY: Tìm poster mặc định cho dự án này (cho mobile)
+        let projectDefaultVideoPoster = 'https://placehold.co/600x400/1e293b/f8fafc?text=Project+Media'; // Poster dự phòng chung nếu không tìm thấy
+
+        // Duyệt qua các media item của dự án để tìm poster của video đầu tiên
+        for (const mediaItem of project.images) {
+            const mediaType = getFileType(mediaItem);
+            if (mediaType === 'video' && typeof mediaItem === 'object' && mediaItem !== null && mediaItem.poster) {
+                projectDefaultVideoPoster = mediaItem.poster;
+                break;
+            }
+        }
+
         const card = document.createElement('div');
         card.id = `project-card-${project.id}`;
         card.classList.add(
@@ -346,21 +423,29 @@ function createMobilePortfolioCards(portfolioGrid) {
         imageStack.appendChild(innerStack);
 
         const imgElements = [];
-        project.images.forEach((mediaSrc, mediaIndex) => { // Đổi tên biến thành mediaSrc
-            const mediaType = getFileType(mediaSrc);
+        project.images.forEach((mediaItem, mediaIndex) => { // mediaItem can be string or object
+            const mediaType = getFileType(mediaItem);
             let mediaElement;
+            const mediaUrl = typeof mediaItem === 'object' && mediaItem !== null ? mediaItem.url : mediaItem;
+            const mediaPoster = typeof mediaItem === 'object' && mediaItem !== null && mediaType === 'video' ? mediaItem.poster : '';
+
 
             if (mediaType === 'video') {
                 mediaElement = document.createElement('video');
-                mediaElement.src = mediaSrc;
+                mediaElement.src = mediaUrl;
                 mediaElement.loop = true;
                 mediaElement.muted = true;
-                mediaElement.autoplay = true;
-                mediaElement.playsInline = true; // Essential for autoplay on mobile
+                mediaElement.playsInline = true;
                 mediaElement.preload = 'auto';
+                // THAY ĐỔI TẠI ĐÂY: Sử dụng mediaPoster hoặc projectDefaultVideoPoster cho mobile
+                if (mediaPoster) {
+                    mediaElement.poster = mediaPoster;
+                } else {
+                    mediaElement.poster = projectDefaultVideoPoster;
+                }
             } else {
                 mediaElement = document.createElement('img');
-                mediaElement.src = mediaSrc;
+                mediaElement.src = mediaUrl;
             }
 
             mediaElement.onerror = function () {
@@ -405,7 +490,7 @@ function createMobilePortfolioCards(portfolioGrid) {
             dot.addEventListener('click', (e) => {
                 e.stopPropagation(); // Ngăn sự kiện click truyền đến link bao phủ
                 currentProjectIndex = i;
-                updatePortfolioCarouselDisplay();
+                updatePortfolioCarouselDisplay(true); // Truyền true để kích hoạt play video trên mobile khi bấm chấm
             });
             progressBarContainer.appendChild(dot);
             progressBars.push(dot);
@@ -423,21 +508,21 @@ function createMobilePortfolioCards(portfolioGrid) {
             'flex', 'flex-col', 'items-start', 'justify-end',
             'p-2', 'sm:p-6',
             'pb-1', 'sm:pb-1',
-            'text-left', 'opacity-100', // Title luôn hiển thị trên mobile
-            'pointer-events-none' // Đảm bảo click xuyên qua đến link bao phủ
+            'text-left', 'opacity-100',
+            'pointer-events-none'
         );
 
         const overlayContent = document.createElement('div');
         overlayContent.classList.add(
             'w-full', 'h-full', 'flex', 'flex-col', 'justify-end', 'relative',
             'transition-opacity', 'duration-300',
-            'opacity-100', // Title luôn hiển thị
-            'pointer-events-none' // Đảm bảo click xuyên qua
+            'opacity-100',
+            'pointer-events-none'
         );
 
         overlay.appendChild(overlayContent);
 
-        const titleLink = document.createElement('div'); // Thay <a> bằng <div> vì link chính đã bao phủ
+        const titleLink = document.createElement('div');
         titleLink.classList.add('block', 'text-decoration-none', 'mb-2', 'project-title-link');
 
         const title = document.createElement('h3');
@@ -449,7 +534,7 @@ function createMobilePortfolioCards(portfolioGrid) {
         const description = document.createElement('p');
         description.classList.add(
             'text-white', 'text-sm', 'mb-4', 'project-description',
-            'hidden' // Ẩn mô tả trên mobile
+            'hidden'
         );
         description.setAttribute('data-lang-key', project.desc_key);
         description.textContent = languages?.[currentLanguage]?.[project.desc_key] || '';
@@ -462,9 +547,10 @@ function createMobilePortfolioCards(portfolioGrid) {
         portfolioGrid.appendChild(card);
 
         // --- Mobile Specific Interactions ---
-        let isDragging = false; // Theo dõi trạng thái kéo để ngừng auto-slide
+        let isDragging = false;
 
-        const updatePortfolioCarouselDisplay = () => {
+        // Thêm tham số shouldAutoplay cho mobile để kiểm soát việc phát video khi chuyển ảnh
+        const updatePortfolioCarouselDisplay = (shouldAutoplay = false) => {
             const totalProjects = project.images.length;
             if (totalProjects === 0) {
                 innerStack.style.transform = `translateX(0%)`;
@@ -482,16 +568,20 @@ function createMobilePortfolioCards(portfolioGrid) {
                 bar.classList.add(idx === currentProjectIndex ? 'bg-blue-500' : 'bg-white');
             });
 
-            // Tạm dừng/phát video nếu có
             imgElements.forEach((mediaElement, idx) => {
                 if (mediaElement.tagName === 'VIDEO') {
-                    if (idx === currentProjectIndex) {
-                        mediaElement.play().catch(e => console.error("Video play failed:", e));
+                    // THAY ĐỔI TẠI ĐÂY: Chỉ play video nếu nó là video hiện tại VÀ shouldAutoplay là true
+                    if (idx === currentProjectIndex && shouldAutoplay) {
+                        mediaElement.play().catch(e => {
+                            console.warn("Video play failed on mobile:", e);
+                        });
                     } else {
                         mediaElement.pause();
+                        mediaElement.currentTime = 0; // Đặt lại về đầu để hiển thị poster
+                        mediaElement.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
                     }
                 } else if (mediaElement.tagName === 'IMG') {
-                    mediaElement.style.transform = 'scale(1)'; // No scaling for images on mobile
+                    mediaElement.style.transform = 'scale(1)';
                 }
             });
         };
@@ -503,9 +593,9 @@ function createMobilePortfolioCards(portfolioGrid) {
             autoSlideInterval = setInterval(() => {
                 if (!isDragging) {
                     currentProjectIndex = (currentProjectIndex + 1) % project.images.length;
-                    updatePortfolioCarouselDisplay();
+                    updatePortfolioCarouselDisplay(true); // Kích hoạt play video khi tự động chuyển slide
                 }
-            }, 5000); // Tùy chỉnh thời gian
+            }, 5000);
         };
 
         // Dừng auto-slide khi người dùng bắt đầu kéo
@@ -513,6 +603,14 @@ function createMobilePortfolioCards(portfolioGrid) {
             e.stopPropagation();
             isDragging = true;
             clearInterval(autoSlideInterval);
+            // Dừng tất cả video khi bắt đầu kéo
+            imgElements.forEach(mediaElement => {
+                if (mediaElement.tagName === 'VIDEO') {
+                    mediaElement.pause();
+                    mediaElement.currentTime = 0;
+                    mediaElement.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
+                }
+            });
         });
 
         // Bắt đầu lại auto-slide khi người dùng dừng kéo
@@ -520,6 +618,12 @@ function createMobilePortfolioCards(portfolioGrid) {
             e.stopPropagation();
             isDragging = false;
             startAutoSlide();
+            // THAY ĐỔI TẠI ĐÂY: Phát video nếu là video hiện tại khi kết thúc kéo
+            if (imgElements[currentProjectIndex] && imgElements[currentProjectIndex].tagName === 'VIDEO') {
+                imgElements[currentProjectIndex].play().catch(e => {
+                    console.warn("Video play failed after touch end:", e);
+                });
+            }
         });
 
         // Xử lý kéo bằng cảm ứng
@@ -528,7 +632,7 @@ function createMobilePortfolioCards(portfolioGrid) {
 
         imageStack.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
-            innerStack.style.transition = 'none'; // Tắt transition khi kéo
+            innerStack.style.transition = 'none';
         });
 
         imageStack.addEventListener('touchmove', (e) => {
@@ -541,7 +645,7 @@ function createMobilePortfolioCards(portfolioGrid) {
         });
 
         imageStack.addEventListener('touchend', () => {
-            innerStack.style.transition = ''; // Bật lại transition
+            innerStack.style.transition = '';
             const cardWidth = card.offsetWidth;
             const swipeThreshold = cardWidth * 0.25;
 
@@ -553,10 +657,10 @@ function createMobilePortfolioCards(portfolioGrid) {
                 currentProjectIndex--;
             }
 
-            updatePortfolioCarouselDisplay(); // Cập nhật vị trí ảnh và thanh tiến trình
+            updatePortfolioCarouselDisplay(true); // Kích hoạt play video khi kết thúc kéo và chuyển ảnh
         });
 
-        updatePortfolioCarouselDisplay(); // Khởi tạo hiển thị ban đầu
-        startAutoSlide(); // Bắt đầu auto-slide khi khởi tạo
+        updatePortfolioCarouselDisplay();
+        startAutoSlide();
     });
 }
