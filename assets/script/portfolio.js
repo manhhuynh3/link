@@ -391,6 +391,7 @@ function createMobilePortfolioCards(portfolioGrid) {
         card.style.transitionDelay = `${index * 100}ms`;
 
         let currentProjectIndex = 0; // Khai báo cục bộ cho mỗi thẻ
+        let scrollAutoplayTimeout = null; // Biến để quản lý timeout autoplay khi cuộn
 
         // --- Tạo thẻ <a> bao phủ toàn bộ khung hình để dễ dàng click trên mobile ---
         const fullCardLink = document.createElement('a');
@@ -490,7 +491,7 @@ function createMobilePortfolioCards(portfolioGrid) {
             dot.addEventListener('click', (e) => {
                 e.stopPropagation(); // Ngăn sự kiện click truyền đến link bao phủ
                 currentProjectIndex = i;
-                updatePortfolioCarouselDisplay(true); // Truyền true để kích hoạt play video trên mobile khi bấm chấm
+                updatePortfolioCarouselDisplay(true); // THAY ĐỔI: Autoplay on dot click
             });
             progressBarContainer.appendChild(dot);
             progressBars.push(dot);
@@ -549,7 +550,8 @@ function createMobilePortfolioCards(portfolioGrid) {
         // --- Mobile Specific Interactions ---
         let isDragging = false;
 
-        // Thêm tham số shouldAutoplay cho mobile để kiểm soát việc phát video khi chuyển ảnh
+        // Hàm cập nhật hiển thị carousel ảnh
+        // THAY ĐỔI: Thêm tham số shouldAutoplay để điều khiển việc phát video
         const updatePortfolioCarouselDisplay = (shouldAutoplay = false) => {
             const totalProjects = project.images.length;
             if (totalProjects === 0) {
@@ -570,7 +572,7 @@ function createMobilePortfolioCards(portfolioGrid) {
 
             imgElements.forEach((mediaElement, idx) => {
                 if (mediaElement.tagName === 'VIDEO') {
-                    // THAY ĐỔI TẠI ĐÂY: Chỉ play video nếu nó là video hiện tại VÀ shouldAutoplay là true
+                    // THAY ĐỔI: Logic phát video dựa trên shouldAutoplay
                     if (idx === currentProjectIndex && shouldAutoplay) {
                         mediaElement.play().catch(e => {
                             console.warn("Video play failed on mobile:", e);
@@ -578,13 +580,36 @@ function createMobilePortfolioCards(portfolioGrid) {
                     } else {
                         mediaElement.pause();
                         mediaElement.currentTime = 0; // Đặt lại về đầu để hiển thị poster
-                        mediaElement.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
                     }
                 } else if (mediaElement.tagName === 'IMG') {
                     mediaElement.style.transform = 'scale(1)';
                 }
             });
         };
+
+        // THAY ĐỔI: Intersection Observer cho autoplay khi dừng cuộn
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.target === card) { // Đảm bảo đây là thẻ đang được quan sát
+                    if (entry.isIntersecting) {
+                        // Thẻ nằm trong khung nhìn
+                        clearTimeout(scrollAutoplayTimeout);
+                        scrollAutoplayTimeout = setTimeout(() => {
+                            // Chỉ tự động phát nếu thẻ vẫn nằm trong khung nhìn sau timeout
+                            if (entry.isIntersecting) { // Kiểm tra lại để tránh phát nhầm
+                                updatePortfolioCarouselDisplay(true); // Tự động phát video hiện tại
+                            }
+                        }, 1500); // 1.5 giây
+                    } else {
+                        // Thẻ rời khỏi khung nhìn
+                        clearTimeout(scrollAutoplayTimeout);
+                        updatePortfolioCarouselDisplay(false); // Tạm dừng video ngay lập tức
+                    }
+                }
+            });
+        }, { threshold: 0.75 }); // Tự động phát khi 75% của thẻ nằm trong khung nhìn
+
+        observer.observe(card); // Bắt đầu quan sát thẻ này
 
         // Auto thumbnail change trên màn hình nhỏ
         let autoSlideInterval;
@@ -593,7 +618,7 @@ function createMobilePortfolioCards(portfolioGrid) {
             autoSlideInterval = setInterval(() => {
                 if (!isDragging) {
                     currentProjectIndex = (currentProjectIndex + 1) % project.images.length;
-                    updatePortfolioCarouselDisplay(true); // Kích hoạt play video khi tự động chuyển slide
+                    updatePortfolioCarouselDisplay(true); // THAY ĐỔI: Autoplay on auto slide
                 }
             }, 5000);
         };
@@ -608,7 +633,6 @@ function createMobilePortfolioCards(portfolioGrid) {
                 if (mediaElement.tagName === 'VIDEO') {
                     mediaElement.pause();
                     mediaElement.currentTime = 0;
-                    mediaElement.load(); // THÊM DÒNG NÀY: Buộc tải lại để hiển thị poster
                 }
             });
         });
@@ -618,12 +642,6 @@ function createMobilePortfolioCards(portfolioGrid) {
             e.stopPropagation();
             isDragging = false;
             startAutoSlide();
-            // THAY ĐỔI TẠI ĐÂY: Phát video nếu là video hiện tại khi kết thúc kéo
-            if (imgElements[currentProjectIndex] && imgElements[currentProjectIndex].tagName === 'VIDEO') {
-                imgElements[currentProjectIndex].play().catch(e => {
-                    console.warn("Video play failed after touch end:", e);
-                });
-            }
         });
 
         // Xử lý kéo bằng cảm ứng
@@ -657,10 +675,10 @@ function createMobilePortfolioCards(portfolioGrid) {
                 currentProjectIndex--;
             }
 
-            updatePortfolioCarouselDisplay(true); // Kích hoạt play video khi kết thúc kéo và chuyển ảnh
+            updatePortfolioCarouselDisplay(true); // THAY ĐỔI: Autoplay on touchend
         });
 
-        updatePortfolioCarouselDisplay();
+        updatePortfolioCarouselDisplay(false); // Khởi tạo hiển thị ban đầu, video sẽ tạm dừng
         startAutoSlide();
     });
 }
