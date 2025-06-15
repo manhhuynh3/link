@@ -216,10 +216,67 @@
 
         <button id="contactButton" class="contact-button">Contact Now</button>
     </div>
-<div id="header-placeholder"></div>
-
 
     <main class="main-content">
+ <!-- Header/Navigation -->
+    <header class="shadow-lg py-4 px-6 md:px-12 fixed w-full z-50 rounded-b-lg top-0">
+        <div class="flex items-center justify-between max-w-7xl mx-auto md:ml-auto md:mr-auto">
+            <nav class="flex items-center justify-between w-full md:pl-0">
+                <a href="#home" class="text-3xl font-bold text-main tracking-tight">Mạnh Huỳnh<span class="text-accent-strong">.</span></a>
+                <ul class="hidden md:flex space-x-8">
+                    <li><a href="#home" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_home">Trang Chủ</a></li>
+                    <li><a href="#about" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_about">Giới Thiệu</a></li>
+                    <li><a href="#portfolio" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_portfolio">Dự Án</a></li>
+                    <li><a href="#services" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_services">Dịch Vụ</a></li>
+                    <li><a href="#contact" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_contact">Liên Hệ</a></li>
+                </ul>
+                <div class="flex flex-col sm:flex-row items-center md:space-x-4 space-y-2 sm:space-y-0">
+                    <label class="switch" id="theme-toggle-label">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <button data-lang-key="lang_toggle_target" id="lang-toggle-button" class="bg-primary-button hover:bg-primary-button text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 transform hover:scale-105 text-sm">
+                        EN
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Toggle Button and Menu -->
+    <div id="mobile-toggle" class="md:hidden collapsed">
+        <!-- Toggle Icon -->
+        <i class="fa-solid fa-chevron-right text-2xl text-white"></i>
+
+        <!-- Menu Items (hidden when collapsed) -->
+        <ul class="mt-4 flex flex-col items-center">
+            <li class="menu-item mb-6">
+                <a href="#home" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                    <i class="fa-solid fa-house text-2xl"></i>
+                </a>
+            </li>
+            <li class="menu-item mb-6">
+                <a href="#about" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                    <i class="fa-solid fa-user text-2xl"></i>
+                </a>
+            </li>
+            <li class="menu-item mb-6">
+                <a href="#portfolio" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                    <i class="fa-solid fa-palette text-2xl"></i>
+                </a>
+            </li>
+            <li class="menu-item mb-6">
+                <a href="#services" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                    <i class="fa-solid fa-briefcase text-2xl"></i>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#contact" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                    <i class="fa-solid fa-envelope text-2xl"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
 
    
         <!-- Home/Hero Section -->
@@ -531,12 +588,16 @@
                 </div>
             </div>
         </section>
+         <!-- Footer -->
+    <footer class="py-8 px-6 md:px-12 text-center rounded-t-lg">
+        <p data-lang-key="footer_copyright">&copy; 2025 Mạnh Huỳnh. Tất cả quyền được bảo lưu.</p>
+    </footer>
     </main>
 
     <!-- Footer -->
-    <div id="footer-placeholder"></div>
+    
 
-    <script type="module" src="assets/script/loadTemplates.js"></script>
+  
     <script type="module" src="assets/script/main.js"></script>
     <script src="assets/script/preloader.js"></script>
 </body>
