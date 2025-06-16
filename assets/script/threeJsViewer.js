@@ -69,7 +69,7 @@ export function initThreeJSViewer(containerId) {
             );
             world.addContactMaterial(contactMat);
             contactMaterialPairs.add(contactKey);
-            console.log(`Added ContactMaterial for: ${sortedNames[0]} vs ${sortedNames[1]} (F:${friction}, R:${restitution})`);
+            // console.log(`Added ContactMaterial for: ${sortedNames[0]} vs ${sortedNames[1]} (F:${friction}, R:${restitution})`);
         }
     }
 
@@ -81,7 +81,7 @@ export function initThreeJSViewer(containerId) {
 
         const newMat = new CANNON.Material(key);
         customMaterialCache.set(key, newMat);
-        console.log(`Created new custom material: ${key}`);
+        // console.log(`Created new custom material: ${key}`);
 
         addContactMaterialSafely(groundMaterial, newMat, friction, restitution, world);
         addContactMaterialSafely(defaultBodyMaterial, newMat, friction, restitution, world);
@@ -238,13 +238,13 @@ export function initThreeJSViewer(containerId) {
             loader.load('assets/3d/SOFTWARE.glb', function (gltf) {
                 const model = gltf.scene;
 
-                console.log('Model loaded:', model);
+                // console.log('Model loaded:', model);
 
                 model.traverse(function (object) {
                     if (object.isLight) {
-                        console.log('Light found:', object, 'Original intensity:', object.intensity);
+                        // console.log('Light found:', object, 'Original intensity:', object.intensity);
                         object.intensity = 1;
-                        console.log('Adjusted intensity:', object.intensity);
+                        // console.log('Adjusted intensity:', object.intensity);
                     }
                     if (object.isMesh && object.material) {
                         const mesh = object;
@@ -296,18 +296,18 @@ export function initThreeJSViewer(containerId) {
                         const physicsShapeType = mesh.userData.physicsShape;
                         const isCollisionObject = mesh.userData.isCollisionObject;
 
-                        console.log(`Mesh ${mesh.name} custom properties: isCollisionObject=${isCollisionObject}, Mass=${physicsMass}, Friction=${physicsFriction}, Restitution=${physicsRestitution}, Shape=${physicsShapeType}`);
+                        // console.log(`Mesh ${mesh.name} custom properties: isCollisionObject=${isCollisionObject}, Mass=${physicsMass}, Friction=${physicsFriction}, Restitution=${physicsRestitution}, Shape=${physicsShapeType}`);
 
                         if (mesh.name === 'STATIC_Ground' || isCollisionObject === true) {
                             mass = 0;
                             bodyMaterial = groundMaterial;
-                            console.log(`Static object found: ${mesh.name}. Setting mass to 0.`);
+                            // console.log(`Static object found: ${mesh.name}. Setting mass to 0.`);
 
                             switch (physicsShapeType) {
                                 case 'Sphere':
                                     const radius = Math.max(size.x, size.y, size.z) / 2;
                                     shape = new CANNON.Sphere(radius);
-                                    console.log(`Static Mesh ${mesh.name} identified as Sphere (radius: ${radius}).`);
+                                    // console.log(`Static Mesh ${mesh.name} identified as Sphere (radius: ${radius}).`);
                                     break;
                                 case 'Mesh':
                                     if (!mesh.geometry.isBufferGeometry) {
@@ -329,19 +329,19 @@ export function initThreeJSViewer(containerId) {
                                     }
                                     
                                     shape = new CANNON.Trimesh(positions, indices);
-                                    console.log(`Static Mesh ${mesh.name} identified as CANNON.Trimesh.`);
+                                    // console.log(`Static Mesh ${mesh.name} identified as CANNON.Trimesh.`);
                                     console.warn(`LƯU Ý: CANNON.Trimesh tốn kém tài nguyên tính toán cho các mesh phức tạp. Dynamic Trimeshes rất hạn chế và chỉ va chạm được với các hình dạng nguyên thủy.`);
                                     break;
                                 case 'Box':
                                 default:
                                     shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
-                                    console.log(`Static Mesh ${mesh.name} identified as Box (default).`);
+                                    // console.log(`Static Mesh ${mesh.name} identified as Box (default).`);
                                     break;
                             }
 
                             if (mesh.name === 'STATIC_Ground') {
                                 groundYPosition = worldPosition.y;
-                                console.log(`Ground Y position set to: ${groundYPosition}`);
+                                // console.log(`Ground Y position set to: ${groundYPosition}`);
                             }
                         } else {
                             mass = physicsMass !== undefined ? physicsMass : 1;
@@ -350,7 +350,7 @@ export function initThreeJSViewer(containerId) {
                                 case 'Sphere':
                                     const radius = Math.max(size.x, size.y, size.z) / 2;
                                     shape = new CANNON.Sphere(radius);
-                                    console.log(`Dynamic Mesh ${mesh.name} identified as Sphere by custom property (radius: ${radius}).`);
+                                    // console.log(`Dynamic Mesh ${mesh.name} identified as Sphere by custom property (radius: ${radius}).`);
                                     break;
                                 case 'Mesh':
                                     console.warn(`CẢNH BÁO: Đang cố gắng tạo CANNON.Trimesh cho đối tượng động "${mesh.name}". Dynamic Trimeshes bị hạn chế nghiêm ngặt (không thể va chạm với Trimeshes khác, chỉ có thể va chạm với các hình nguyên thủy) và có thể không ổn định/hiệu suất kém. Quay lại sử dụng CANNON.Box.`);
@@ -359,7 +359,7 @@ export function initThreeJSViewer(containerId) {
                                 case 'Box':
                                 default:
                                     shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
-                                    console.log(`Dynamic Mesh ${mesh.name} identified as Box (default).`);
+                                    // console.log(`Dynamic Mesh ${mesh.name} identified as Box (default).`);
                                     break;
                             }
 
@@ -369,7 +369,7 @@ export function initThreeJSViewer(containerId) {
                                 bodyMaterial = getOrCreateCustomMaterial(frictionVal, restitutionVal, world);
                             } else {
                                 bodyMaterial = getOrCreateCustomMaterial(1, 0, world);
-                                console.log(`Dynamic Mesh ${mesh.name} using default body material (F:1, R:0).`);
+                                // console.log(`Dynamic Mesh ${mesh.name} using default body material (F:1, R:0).`);
                             }
 
                             worldPosition.y += 0.05;

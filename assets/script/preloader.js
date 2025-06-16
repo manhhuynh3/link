@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Hàm để kiểm tra xem thiết bị có phải là di động hay không
+    function isMobileDevice() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        // Biểu thức chính quy để kiểm tra các chuỗi user agent phổ biến của thiết bị di động
+        if (/android|ipad|iphone|ipod|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|rim)|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(userAgent) ||
+            /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|ob)|al(av|ca|co)|amoi|an(d|on)|aq(io|nk)|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|av(on|te|w )|ay(ec|nd)|blin|bo(l|c)k|bude|ca(li|co)|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|me|o )|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s)|\-v|_lib)|huaq|ic(e |ve)|ig01|ikom|inet|ipaq|it(ca|co|ip)|jdwa|jeru|jgwa|jk\-md|jo(di|me)|kc(28|mm)|ki(05|sc|zr)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|cd|ev)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|ad|lg|xe)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|mark|bl)|sc(01|st)|sh(mo|k0)|si(54|70)|sk\-0|sl(45|id)|sm(al|lk)|so(lb|gm)|upsi|vk(40|5[0-3]|\-v)|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nw)|wmlb|wonu|x700|xavw|xda(\-|2|g)|yas\-|your|zeto|zte\-/i.test(userAgent.substr(0, 4))) {
+            return true;
+        }
+        return false;
+    }
+
+    // === BẮT ĐẦU THÊM LOGIC ĐỂ VÔ HIỆU HÓA PRELOADER TRÊN THIẾT BỊ DI ĐỘNG ===
+    if (isMobileDevice()) {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.display = 'none'; // Ẩn preloader ngay lập tức
+            document.body.classList.remove('is-loading'); // Đảm bảo nội dung hiển thị
+            document.body.style.overflow = 'auto'; // Cho phép cuộn trang
+            preloader.remove(); // Xóa preloader khỏi DOM
+        }
+        return; // Dừng thực thi các logic preloader còn lại
+    }
+    // === KẾT THÚC LOGIC VÔ HIỆU HÓA PRELOADER TRÊN THIẾT BỊ DI ĐỘNG ===
+
+
     const preloader = document.getElementById('preloader');
     // Đã đổi tên biến từ loadingVideo thành loadingAnimationImage để khớp với HTML
     const loadingAnimationImage = document.getElementById('loadingAnimationImage'); 
