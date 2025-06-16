@@ -1,6 +1,6 @@
 // assets/script/loadTemplates.js
 
-// Hàm tải template từ URL và chèn vào một phần tử có ID cho trước
+// Function to load a template from a URL and insert it into an element with a given ID
 export function loadTemplate(url, elementId) {
     return fetch(url)
         .then(response => {
@@ -22,8 +22,20 @@ export function loadTemplate(url, elementId) {
         });
 }
 
+// Function to load all necessary templates (header and footer)
+export async function loadAllTemplates() {
+    try {
+        // Correcting template paths to be relative to the root, using forward slashes
+        await loadTemplate('/assets/templates/header.html', 'header-placeholder');
+        await loadTemplate('/assets/templates/footer.html', 'footer-placeholder');
+    } catch (error) {
+        console.error('Error loading all templates:', error);
+    }
+}
+
+// Execute loadAllTemplates when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Sửa đường dẫn template để tương đối với vị trí của loadTemplates.js
-    loadTemplate('\assets\templates\header.html', 'header-placeholder');
-    loadTemplate('\assets\templates\footer.html', 'footer-placeholder');
+    loadAllTemplates().catch(error => {
+        console.error('Error in DOMContentLoaded template loading:', error);
+    });
 });
