@@ -375,23 +375,25 @@
                 </div>
 
                 <!-- Software Section -->
-               
-<div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl shadow-xl bg-card" style="margin-bottom: 48px">
-    <h3 id="toolsTitle"  class="absolute top-6 left-1/2 -translate-x-1/2 text-3xl font-bold text-main cursor-pointer z-20">Tools</h3>
-
-    <div id="three-js-container" class="absolute inset-0 z-0" ></div> 
-    
+<div class="hidden md:block">
+    <div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl shadow-xl bg-card" style="margin-bottom: 48px">
+        <h3 id="toolsTitle" class="absolute top-6 left-1/2 -translate-x-1/2 text-3xl font-bold text-main cursor-pointer z-20">Tools</h3>
+        <div id="three-js-container" class="absolute inset-0 z-0" ></div>
     </div>
+    <script type="module">
+        import { initThreeJSViewer } from './assets/script/threeJsViewer.js';
 
-<script type="module">
-    import { initThreeJSViewer } from './assets/script/threeJsViewer.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kiểm tra xem màn hình có phải là desktop hay không (breakpoint 'md' của Tailwind CSS là 768px)
+            const isDesktop = window.matchMedia('(min-width: 768px)').matches;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Khởi tạo viewer cho container 'three-js-container'
-        initThreeJSViewer('three-js-container');
-    });
-</script>
-
+            if (isDesktop) {
+                // Khởi tạo viewer chỉ khi đang ở trên desktop
+                initThreeJSViewer('three-js-container');
+            }
+        });
+    </script>
+</div>
 
                 <!-- Work Process Section -->
                 <h3 class="text-3xl font-bold text-main mb-6 scroll-reveal delay-150" data-lang-key="work_process_heading">Quy Trình Làm Việc</h3>
