@@ -800,3 +800,54 @@
             background-color: rgba(0, 0, 0, 0.9);
         }
        
+/* ========================================= */
+/* Scroll Reveal Animations */
+/* ========================================= */
+
+/* Initial state for elements to be revealed */
+.scroll-reveal, .scroll-reveal-x {
+    opacity: 0;
+    transform: translateY(20px); /* Move down slightly */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Initial state for elements to be revealed from left/right */
+.scroll-reveal-x {
+    transform: translateX(-50px); /* Example: start from left */
+}
+
+/* State when 'visible' class is added */
+.scroll-reveal.visible, .scroll-reveal-x.visible {
+    opacity: 1;
+    transform: translateY(0); /* Return to original position */
+}
+
+/* Specific for .scroll-reveal-x when 'visible' */
+.scroll-reveal-x.visible {
+    transform: translateX(0); /* Return to original position */
+}
+
+
+/* Delay effects (can be combined with scroll-reveal) */
+.delay-150 { transition-delay: 0.15s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-450 { transition-delay: 0.45s; }
+.delay-600 { transition-delay: 0.6s; }
+.delay-750 { transition-delay: 0.75s; }
+.delay-900 { transition-delay: 0.9s; }
+.delay-1050 { transition-delay: 1.05s; }
+.delay-1200 { transition-delay: 1.2s; }
+.delay-1350 { transition-delay: 1.35s; }
+.delay-1500 { transition-delay: 1.5s; }
+/* Add more delay classes as needed */
+
+/* Ensure the preloader hides the content properly initially */
+/* This is already in index.html, but keeping it here for context if moved */
+body.is-loading main.main-content,
+body.is-loading #header,
+body.is-loading #footer,
+body.is-loading section:not(#preloader) {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
