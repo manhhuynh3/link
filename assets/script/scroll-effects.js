@@ -12,12 +12,26 @@ export function setupSmoothScrolling() {
 }
 
 export function setupScrollReveal() {
+    // Kiểm tra nếu đang ở màn hình nhỏ (mobile) trước khi thiết lập observer
+    // Sử dụng 768px làm breakpoint, khớp với 'md' của Tailwind CSS
+    if (window.innerWidth < 768) {
+        // Nếu ở mobile, đảm bảo tất cả các phần tử scroll-reveal hiển thị ngay lập tức
+        document.querySelectorAll('.scroll-reveal, .scroll-reveal-x').forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            el.style.transition = 'none';
+            el.style.visibility = 'visible';
+            el.classList.add('visible'); // Thêm lớp 'visible' để đồng bộ hóa styling nếu có quy tắc phụ thuộc
+        });
+        return; // Thoát khỏi hàm, không thiết lập IntersectionObserver
+    }
+
     const scrollRevealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-x');
 
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.1 /* Element is 10% visible */
+        threshold: 0.1 /* Phần tử hiển thị 10% */
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -36,7 +50,7 @@ export function setupHeroParallax() {
     const heroTextContent = document.getElementById('hero-text-content');
     if (!heroTextContent) return;
 
-    const parallaxSpeed = 0.2; // Adjust this value for more/less parallax
+    const parallaxSpeed = 0.2; // Điều chỉnh giá trị này để có nhiều/ít hiệu ứng parallax hơn
 
     function handleHeroParallax() {
         const scrollY = window.scrollY;
@@ -44,5 +58,4 @@ export function setupHeroParallax() {
     }
 
     window.addEventListener('scroll', handleHeroParallax);
-    handleHeroParallax(); // Call initially to set correct position
 }

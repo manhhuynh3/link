@@ -286,11 +286,10 @@
         <!-- Home/Hero Section -->
         <section id="home" class="relative min-h-screen flex flex-col justify-center items-center text-center p-6 overflow-hidden">
             <!-- Replaced 3D container with video background -->
-            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
-                <source src="assets/videos/cover.webm" type="video/webm">
-                <!-- Fallback for browsers that don't support webm or video tag -->
-                Your browser does not support the video tag.
-            </video>
+        <video id="backgroundVideo" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+    <source src="assets/videos/cover.webm" type="video/webm">
+    Your browser does not support the video tag.
+</video>
             <div id="hero-text-content" class="relative z-10 p-8 rounded-xl shadow-2xl scroll-reveal hero-text-parallax">
                 <h1 class="text-5xl md:text-7xl font-extrabold text-main leading-tight mb-4 animate-fade-in-up">
                     Mạnh Huỳnh<span class="text-heading">.</span>
@@ -600,7 +599,30 @@
 
     <!-- Footer -->
     
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backgroundVideo = document.getElementById('backgroundVideo');
 
+            if (backgroundVideo) {
+                const playPromise = backgroundVideo.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Video đã bắt đầu phát thành công
+                        console.log('Background video started successfully.');
+                    }).catch(error => {
+                        // Tự động phát bị ngăn chặn hoặc bị ngắt quãng
+                        if (error.name === "NotAllowedError" || error.name === "AbortError") {
+                            console.warn("Background video autoplay prevented or interrupted:", error.name, error.message);
+                         
+                        } else {
+                            console.error("Background video play failed unexpectedly:", error);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
   
     <script type="module" src="assets/script/main.js"></script>
     <script src="assets/script/preloader.js"></script>

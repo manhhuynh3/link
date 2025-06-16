@@ -851,3 +851,22 @@ body.is-loading section:not(#preloader) {
     opacity: 0;
     pointer-events: none;
 }
+
+/* Media query để vô hiệu hóa hiệu ứng scroll-reveal trên mobile */
+@media (max-width: 767px) { /* Áp dụng cho màn hình có chiều rộng tối đa 767px */
+    .scroll-reveal,
+    .scroll-reveal-x {
+        opacity: 1 !important; /* Đảm bảo các phần tử luôn hiển thị */
+        transform: none !important; /* Xóa bỏ mọi biến đổi (transform) */
+        transition: none !important; /* Tắt tất cả các hiệu ứng chuyển đổi */
+        visibility: visible !important; /* Đảm bảo hiển thị */
+    }
+
+    /* Đảm bảo trạng thái 'visible' cũng không có hiệu ứng */
+    .scroll-reveal.visible,
+    .scroll-reveal-x.visible {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
