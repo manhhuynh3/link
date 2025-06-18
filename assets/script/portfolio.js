@@ -185,7 +185,6 @@ function createDesktopPortfolioCards(portfolioGrid) {
 
         const titleLink = document.createElement('a');
         titleLink.href = project.behance_link;
-        titleLink.target = '_blank';
         titleLink.rel = 'noopener noreferrer';
         titleLink.classList.add('block', 'text-decoration-none', 'mb-2', 'project-title-link', 'pointer-events-auto');
 
@@ -208,7 +207,6 @@ function createDesktopPortfolioCards(portfolioGrid) {
 
         const linkButton = document.createElement('a');
         linkButton.href = project.behance_link;
-        linkButton.target = '_blank';
         linkButton.rel = 'noopener noreferrer';
         linkButton.classList.add(
             'view-details-button',
@@ -401,7 +399,6 @@ function createMobilePortfolioCards(portfolioGrid) {
         // --- Tạo thẻ <a> bao phủ toàn bộ khung hình để dễ dàng click trên mobile ---
         const fullCardLink = document.createElement('a');
         fullCardLink.href = project.behance_link;
-        fullCardLink.target = '_blank';
         fullCardLink.rel = 'noopener noreferrer';
         fullCardLink.classList.add('absolute', 'inset-0', 'z-30', 'pointer-events-auto');
 

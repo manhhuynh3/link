@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="title">Mạnh Huỳnh - Graphic Designer | 3D Artist</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/images/fav_icon.svg">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KFPG79L00S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KFPG79L00S');
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0PzGcVq/p/rW+9r/h/i6Qn/L1k/yG7CjY0sD4LwFpL+hL2gOQ2/yU2fJ+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <style>
+        /* Đảm bảo toàn bộ trang bị ẩn cho đến khi preloader sẵn sàng */
+        body.is-loading main.main-content {
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            /* hoặc đơn giản là display: none; nếu bạn không dùng transition cho main-content */
+        }
+        body.is-loading #header,
+        body.is-loading #footer,
+        body.is-loading section:not(#preloader) { /* Ẩn tất cả section trừ preloader */
+             visibility: hidden;
+             opacity: 0;
+             pointer-events: none;
+             /* hoặc display: none; */
+        }
+
+        /* CSS cốt lõi cho preloader phải ở đây */
+        .preloader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* Sử dụng 100vh mặc định */
+            height: var(--app-height, 100vh); /* Biến này sẽ được JS cập nhật */
+            background-color: #F6F6F6; /* Màu nền preloader */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
+            opacity: 1;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: none;
+            /* Thêm các style để đảm bảo nó che phủ hoàn toàn */
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .preloader-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Các style khác của preloader (ví dụ: video container, progress text) */
+        /* Bạn có thể để lại trong preloader.css và chỉ inline những gì cần thiết để hiển thị ngay lập tức */
+        /* Tuy nhiên, để đảm bảo tuyệt đối, bạn có thể inline toàn bộ preloader.css tại đây */
+        /* Hoặc chỉ những phần quan trọng nhất để chống FOUC */
+
+        /* Ví dụ về inline các style quan trọng khác nếu cần */
+        .preloader-video-container { /* ví dụ, để video đúng vị trí ngay lập tức */
+            position: absolute;
+            width: 66.66%;
+            height: 100%;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 999;
+        }
+        .preloader-video {
+            width: 70vh;
+            height: 70vh;
+            max-width: 60%;
+            max-height: 80%;
+            object-fit: cover;
+            margin: 0;
+            border: none;
+            box-shadow: none;
+            transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
+        }
+        .preloader-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.02);
+            transition: transform 0.3s ease-in-out;
+        }
+        /* Style cho % tiến độ và Loading... */
+        .progress-indicator {
+            position: absolute;
+            left: 1vw;
+            bottom: 5vh;
+            font-size: 20vh;
+            line-height: 1;
+            font-weight: 200;
+            color: #000000;
+            text-shadow: none;
+            transition: bottom 0.3s ease-out, opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
+            z-index: 10000;
+            max-width: 30vw;
+            white-space: nowrap;
+        }
+        .loading-text {
+            position: absolute;
+            left: 1vw;
+            bottom: 5vh;
+            transform: translateY(100%);
+            color: #000000;
+            font-size: 1.5em;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            z-index: 9999;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.9s ease-in-out;
+        }
+        /* Nút Contact */
+        .contact-button {
+            position: absolute;
+            right: 5vw;
+            bottom: 5vh;
+            padding: 15px 30px;
+            background-color: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.9s ease-in-out;
+            z-index: 10000;
+        }
+        .contact-button:hover {
+            background-color: #1D4ED8;
+            transform: scale(1.1);
+        }
+        /* Media queries cho mobile cũng nên được inline nếu bạn muốn chúng được áp dụng ngay lập tức */
+        @media (max-width: 768px) {
+            .preloader-video-container {
+                width: 100%;
+                height: 70%;
+                top: 0;
+                left: 0;
+                right: auto;
+                justify-content: center;
+                align-items: center;
+            }
+            .preloader-video {
+                width: 240px;
+                height: 240px;
+            }
+            .progress-indicator {
+                left: 5vw;
+                bottom: 12vh;
+                font-size: 20vh;
+            }
+            .loading-text {
+                left: 5vw;
+                bottom: 8vh;
+                transform: none;
+                font-size: 1.1em;
+            }
+            .contact-button {
+                right: 5vw;
+                bottom: 8vh;
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* Sticky footer layout */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        main {
+            flex: 1; /* Ensures the main content takes up available space */
+        }
+
+        footer {
+            background-color: #f8f9fa; /* Example footer background color */
+            padding: 1rem;
+            text-align: center;
+        }
+
+        /* ========================================= */
+        /* CUSTOM CAROUSEL CSS FOR 3 SLIDES AND BLUR */
+        /* ========================================= */
+        .custom-carousel-wrapper {
+            position: relative;
+            overflow: hidden; /* Quan trọng để ẩn các slide không hiển thị */
+            width: 100%;
+            /* min-height để đảm bảo không bị co lại khi video chưa load */
+            min-height: 500px; /* Điều chỉnh nếu cần */
+            display: flex;
+            align-items: center; /* Căn giữa các slide theo chiều dọc */
+        }
+
+        .custom-carousel-inner {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.25,1,0.5,1); /* Easing giống portfolio.js */
+            flex-nowrap: nowrap; /* Đảm bảo các video nằm trên một hàng */
+            width: calc(100% / 3 * var(--total-slides, 10)); /* 100% chia 3 để hiển thị 3 slide, nhân tổng số slide */
+            margin-left: calc((100% / 3 - 360px) / 2); /* Căn giữa slide đầu tiên nếu cần */
+            /* Để hiển thị 3 slide, mỗi slide chiếm 1/3 không gian */
+            /* translateX sẽ được tính toán để căn giữa slide active */
+        }
+
+        .custom-carousel-slide {
+            flex-shrink: 0; /* Đảm bảo slide không bị co lại */
+            width: calc(100% / 10); /* Mỗi slide chiếm 1/3 chiều rộng của wrapper */
+            /* Các style kích thước và căn giữa đã có */
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem; /* p-4 md:p-6 */
+            transition: filter 0.3s ease; /* Chuyển đổi mượt mà cho blur */
+            /* Đặt chiều rộng cụ thể cho iframe container để kiểm soát tốt hơn */
+            position: relative; /* Dùng cho overlay/buttons nếu có */
+        }
+
+        /* Classes cho hiệu ứng blur */
+        .custom-carousel-slide.blurred {
+            filter: blur(5px); /* Làm mờ ảnh */
+            transform: scale(0.9); /* Thu nhỏ nhẹ */
+            opacity: 0.7; /* Giảm độ trong suốt */
+        }
+
+        .custom-carousel-slide iframe {
+            transition: transform 0.3s ease; /* Thêm transition cho iframe */
+        }
+
+        /* CSS cho các chấm chỉ báo */
+        .custom-carousel-pagination {
+            display: flex;
+            gap: 0.25rem; /* gap-1 */
+            width: 100%;
+            max-width: 20rem; /* max-w-xs */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            justify-content: center;
+            /* Các thuộc tính position, top, left, transform, z-index đã bị xóa */
+            /* Thay vào đó, nó sẽ là một block element bình thường, có thể căn giữa bằng margin: auto; hoặc flexbox */
+            margin: 1.5rem auto; /* Khoảng cách phía trên và căn giữa */
+            background-color: rgba(0,0,0,0.5); /* Nền cho dots */
+            padding: 0.5rem;
+            border-radius: 9999px; /* rounded-full */
+        }
+
+        .custom-carousel-dot {
+            height: 0.25rem; /* h-1 */
+            flex: 1; /* flex-1 */
+            border-radius: 9999px; /* rounded-full */
+            transition: all 0.3s ease; /* transition-all duration-300 */
+            background-color: white; /* bg-white */
+            cursor: pointer;
+        }
+
+        .custom-carousel-dot.active {
+            background-color: #3B82F6; /* bg-blue-500 */
+        }
+
+        /* ========================================= */
+        /* NAVIGATION ARROWS */
+        /* ========================================= */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 30;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-arrow:hover {
+            opacity: 1;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .carousel-arrow.left {
+            left: 10px; /* Cách lề trái */
+        }
+
+        .carousel-arrow.right {
+            right: 10px; /* Cách lề phải */
+        }
+
+    </style>
+     <link rel="stylesheet" href="/assets/css/main_theme.css">
+     <link rel="stylesheet" href="/assets/css/preloader.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.177.0/build/three.module.js"
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+   <main class="blog-content bg-background text-text-color font-inter">
+    <section class="relative z-10 px-4 md:px-8 py-20 md:py-28 max-w-7xl mx-auto bg-card rounded-xl shadow-xl">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-heading mb-6 text-center">
+            2024 - 2025 CGI - Fake OOH collection
+        </h1>
+        <p class="text-lg md:text-xl text-gray-normal text-center mb-12">
+            These short videos represent my work on CGI fake OOH in 2024. It's been a fantastic and lucky year, filled with amazing opportunities to collaborate with incredible clients!
+        </p>
+
+        <div id="desktop-video-carousel-container" class="hidden md:block mb-10 relative">
+            <div class="custom-carousel-wrapper group">
+                <div id="desktop-video-carousel-inner" class="custom-carousel-inner">
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/EyXroIh3h1Y?modestbranding=1&rel=0"
+                                    title="Video 1"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Yves Rocher Việt Nam</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/Hpayc-5xtzg?modestbranding=1&rel=0"
+                                    title="Video 2"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Aeon Việt Nam</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/8SkYppBHVfM?modestbranding=1&rel=0"
+                                    title="Video 3"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Aeon Việt Nam</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/Z5p4aYoX-fQ?modestbranding=1&rel=0"
+                                    title="Video 5"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Yves Rocher Việt Nam</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/OayhgTXeAU4?modestbranding=1&rel=0"
+                                    title="Video 6"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Danh giá Fashion</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/HRujBRTRCaQ?modestbranding=1&rel=0"
+                                    title="Video 7"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Garmin Việt Nam</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/EpCLgajxUCs?modestbranding=1&rel=0"
+                                    title="Video 8"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Danh giá Fashion</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/w6rj6sLhtuI?modestbranding=1&rel=0"
+                                    title="Video 9"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Miss Universe Việt Nam 2024</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/C3Jbgfb3PWk?modestbranding=1&rel=0"
+                                    title="Video 10"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Home Credit<br/>
+Agency: N&D communication & creative</p>
+                    </div>
+
+                    <div class="custom-carousel-slide">
+                        <div class="relative aspect-[9/16] w-[360px] lg:w-[400px] mx-auto mb-4">
+                            <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                                    src="https://www.youtube.com/embed/1EUJ62rfOZw?modestbranding=1&rel=0"
+                                    title="Video 11"
+                                    frameborder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <p class="text-gray-normal text-center">Client: Yves Rocher Việt Nam</p>
+                    </div>
+                </div>
+
+                <div id="carousel-arrow-left" class="carousel-arrow left">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div id="carousel-arrow-right" class="carousel-arrow right">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            <div id="desktop-video-pagination" class="custom-carousel-pagination"></div>
+        </div>
+
+        <div class="md:hidden space-y-10 mb-10">
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/EyXroIh3h1Y?modestbranding=1&rel=0"
+                            title="Video 1"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Yves Rocher Việt Nam</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/Hpayc-5xtzg?modestbranding=1&rel=0"
+                            title="Video 2"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Aeon Việt Nam</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/8SkYppBHVfM?modestbranding=1&rel=0"
+                            title="Video 3"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Aeon Việt Nam</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/Z5p4aYoX-fQ?modestbranding=1&rel=0"
+                            title="Video 5"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Yves Rocher Việt Nam</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/OayhgTXeAU4?modestbranding=1&rel=0"
+                            title="Video 6"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Danh giá Fashion</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/HRujBRTRCaQ?modestbranding=1&rel=0"
+                            title="Video 7"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Garmin Việt Nam</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/EpCLgajxUCs?modestbranding=1&rel=0"
+                            title="Video 8"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Danh giá Fashion</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/w6rj6sLhtuI?modestbranding=1&rel=0"
+                            title="Video 9"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Miss Universe Việt Nam 2024</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/C3Jbgfb3PWk?modestbranding=1&rel=0"
+                            title="Video 10"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Home Credit<br/>
+Agency: N&D communication & creative</p>
+            </div>
+
+            <div class="p-4 md:p-6 overflow-hidden flex justify-center flex-col items-center">
+                <div class="relative aspect-[9/16] w-[240px] sm:w-[300px] mx-auto mb-4">
+                    <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/1EUJ62rfOZw?modestbranding=1&rel=0"
+                            title="Video 11"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-normal text-center">Client: Yves Rocher Việt Nam</p>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            
+<a href="https://www.behance.net/gallery/217807677/2024-CGI-Fake-OOH-videos-collection" target="_blank" class="mt-8 inline-flex items-center px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-full shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                <i class="fab fa-behance mr-3 text-xl"></i> Xem trên Behance
+            </a></div>
+        <div class="p-6 md:p-8 text-center mt-10 border-t border-gray-200 pt-8">
+            <p class="text-2xl md:text-3xl font-extrabold text-main mb-4">Thank for watching!</p>
+            <p class="text-lg md:text-xl text-gray-normal">
+                Contact for works:
+                <a href="mailto:contact@manhhuynh.work" class="text-blue-600 hover:underline font-semibold">contact@manhhuynh.work</a>
+            </p>
+        </div>
+    </section>
+</main>
+
+    <footer id="footer-placeholder"></footer>
+
+
+    <script type="module">
+        import { loadAllTemplates } from '/assets/script/loadTemplates.js';
+        loadAllTemplates().catch(error => {
+            console.error('Error loading templates:', error);
+        });
+    </script>
+    <script type="module" src="/assets/script/preloader.js"></script>
+    <script type="module" src="/assets/script/main.js"></script>
+    <script type="module" src="/assets/script/videoCarousel.js"></script>
+</body>
+</html>

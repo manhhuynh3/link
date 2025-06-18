@@ -62,7 +62,7 @@ export const languages = {
         'project_maybelline_lifter_title': 'Maybelline LIFTER GLOSS - Thiết kế POSM & Digital',
         'project_maybelline_lifter_desc': 'Thiết kế các tài liệu POSM và nội dung kỹ thuật số sáng tạo cho chiến dịch quảng cáo của Maybelline Lifter Gloss.',
         'project_maybelline_lifter_skills': 'Thiết kế đồ họa, POSM',
-        'project_cgi_fooh_title': 'Bộ sưu tập Video CGI FOOH 2024',
+        'project_cgi_fooh_title': 'Bộ sưu tập Video CGI FOOH 2024-2025',
         'project_cgi_fooh_desc': 'Tổng hợp các video quảng cáo Fake Out Of Home (FOOH) sử dụng CGI sáng tạo, thu hút sự chú ý trên mạng xã hội.',
         'project_cgi_fooh_skills': 'CGI, Video Animation, VFX',
         'project_dove_tvc_title': 'TVC Sản phẩm Dove Deodorant Night Serum',
@@ -172,7 +172,7 @@ export const languages = {
         'project_maybelline_lifter_title': 'Maybelline LIFTER GLOSS - POSM & Digital Design',
         'project_maybelline_lifter_desc': 'Designed creative POSM materials and digital content for Maybelline Lifter Gloss advertising campaigns.',
         'project_maybelline_lifter_skills': 'Graphic Design, POSM',
-        'project_cgi_fooh_title': '2024 CGI Fake OOH videos collection',
+        'project_cgi_fooh_title': '2024-2025 CGI Fake OOH videos collection',
         'project_cgi_fooh_desc': 'Compilation of creative Fake Out Of Home (FOOH) advertising videos using CGI, attracting attention on social media.',
         'project_cgi_fooh_skills': 'CGI, Video Animation, VFX',
         'project_dove_tvc_title': 'Dove Deodorant Night Serum Product TVC',
@@ -229,7 +229,7 @@ export const portfolioProjects = [
         title_key: 'project_cgi_fooh_title',
         desc_key: 'project_cgi_fooh_desc',
         skills_key: 'project_cgi_fooh_skills',
-        behance_link: 'https://www.behance.net/gallery/217807677/2024-CGI-Fake-OOH-videos-collection',
+        behance_link: '/Projects/FOOH/index.html',
         images: [
             { url: 'assets/images/Project/FOOH_1.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
             { url: 'assets/images/Project/FOOH_2.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
@@ -255,7 +255,7 @@ export const portfolioProjects = [
         title_key: 'project_dove_tvc_title',
         desc_key: 'project_dove_tvc_desc',
         skills_key: 'project_dove_tvc_skills',
-        behance_link: 'https://www.behance.net/gallery/210560855/Dove-Deodorant-Night-serum-Product-TVC',
+        behance_link: '/Projects/Dove-deodorant',
         images: [
             { url: 'assets/images/Project/DOVE_1.webm', poster: 'assets/images/Project/dove_poster.webp' },
             { url: 'assets/images/Project/DOVE_2.webm', poster: 'assets/images/Project/dove_poster.webp' },
@@ -270,7 +270,7 @@ export const portfolioProjects = [
         title_key: 'project_maybelline_lifter_title',
         desc_key: 'project_maybelline_lifter_desc',
         skills_key: 'project_maybelline_lifter_skills',
-        behance_link: 'https://www.behance.net/gallery/224918323/Maybelline-LIFTER-GLOSS-POSM-Digital-Design',
+        behance_link: '/Projects/Lifter-gloss/',
         images: [
             'assets/images/Project/MBL_1.jpg', // Dạng ảnh tĩnh không cần poster
             'assets/images/Project/MBL_2.jpg',
