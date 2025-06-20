@@ -110,8 +110,10 @@ export const languages = {
         'contact_location': 'Địa điểm: Thành phố Hồ Chí Minh, Việt Nam',
         'no_projects': 'Không có dự án mẫu nào.',
         'lang_toggle_target': 'EN',
+        'contact_with_me': 'Liên hệ với tôi:',
     },
     'en': {
+        'contact_with_me': 'Connect with me:',
         'lang_toggle_target': 'VI',
         'title': 'Manh Huynh - Graphic Designer | 3D Artist',
         'nav_home': 'Home',

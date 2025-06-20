@@ -54,8 +54,8 @@
             z-index: 9999;
             transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
             opacity: 1; 
-            backdrop-filter: none;
             -webkit-backdrop-filter: none;
+            backdrop-filter: none;
             border: none;
             /* Thêm các style để đảm bảo nó che phủ hoàn toàn */
             margin: 0;
@@ -207,10 +207,19 @@
   <div id="preloader" class="preloader-wrapper">
         <div class="preloader-video-container">
             <div class="preloader-video">
-                <video id="loadingAnimationVideo" autoplay loop muted playsinline>
+                <video id="loadingAnimationVideo" autoplay loop muted webkit-playsinline>
                     <source src="assets/videos/loading-animation.webm" type="video/webm">
                     Your browser does not support the video tag.
                 </video>
+                <script>
+                    // Ensure playsinline is set for all browsers (including Firefox)
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var loadingVideo = document.getElementById('loadingAnimationVideo');
+                        if (loadingVideo) {
+                            loadingVideo.setAttribute('playsinline', '');
+                        }
+                    });
+                </script>
             </div>
             </div>
 
@@ -229,14 +238,14 @@
                 <a href="#home" class="text-3xl font-bold text-main tracking-tight">Mạnh Huỳnh<span class="text-accent-strong">.</span></a>
                 <ul class="hidden md:flex space-x-8">
                     <li><a href="#home" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_home">Trang Chủ</a></li>
-                    <li><a href="#about" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_about">Giới Thiệu</a></li>
+                    <li><a href="/about" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_about">Giới Thiệu</a></li>
                     <li><a href="#portfolio" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_portfolio">Dự Án</a></li>
                     <li><a href="#services" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_services">Dịch Vụ</a></li>
                     <li><a href="#contact" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_contact">Liên Hệ</a></li>
                 </ul>
                 <div class="flex flex-col sm:flex-row items-center md:space-x-4 space-y-2 sm:space-y-0">
                     <label class="switch" id="theme-toggle-label">
-                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <input type="checkbox" id="theme-toggle-checkbox" title="Toggle theme">
                         <span class="slider round"></span>
                     </label>
                     <button data-lang-key="lang_toggle_target" id="lang-toggle-button" class="bg-primary-button hover:bg-primary-button text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 transform hover:scale-105 text-sm">
@@ -255,27 +264,27 @@
         <!-- Menu Items (hidden when collapsed) -->
         <ul class="mt-4 flex flex-col items-center">
             <li class="menu-item mb-6">
-                <a href="#home" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                <a href="#home" title="Trang chủ" class="flex flex-col items-center text-white hover:text-white transition duration-300">
                     <i class="fa-solid fa-house text-2xl"></i>
                 </a>
             </li>
             <li class="menu-item mb-6">
-                <a href="#about" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                <a href="/about" title="Giới thiệu" class="flex flex-col items-center text-white hover:text-white transition duration-300">
                     <i class="fa-solid fa-user text-2xl"></i>
                 </a>
             </li>
             <li class="menu-item mb-6">
-                <a href="#portfolio" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                <a href="#portfolio" title="Dự án" class="flex flex-col items-center text-white hover:text-white transition duration-300">
                     <i class="fa-solid fa-palette text-2xl"></i>
                 </a>
             </li>
             <li class="menu-item mb-6">
-                <a href="#services" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                <a href="#services" title="Dịch vụ" class="flex flex-col items-center text-white hover:text-white transition duration-300">
                     <i class="fa-solid fa-briefcase text-2xl"></i>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#contact" class="flex flex-col items-center text-white hover:text-white transition duration-300">
+                <a href="#contact" title="Liên hệ" class="flex flex-col items-center text-white hover:text-white transition duration-300">
                     <i class="fa-solid fa-envelope text-2xl"></i>
                 </a>
             </li>
@@ -286,10 +295,19 @@
         <!-- Home/Hero Section -->
         <section id="home" class="relative min-h-screen flex flex-col justify-center items-center text-center p-6 overflow-hidden">
             <!-- Replaced 3D container with video background -->
-        <video id="backgroundVideo" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+        <video id="backgroundVideo" autoplay loop muted webkit-playsinline class="absolute inset-0 w-full h-full object-cover">
     <source src="assets/videos/cover.webm" type="video/webm">
     Your browser does not support the video tag.
 </video>
+<script>
+    // Ensure pla<ysinline is set for all browsers (including Firefox)
+    document.addEventListener('DOMContentLoaded', function() {
+        var bgVideo = document.getElementById('backgroundVideo');
+        if (bgVideo) {
+            bgVideo.setAttribute('playsinline', '');
+        }
+    });
+</script>
             <div id="hero-text-content" class="relative z-10 p-8 rounded-xl shadow-2xl scroll-reveal hero-text-parallax">
                 <h1 class="text-5xl md:text-7xl font-extrabold text-main leading-tight mb-4 animate-fade-in-up">
                     Mạnh Huỳnh<span class="text-heading">.</span>
@@ -304,124 +322,6 @@
                     <a href="#contact" class="bg-transparent border-2 border-primary-button text-secondary-button-color hover:bg-primary-button hover:text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105" data-lang-key="hero_cta_contact">
                         Liên Hệ
                     </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="py-16 md:py-24 px-6 md:px-12 text-center">
-            
-            <div class="max-w-7xl mx-auto"> <!-- Changed from max-w-4xl -->
-                <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal" data-lang-key="about_heading">Giới Thiệu</h2>
-
-                <div class="bg-card p-8 rounded-xl shadow-xl mb-12 scroll-reveal delay-150">
-                    <h3 class="text-3xl font-bold text-main mb-6" data-lang-key="about_greeting">Chào bạn, tôi là Mạnh.</h3>
-                    <p class="text-lg text-gray-normal leading-relaxed" data-lang-key="about_intro_paragraph">
-                        Tôi là Mạnh Huỳnh, một 3D Motion Graphic Designer với hơn <strong class="text-accent-strong">5 năm kinh nghiệm</strong> trong lĩnh vực thiết kế đồ họa và sản xuất nội dung số. Tôi chuyên thực hiện video sản phẩm CGI, đặc biệt là các chiến dịch Fake OOH (CGI FOOH) – kết hợp hình ảnh 3D với môi trường thực.<br><br>
-                        Bên cạnh đó, tôi có nhiều kinh nghiệm trong việc sản xuất video 3D ngắn giới thiệu sản phẩm, dựng và render hình ảnh sản phẩm chất lượng cao, cũng như thiết kế các ấn phẩm như POSM, bao bì, key visual phục vụ cho các chiến dịch truyền thông đa kênh.<br><br>
-                        Tôi là một người tư duy sáng tạo và đổi mới, và tôi luôn tìm kiếm những cách thức mới để sử dụng thiết kế nhằm giải quyết vấn đề và truyền đạt ý tưởng một cách rõ ràng và hiệu quả.
-                    </p>
-                </div>
-
-                <!-- Experience -->
-                <div class="bg-card p-8 rounded-xl shadow-xl mb-12 scroll-reveal delay-600">
-                    <h3 class="text-3xl font-bold text-main mb-6" data-lang-key="experience_heading">Kinh Nghiệm Làm Việc</h3>
-                    <div class="timeline-container">
-                        <!-- Freelance -->
-                        <div class="timeline-item scroll-reveal delay-150">
-                            <p class="timeline-item-date" data-lang-key="exp_freelance_date">Tháng 4 năm 2025 - Hiện tại</p>
-                            <h4 class="timeline-item-title" data-lang-key="exp_freelance_title">Freelance | Graphic Designer | 3D Artist</h4>
-                            <ul class="timeline-item-description space-y-1">
-                                <li data-lang-key="exp_freelance_desc1"><strong class="text-accent-green">3D Product Visualization & Animation:</strong> Mô hình hóa, đổ bóng, chiếu sáng, và hoạt hình sản phẩm chân thực sử dụng Blender & Cycles CGI cho các chiến dịch kỹ thuật số.</li>
-                                <li data-lang-key="exp_freelance_desc2">Kể chuyện bằng hình ảnh cho các sản phẩm chăm sóc da, trang điểm và chăm sóc cá nhân.</li>
-                                <li data-lang-key="exp_freelance_desc3"><strong class="text-accent-green">Motion Design & Compositing:</strong> Đồ họa chuyển động 2D/3D, chuyển cảnh, và hiệu ứng sản phẩm sử dụng After Effects.</li>
-                                <li data-lang-key="exp_freelance_desc4">Graphic & Visual Design: Tài sản sáng tạo cho tiếp thị kỹ thuật số, mạng xã hội, và thương mại điện tử (Photoshop, Illustrator).</li>
-                            </ul>
-                        </div>
-                        <!-- L'Oréal -->
-                        <div class="timeline-item scroll-reveal delay-300">
-                            <p class="timeline-item-date" data-lang-key="exp_loreal_date">Tháng 7 năm 2022 - Tháng 4 năm 2025</p>
-                            <h4 class="timeline-item-title" data-lang-key="exp_loreal_title">L'Oréal | Senior E-Designer</h4>
-                            <ul class="timeline-item-description space-y-1">
-                                <li data-lang-key="exp_loreal_desc1">Thiết kế nội dung và tài sản kỹ thuật số hấp dẫn về hình ảnh cho các chiến dịch và khuyến mãi trực tuyến.</li>
-                                <li data-lang-key="exp_loreal_desc2">Hợp tác với các team để tạo visual e-commerce hiệu quả và thẩm mỹ.</li>
-                                <li data-lang-key="exp_loreal_desc3">Phát triển concept và thiết kế cho các nền tảng mạng xã hội.</li>
-                                <li data-lang-key="exp_loreal_desc4">Sử dụng phần mềm 3D để đẩy nhanh quy trình thiết kế và tạo quảng cáo CGI.</li>
-                            </ul>
-                        </div>
-                        <!-- Soul Specialty Coffee -->
-                        <div class="timeline-item scroll-reveal delay-450">
-                            <p class="timeline-item-date" data-lang-key="exp_soulcoffee_date">Tháng 4 năm 2021 - Tháng 5 năm 2022</p>
-                            <h4 class="timeline-item-title" data-lang-key="exp_soulcoffee_title">Soul Specialty Coffee | Graphic Designer</h4>
-                            <ul class="timeline-item-description space-y-1">
-                                <li data-lang-key="exp_soulcoffee_desc1">Thiết kế bao bì hiệu quả chi phí và hấp dẫn về hình ảnh cho các sản phẩm thương mại khác nhau.</li>
-                                <li data-lang-key="exp_soulcoffee_desc2">Tạo quảng cáo, báo cáo và tài liệu thương hiệu để hỗ trợ các nỗ lực tiếp thị của công ty.</li>
-                                <li data-lang-key="exp_soulcoffee_desc3">Hợp tác với các thành viên trong nhóm về cả các dự án thiết kế quy mô lớn và nhỏ hơn.</li>
-                                <li data-lang-key="exp_soulcoffee_desc4">Giám sát hiệu suất in ấn và duy trì kiểm soát chất lượng in.</li>
-                            </ul>
-                        </div>
-                        <!-- Loyal District LTd.co -->
-                        <div class="timeline-item scroll-reveal delay-600">
-                            <p class="timeline-item-date" data-lang-key="exp_loyal_date">Tháng 3 năm 2019 - Tháng 5 năm 2020</p>
-                            <h4 class="timeline-item-title" data-lang-key="exp_loyal_title">Loyal District LTd.co | Graphic Designer</h4>
-                            <ul class="timeline-item-description space-y-1">
-                                <li data-lang-key="exp_loyal_desc1">Thiết kế mẫu mockup áo thun và đồng phục cho cả sản xuất nội bộ và tùy chỉnh của khách hàng.</li>
-                                <li data-lang-key="exp_loyal_desc2">Quản lý và hướng dẫn thực tập sinh trong bộ phận thiết kế.</li>
-                                <li data-lang-key="exp_loyal_desc3">Tạo quảng cáo, báo cáo và tài liệu thương hiệu để nâng cao nhận diện thương hiệu của công ty.</li>
-                                <li data-lang-key="exp_loyal_desc4">Hợp tác với nhóm trong các dự án thiết kế và tiến hành tư vấn khách hàng.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Software Section -->
-<div class="hidden md:block">
-    <div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl shadow-xl bg-card" style="margin-bottom: 48px">
-        <h3 id="toolsTitle" class="absolute top-6 left-1/2 -translate-x-1/2 text-3xl font-bold text-main cursor-pointer z-20">Tools</h3>
-        <div id="three-js-container" class="absolute inset-0 z-0" ></div>
-    </div>
-    <script type="module">
-        import { initThreeJSViewer } from './assets/script/threeJsViewer.js';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Kiểm tra xem màn hình có phải là desktop hay không (breakpoint 'md' của Tailwind CSS là 768px)
-            const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-
-            if (isDesktop) {
-                // Khởi tạo viewer chỉ khi đang ở trên desktop
-                initThreeJSViewer('three-js-container');
-            }
-        });
-    </script>
-</div>
-
-                <!-- Work Process Section -->
-                <h3 class="text-3xl font-bold text-main mb-6 scroll-reveal delay-150" data-lang-key="work_process_heading">Quy Trình Làm Việc</h3>
-                <div class="flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0 items-stretch justify-center process-steps-container">
-                    <!-- Step 1 -->
-                    <div class="flex-1 bg-card p-6 rounded-xl shadow-md text-left relative process-step scroll-reveal-x delay-150">
-                        <div class="text-4xl text-accent-strong mb-4">💡</div>
-                        <h4 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step1_title">1. Tiếp nhận & Phân tích Yêu cầu</h4>
-                        <p class="text-gray-normal text-md" data-lang-key="work_process_step1_short_desc">Lắng nghe và hiểu rõ mục tiêu dự án.</p>
-                    </div>
-                    <!-- Step 2 -->
-                    <div class="flex-1 bg-card p-6 rounded-xl shadow-md text-left relative process-step scroll-reveal-x delay-300">
-                        <div class="text-4xl text-accent-strong mb-4">✏️</div>
-                        <h4 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step2_title">2. Lên ý tưởng & Phát triển Concept</h4>
-                        <p class="text-gray-normal text-md" data-lang-key="work_process_step2_short_desc">Phác thảo ý tưởng và tạo moodboard.</p>
-                    </div>
-                    <!-- Step 3 -->
-                    <div class="flex-1 bg-card p-6 rounded-xl shadow-md text-left relative process-step scroll-reveal-x delay-450">
-                        <div class="text-4xl text-accent-strong mb-4">⚙️</div>
-                        <h4 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step3_title">3. Triển khai & Tối ưu</h4>
-                        <p class="text-gray-normal text-md" data-lang-key="work_process_step3_short_desc">Thiết kế hoàn chỉnh, tinh chỉnh hiệu suất.</p>
-                    </div>
-                    <!-- Step 4 -->
-                    <div class="flex-1 bg-card p-6 rounded-xl shadow-md text-left relative process-step scroll-reveal-x delay-600">
-                        <div class="text-4xl text-accent-strong mb-4">📦</div>
-                        <h4 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step4_title">4. Giao nhận & Hỗ trợ</h4>
-                        <p class="text-gray-normal text-md" data-lang-key="work_process_step4_short_desc">Bàn giao sản phẩm và hỗ trợ sau dự án.</p>
-                    </div>
                 </div>
             </div>
         </section>
@@ -443,76 +343,123 @@
 </section>
 
         <!-- Services Section -->
-        <section id="services" class="py-16 md:py-24 px-6 md:px-12 text-center">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal" data-lang-key="services_heading">Dịch Vụ Cung Cấp</h2>
-                <div id="services-cards-container" class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 transition-all duration-300 ease-in-out">
-                    <!-- Video CGI FOOH Production -->
-                    <div id="service-fooh" class="bg-card p-4 sm:p-6 md:p-8 rounded-xl shadow-xl text-left relative service-card scroll-reveal">
-                        <div class="absolute bottom-4 right-4 cursor-pointer text-xl text-heading toggle-details" data-service-id="service-fooh">
-                            <i class="fa-solid fa-plus"></i>
-                        </div>
-                        <div class="service-details-wrapper">
-                            <h3 class="text-3xl font-bold text-main mb-4" data-lang-key="service_fooh_title">Sản xuất Video CGI FOOH</h3>
-                            <ul class="list-disc list-inside text-lg text-gray-normal space-y-2">
-                                <li data-lang-key="service_fooh_desc"><strong class="text-accent-green">Sản xuất các video quảng cáo CGI ngắn (15-30 giây)</strong> cho các chiến dịch truyền thông.</li>
-                            </ul>
-                        </div>
-                        <div class="project-carousel-wrapper">
-                            <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
-                                <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out">
-                                    <!-- Project images will be dynamically added here -->
-                                </div>
-                                <div class="carousel-indicators"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 3D Modeling & Animation -->
-                    <div id="service-3d-modeling-animation" class="bg-card p-4 sm:p-6 md:p-8 rounded-xl shadow-xl text-left relative service-card scroll-reveal delay-150">
-                        <div class="absolute bottom-4 right-4 cursor-pointer text-xl text-heading toggle-details" data-service-id="service-3d-modeling-animation">
-                            <i class="fa-solid fa-plus"></i>
-                        </div>
-                        <div class="service-details-wrapper">
-                            <h3 class="text-3xl font-bold text-main mb-4" data-lang-key="service_3d_modeling_animation_title">Mô hình hóa & Hoạt hình 3D</h3>
-                                <li data-lang-key="service_3d_modeling_animation_desc2"><strong class="text-accent-strong">Render hình ảnh sản phẩm 3D</strong> chất lượng cao, chân thực.</li>
-                                <li data-lang-key="service_3d_modeling_animation_desc3"><strong class="text-accent-strong">Sản xuất video quảng cáo 3D CGI</strong> cho sản phẩm.</li>
-                            </ul>
-                        </div>
-                        <div class="project-carousel-wrapper">
-                            <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
-                                <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out">
-                                    <!-- Project images will be dynamically added here -->
-                                </div>
-                                <div class="carousel-indicators"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 2D Design -->
-                    <div id="service-2d-design" class="bg-card p-4 sm:p-6 md:p-8 rounded-xl shadow-xl text-left relative service-card scroll-reveal delay-300">
-                        <div class="absolute bottom-4 right-4 cursor-pointer text-xl text-heading toggle-details" data-service-id="service-2d-design">
-                            <i class="fa-solid fa-plus"></i>
-                        </div>
-                        <div class="service-details-wrapper">
-                            <h3 class="text-3xl font-bold text-main mb-4" data-lang-key="service_2d_design_title">Thiết kế 2D</h3>
-                            <ul class="list-disc list-inside text-lg text-gray-normal space-y-2">
-                                <li data-lang-key="service_2d_design_desc1"><strong class="text-accent-strong">Thiết kế cho thương mại điện tử</strong> (e-commerce).</li>
-                                <li data-lang-key="service_2d_design_desc2"><strong class="text-accent-strong">Thiết kế bao bì sản phẩm.</strong></li>
-                                <li data-lang-key="service_2d_design_desc3">POSM Design.</li>
-                                <li data-lang-key="service_2d_design_desc4">Các dịch vụ thiết kế 2D khác theo yêu cầu.</li>
-                            </ul>
-                        </div>
-                        <div class="project-carousel-wrapper">
-                            <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
-                                <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out">
-                                    <!-- Project images will be dynamically added here -->
-                                </div>
-                                <div class="carousel-indicators"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <section id="services" class="py-16 md:py-24 px-6 md:px-12 text-center">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal" data-lang-key="services_heading">Dịch Vụ Cung Cấp</h2>
+    <div id="services-cards-container" class="w-full flex flex-col gap-8 transition-all duration-300 ease-in-out">
+      <!-- Service Card 1: FOOH -->
+      <div id="service-fooh" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex flex-col md:flex-row items-stretch scroll-reveal">
+        <div class="service-details-wrapper md:w-1/2 md:pr-8 flex flex-col justify-center">
+          <h3 class="text-2xl font-bold text-main mb-4" data-lang-key="service_fooh_title">Sản xuất Video CGI FOOH</h3>
+          <ul class="space-y-2">
+            <li class="cursor-pointer" data-lang-key="service_fooh_desc"><strong class="text-primary">Sản xuất các video quảng cáo CGI ngắn (15-30 giây)</strong> cho các chiến dịch truyền thông.</li>
+          </ul>
+        </div>
+        <div class="project-carousel-wrapper md:w-1/2 md:pl-8 mt-8 md:mt-0">
+          <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
+            <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out"></div>
+            <div class="carousel-indicators absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Service Card 2: 3D Modeling & Animation -->
+      <div id="service-3d-modeling-animation" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex flex-col md:flex-row items-stretch scroll-reveal delay-150">
+        <div class="service-details-wrapper md:w-1/2 md:pr-8 flex flex-col justify-center">
+          <h3 class="text-2xl font-bold text-main mb-4" >3D Modeling & Animation</h3>
+          <ul class="space-y-2">
+            <li data-lang-key="service_3d_modeling_animation_desc2"><strong class="text-primary">Render hình ảnh sản phẩm 3D</strong> chất lượng cao, chân thực.</li>
+            <li data-lang-key="service_3d_modeling_animation_desc3"><strong class="text-primary">Sản xuất video quảng cáo 3D CGI</strong> cho sản phẩm.</li>
+          </ul>
+        </div>
+        <div class="project-carousel-wrapper md:w-1/2 md:pl-8 mt-8 md:mt-0">
+          <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
+            <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out"></div>
+            <div class="carousel-indicators absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Service Card 3: 2D Design -->
+      <div id="service-2d-design" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex flex-col md:flex-row items-stretch scroll-reveal delay-300">
+        <div class="service-details-wrapper md:w-1/2 md:pr-8 flex flex-col justify-center">
+          <h3 class="text-2xl font-bold text-main mb-4" data-lang-key="service_2d_design_title">Thiết kế 2D</h3>
+          <ul class="space-y-2">
+            <li  data-lang-key="service_2d_design_desc1"><strong class="text-primary">Thiết kế cho thương mại điện tử</strong> (e-commerce).</li>
+            <li data-lang-key="service_2d_design_desc2"><strong class="text-primary">Thiết kế bao bì sản phẩm.</strong></li>
+            <li  data-lang-key="service_2d_design_desc3">POSM Design.</li>
+            <li  data-lang-key="service_2d_design_desc4">Các dịch vụ thiết kế 2D khác theo yêu cầu.</li>
+          </ul>
+        </div>
+        <div class="project-carousel-wrapper md:w-1/2 md:pl-8 mt-8 md:mt-0">
+          <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
+            <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out"></div>
+            <div class="carousel-indicators absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+        <!-- Work Process Section -->
+
+
+  <section id="work-process" class="py-16 md:py-24 px-6 md:px-12 text-center scroll-reveal-y">
+  <div class="max-w-7xl mx-auto">
+    
+    <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal-y px-6 md:px-12" data-lang-key="work_process_heading">
+      Quy Trình Làm Việc
+    </h2>
+
+    <div class="flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0 items-stretch justify-center process-steps-container">
+
+      <!-- Step 1 -->
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-150 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 1: Tiếp nhận & Phân tích yêu cầu">
+        <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step1_icon">💡</div>
+        <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step1_title">
+          1. Tiếp nhận & Phân tích Yêu cầu
+        </h3>
+        <p class="text-gray-normal text-md" data-lang-key="work_process_step1_short_desc">
+          Lắng nghe và hiểu rõ mục tiêu dự án.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-300 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 2: Lên ý tưởng & Phát triển Concept">
+        <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step2_icon">✏️</div>
+        <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step2_title">
+          2. Lên ý tưởng & Phát triển Concept
+        </h3>
+        <p class="text-gray-normal text-md" data-lang-key="work_process_step2_short_desc">
+          Phác thảo ý tưởng và tạo moodboard.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-450 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 3: Triển khai & Tối ưu">
+        <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step3_icon">⚙️</div>
+        <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step3_title">
+          3. Triển khai & Tối ưu
+        </h3>
+        <p class="text-gray-normal text-md" data-lang-key="work_process_step3_short_desc">
+          Thiết kế hoàn chỉnh, tinh chỉnh hiệu suất.
+        </p>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-600 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 4: Giao nhận & Hỗ trợ">
+        <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step4_icon">📦</div>
+        <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step4_title">
+          4. Giao nhận & Hỗ trợ
+        </h3>
+        <p class="text-gray-normal text-md" data-lang-key="work_process_step4_short_desc">
+          Bàn giao sản phẩm và hỗ trợ sau dự án.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
 
         <!-- Contact Section -->
         <section id="contact" class="py-16 md:py-24 px-6 md:px-12 text-center">
@@ -569,23 +516,23 @@
                             <i class="fa-solid fa-globe mr-2"></i>
                             manhhuynh.work
                         </a>
-                        <a href="https://zalo.me/84359312806" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300 flex items-center">
-                            <img src="assets\images\Zalo_logo.svg" alt="Zalo" class="mr-2" style="width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle;">
-                            (+84) 359312806
-                        </a>
+                       <a href="https://zalo.me/84359312806" target="_blank" rel="noopener noreferrer" class="link-primary hover:underline transition duration-300 flex items-center">
+                <img src="/assets/images/Zalo_logo.svg" alt="Zalo" class="mr-2 zalo-icon w-6 h-6">
+                (+84) 359312806
+                </a>
                     </div>
                     <!-- Social media icons -->
                     <div class="flex flex-wrap justify-center items-center gap-6 text-2xl">
-                        <a href="https://www.tiktok.com/@manhhuynh.designer" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
+                        <a href="https://www.tiktok.com/@manhhuynh.designer" title="TikTok" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
                             <i class="fab fa-tiktok"></i>
                         </a>
-                        <a href="https://www.instagram.com/manh.des.98" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
+                        <a href="https://www.instagram.com/manh.des.98" title="Instagram" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://www.behance.net/manhhuynh323b3" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
+                        <a href="https://www.behance.net/manhhuynh323b3" title="Behance" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
                             <i class="fab fa-behance"></i>
                         </a>
-                        <a href="https://www.linkedin.com/in/manh-huynh-designer" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
+                        <a href="https://www.linkedin.com/in/manh-huynh-designer" title="LinkedIn" target="_blank" rel="noopener noreferrer" class="link-primary hover:link-primary transition duration-300">
                             <i class="fab fa-linkedin"></i>
                         </a>
                     </div>
@@ -625,7 +572,8 @@
             }
         });
     </script>
-  
+  <script src="assets/script/services.js" defer></script>
+
     <script type="module" src="assets/script/main.js"></script>
     <script src="assets/script/preloader.js"></script>
 </body>

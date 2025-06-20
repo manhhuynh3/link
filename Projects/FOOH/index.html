@@ -49,8 +49,8 @@
             z-index: 9999;
             transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
             opacity: 1;
-            backdrop-filter: none;
             -webkit-backdrop-filter: none;
+            backdrop-filter: none;
             border: none;
             /* Thêm các style để đảm bảo nó che phủ hoàn toàn */
             margin: 0;
@@ -216,7 +216,7 @@
         .custom-carousel-inner {
             display: flex;
             transition: transform 0.7s cubic-bezier(0.25,1,0.5,1); /* Easing giống portfolio.js */
-            flex-nowrap: nowrap; /* Đảm bảo các video nằm trên một hàng */
+            flex-wrap: nowrap; /* Đảm bảo các video nằm trên một hàng */
             width: calc(100% / 3 * var(--total-slides, 10)); /* 100% chia 3 để hiển thị 3 slide, nhân tổng số slide */
             margin-left: calc((100% / 3 - 360px) / 2); /* Căn giữa slide đầu tiên nếu cần */
             /* Để hiển thị 3 slide, mỗi slide chiếm 1/3 không gian */

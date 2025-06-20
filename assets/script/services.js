@@ -1,209 +1,150 @@
-// js/services.js
-import { projectMapping, languages } from './data.js';
-import { currentLanguage, updateContent } from './language.js'; // Import updateContent to translate 'no_projects'
+// services.js
+const projectMapping = {
+  "service-fooh": [
+    { src: "assets/images/Project/FOOH_1.gif", type: "image", caption: "Dự án CGI FOOH - Concept 1" },
+    { src: "assets/images/Project/FOOH_2.gif", type: "image", caption: "Dự án CGI FOOH - Concept 2" },
+    { src: "assets/images/Project/FOOH_3.gif", type: "image", caption: "Dự án CGI FOOH - Concept 3" },
+  ],
+  "service-3d-modeling-animation": [
+    { src: "assets/images/Project/modeling_1.jpg", type: "image", caption: "Mô hình 3D sản phẩm cao cấp A" },
+    { src: "assets/images/Project/modeling_2.jpg", type: "image", caption: "Hoạt hình 3D sản phẩm B" },
+    { src: "assets/images/Project/modeling_3.jpg", type: "image", caption: "Render chân thực sản phẩm C" },
+  ],
+  "service-2d-design": [
+    { src: "assets/images/Project/2D_1.jpg", type: "image", caption: "Thiết kế E-commerce cho cửa hàng X" },
+    { src: "assets/images/Project/2D_2.jpg", type: "image", caption: "Thiết kế bao bì sản phẩm Y" },
+    { src: "assets/images/Project/2D_3.jpg", type: "image", caption: "Thiết kế POSM cho chiến dịch Z" },
+  ]
+};
 
-let activeServiceId = null;
-let autoSlideInterval;
-let currentProjectIndex = 0;
+const carouselStates = new Map();
 
-export function setupServiceDetailsToggle() {
-    document.querySelectorAll('.toggle-details').forEach(button => {
-        button.addEventListener('click', function() {
-            const serviceId = this.dataset.serviceId;
-            toggleServiceDetails(serviceId);
-        });
-    });
+function initializeServiceCarousel(serviceCardId) {
+  const cardElement = document.getElementById(serviceCardId);
+  const inner = cardElement.querySelector(".carousel-inner");
+  const indicators = cardElement.querySelector(".carousel-indicators");
+  const data = projectMapping[serviceCardId] || [];
 
-    window.addEventListener('resize', () => {
-        if (activeServiceId) { // Only re-evaluate if a service is expanded
-            const activeCardElement = document.getElementById(activeServiceId);
-            const projectCarouselWrapper = activeCardElement.querySelector('.project-carousel-wrapper');
+  carouselStates.set(serviceCardId, {
+    currentProjectIndex: 0,
+    autoSlideInterval: null
+  });
 
-            if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) {
-                startAutoSlide(activeCardElement);
-                projectCarouselWrapper.removeEventListener('mousemove', handleCarouselMouseMove);
-                projectCarouselWrapper.removeEventListener('mouseleave', handleCarouselMouseLeave);
-            } else {
-                stopAutoSlide();
-                projectCarouselWrapper.addEventListener('mousemove', (e) => handleCarouselMouseMove(e, activeCardElement));
-                projectCarouselWrapper.removeEventListener('mouseleave', (e) => handleCarouselMouseLeave(e, activeCardElement));
-            }
-            updateCarouselDisplay(activeCardElement); // Update carousel position after resize
-        }
-    });
+  inner.innerHTML = "";
+  indicators.innerHTML = "";
+
+  if (!data.length) {
+    inner.innerHTML = '<div class="text-center text-white">Chưa có dự án nào.</div>';
+    return;
+  }
+
+  data.forEach((item, index) => {
+    const element = document.createElement(item.type === "video" ? "video" : "img");
+    element.src = item.src;
+    element.alt = item.caption;
+    if (item.type === "video") {
+      element.autoplay = true;
+      element.loop = true;
+      element.muted = true;
+    }
+    element.classList.add("carousel-item", "w-full", "h-full", "object-cover", "rounded-xl", "flex-shrink-0");
+    inner.appendChild(element);
+
+    const dot = document.createElement("div");
+    dot.classList.add("w-2", "h-2", "rounded-full", "bg-gray-400", "cursor-pointer");
+    if (index === 0) dot.classList.add("bg-white", "active");
+    dot.addEventListener("click", () => updateCarousel(serviceCardId, index));
+    indicators.appendChild(dot);
+  });
+
+  const items = cardElement.querySelectorAll(".service-details-wrapper li");
+  items.forEach((li, i) => {
+    li.addEventListener("mouseenter", () => updateCarousel(serviceCardId, i));
+  });
+
+  cardElement.addEventListener("mouseleave", () => {
+    updateCarousel(serviceCardId, 0);
+    resetAutoSlide(serviceCardId);
+  });
+
+  inner.addEventListener("mousemove", (e) => handleCarouselMouseMove(e, cardElement));
+
+  updateCarousel(serviceCardId, 0);
+  startAutoSlide(serviceCardId);
 }
 
-function loadCarousel(serviceId, cardElement) {
-    const carouselInner = cardElement.querySelector('.carousel-inner');
-    let carouselIndicatorsContainer = cardElement.querySelector('.carousel-indicators');
+function updateCarousel(serviceId, activeIndex) {
+  const cardElement = document.getElementById(serviceId);
+  const inner = cardElement.querySelector(".carousel-inner");
+  const indicators = cardElement.querySelectorAll(".carousel-indicators div");
+  const state = carouselStates.get(serviceId);
 
-    carouselInner.innerHTML = '';
-    carouselIndicatorsContainer.innerHTML = '';
+  if (!state) return;
+  state.currentProjectIndex = activeIndex;
+  const offset = -100 * activeIndex;
+  inner.style.transform = `translateX(${offset}%)`;
 
-    const projects = projectMapping[serviceId];
-    if (projects && projects.length > 0) {
-        projects.forEach((project, index) => {
-            const item = document.createElement('div');
-            item.classList.add('carousel-item');
-            const img = document.createElement('img');
-            img.src = project.src;
-            img.alt = project.caption;
-            item.appendChild(img);
-            carouselInner.appendChild(item);
-
-            const indicator = document.createElement('span');
-            indicator.classList.add('w-3', 'h-3', 'bg-gray-400', 'rounded-full', 'cursor-pointer', 'transition-colors', 'duration-300');
-            indicator.dataset.index = index;
-            indicator.addEventListener('click', () => {
-                currentProjectIndex = index;
-                updateCarouselDisplay(cardElement);
-                resetAutoSlide(cardElement);
-            });
-            carouselIndicatorsContainer.appendChild(indicator);
-        });
-        currentProjectIndex = 0;
-        updateCarouselDisplay(cardElement);
-
-        const projectCarouselWrapper = cardElement.querySelector('.project-carousel-wrapper');
-        projectCarouselWrapper.removeEventListener('mousemove', handleCarouselMouseMove);
-        projectCarouselWrapper.removeEventListener('mouseleave', handleCarouselMouseLeave);
-
-        if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) {
-            startAutoSlide(cardElement);
-        } else {
-            stopAutoSlide();
-            projectCarouselWrapper.addEventListener('mousemove', (e) => handleCarouselMouseMove(e, cardElement));
-            projectCarouselWrapper.addEventListener('mouseleave', (e) => handleCarouselMouseLeave(e, cardElement));
-        }
-
-    } else {
-        carouselInner.innerHTML = `<p class="text-gray-medium text-center" data-lang-key="no_projects">${languages[currentLanguage]['no_projects']}</p>`;
-        // updateContent(currentLanguage); // This might cause a loop if called inside loadCarousel, better to handle directly.
-        stopAutoSlide();
-    }
+  indicators.forEach((dot, i) => {
+    dot.classList.toggle("bg-white", i === activeIndex);
+    dot.classList.toggle("bg-gray-400", i !== activeIndex);
+    dot.classList.toggle("active", i === activeIndex);
+  });
 }
 
 function updateCarouselDisplay(cardElement) {
-    const carouselInner = cardElement.querySelector('.carousel-inner');
-    const carouselIndicators = cardElement.querySelectorAll('.carousel-indicators span');
-
-    const projects = projectMapping[cardElement.id];
-    if (!projects || projects.length === 0) return;
-
-    carouselInner.style.transform = `translateX(-${currentProjectIndex * 100}%)`;
-
-    carouselIndicators.forEach((indicator, index) => {
-        if (index === currentProjectIndex) {
-            indicator.classList.remove('bg-gray-400');
-            indicator.classList.add('bg-blue-500', 'active');
-        } else {
-            indicator.classList.remove('bg-blue-500', 'active');
-            indicator.classList.add('bg-gray-400');
-        }
-    });
+  const id = cardElement.id;
+  const state = carouselStates.get(id);
+  if (!state) return;
+  updateCarousel(id, state.currentProjectIndex);
 }
 
 function handleCarouselMouseMove(event, cardElement) {
-    const projectCarouselWrapper = cardElement.querySelector('.project-carousel-wrapper');
-    const rect = projectCarouselWrapper.getBoundingClientRect();
-    const mouseX = event.clientX - rect.left;
-    const elementWidth = rect.width;
-    const projects = projectMapping[cardElement.id];
-    const totalProjects = projects ? projects.length : 0;
+  if (window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768) return;
 
-    if (totalProjects <= 1) {
-        currentProjectIndex = 0;
-        updateCarouselDisplay(cardElement);
-        return;
-    }
+  stopAutoSlide(cardElement.id);
 
-    const segmentWidth = elementWidth / totalProjects;
-    let newIndex = Math.floor(mouseX / segmentWidth);
-    newIndex = Math.max(0, Math.min(totalProjects - 1, newIndex));
+  const rect = cardElement.querySelector(".carousel-container").getBoundingClientRect();
+  const relX = event.clientX - rect.left;
+  const width = rect.width;
+  const total = projectMapping[cardElement.id]?.length || 0;
+  const newIndex = Math.floor((relX / width) * total);
 
-    if (newIndex !== currentProjectIndex) {
-        currentProjectIndex = newIndex;
-        updateCarouselDisplay(cardElement);
-    }
+  const state = carouselStates.get(cardElement.id);
+  if (state && state.currentProjectIndex !== newIndex) {
+    updateCarousel(cardElement.id, newIndex);
+  }
 }
 
-function handleCarouselMouseLeave(event, cardElement) {
-    // As per previous request, no reset on mouse leave for desktop
+function startAutoSlide(serviceCardId) {
+  const state = carouselStates.get(serviceCardId);
+  if (!state) return;
+  stopAutoSlide(serviceCardId);
+
+  const total = projectMapping[serviceCardId]?.length || 0;
+  state.autoSlideInterval = setInterval(() => {
+    state.currentProjectIndex = (state.currentProjectIndex + 1) % total;
+    updateCarousel(serviceCardId, state.currentProjectIndex);
+  }, 3000);
 }
 
-function startAutoSlide(cardElement) {
-    stopAutoSlide();
-    autoSlideInterval = setInterval(() => {
-        const projects = projectMapping[cardElement.id];
-        if (projects && projects.length > 0) {
-            currentProjectIndex = (currentProjectIndex + 1) % projects.length;
-            updateCarouselDisplay(cardElement);
-        }
-    }, 3000);
+function stopAutoSlide(serviceCardId) {
+  const state = carouselStates.get(serviceCardId);
+  if (state?.autoSlideInterval) {
+    clearInterval(state.autoSlideInterval);
+    state.autoSlideInterval = null;
+  }
 }
 
-function stopAutoSlide() {
-    if (autoSlideInterval) {
-        clearInterval(autoSlideInterval);
-        autoSlideInterval = null;
-    }
+function resetAutoSlide(serviceCardId) {
+  if (window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768) {
+    startAutoSlide(serviceCardId);
+  } else {
+    stopAutoSlide(serviceCardId);
+  }
 }
 
-function resetAutoSlide(cardElement) {
-    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) {
-        stopAutoSlide();
-        startAutoSlide(cardElement);
-    }
-}
-
-function toggleServiceDetails(serviceId) {
-    const allServiceCards = document.querySelectorAll('.service-card');
-    const clickedCard = document.getElementById(serviceId);
-    const clickedIcon = clickedCard.querySelector('.toggle-details i');
-    const projectCarouselWrapper = clickedCard.querySelector('.project-carousel-wrapper');
-    const servicesCardsContainer = document.getElementById('services-cards-container');
-
-    const isCurrentlyExpanded = clickedCard.classList.contains('expanded');
-
-    // Reset all cards and container to their default collapsed state (3-column grid)
-    allServiceCards.forEach(card => {
-        card.classList.remove('expanded', 'hidden-by-expansion'); // Remove all state classes
-        card.querySelector('.toggle-details i').classList.replace('fa-times', 'fa-plus'); // Reset icon
-        // Ensure carousel wrapper is hidden for all cards
-        const pcw = card.querySelector('.project-carousel-wrapper');
-        if (pcw) {
-            pcw.classList.remove('carousel-visible'); // Remove carousel visible class
-        }
-    });
-    servicesCardsContainer.classList.remove('services-expanded'); // Reset container layout
-
-    stopAutoSlide(); // Stop auto-slide for any previous active card
-
-    if (isCurrentlyExpanded) {
-        // If clicked card was expanded, we just collapsed it.
-        // The reset above already handled the collapse. So we just exit.
-        activeServiceId = null;
-        return;
-    }
-
-    // If the clicked card was not expanded, we will expand it.
-    clickedCard.classList.add('expanded'); // Mark clicked card as expanded
-    clickedIcon.classList.replace('fa-plus', 'fa-times'); // Change icon
-
-    // Hide other cards by adding `hidden-by-expansion` class
-    allServiceCards.forEach(card => {
-        if (card.id !== serviceId) {
-            card.classList.add('hidden-by-expansion');
-        }
-    });
-
-    // Set container to expanded state layout (flex row for desktop)
-    servicesCardsContainer.classList.add('services-expanded');
-
-    // Ensure the active card's project carousel is visible
-    projectCarouselWrapper.classList.add('carousel-visible'); // Add the new class
-
-    // Load and display projects for the active service
-    loadCarousel(serviceId, clickedCard);
-    activeServiceId = serviceId;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  initializeServiceCarousel("service-fooh");
+  initializeServiceCarousel("service-3d-modeling-animation");
+  initializeServiceCarousel("service-2d-design");
+});

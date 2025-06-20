@@ -198,7 +198,7 @@ export function initThreeJSViewer(containerId) {
             scene.add(directionalLight);
 
             const rgbeLoader = new RGBELoader();
-            rgbeLoader.load('assets/3d/brown_photostudio_01_1k.hdr', function (texture) {
+            rgbeLoader.load('/assets/3d/brown_photostudio_01_1k.hdr', function (texture) {
                 hdriTexture = texture;
                 hdriTexture.mapping = THREE.EquirectangularReflectionMapping;
                 scene.environment = hdriTexture;
@@ -235,7 +235,7 @@ export function initThreeJSViewer(containerId) {
 
             // Tải mô hình GLB
             const loader = new GLTFLoader();
-            loader.load('assets/3d/SOFTWARE.glb', function (gltf) {
+            loader.load('/assets/3d/SOFTWARE.glb', function (gltf) {
                 const model = gltf.scene;
 
                 // console.log('Model loaded:', model);

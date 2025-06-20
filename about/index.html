@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="title">Mạnh Huỳnh - Graphic Designer | 3D Artist</title>
+    <!-- Add favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/fav_icon.svg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KFPG79L00S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KFPG79L00S');
+    </script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Social Media Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0PzGcVq/p/rW+9r/h/i6Qn/L1k/yG7CjY0sD4LwFpL+hL2gOQ2/yU2fJ+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <style>
+        /* Đảm bảo toàn bộ trang bị ẩn cho đến khi preloader sẵn sàng */
+        body.is-loading main.main-content {
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            /* hoặc đơn giản là display: none; nếu bạn không dùng transition cho main-content */
+        }
+        body.is-loading #header,
+        body.is-loading #footer,
+        body.is-loading section:not(#preloader) { /* Ẩn tất cả section trừ preloader */
+             visibility: hidden;
+             opacity: 0;
+             pointer-events: none;
+             /* hoặc display: none; */
+        }
+        
+        /* CSS cốt lõi cho preloader phải ở đây */
+        .preloader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* Sử dụng 100vh mặc định */
+            height: var(--app-height, 100vh); /* Biến này sẽ được JS cập nhật */
+            background-color: #F6F6F6; /* Màu nền preloader */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
+            opacity: 1; 
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+            border: none;
+            /* Thêm các style để đảm bảo nó che phủ hoàn toàn */
+            margin: 0;
+            padding: 0;
+            
+        }
+
+        .preloader-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Các style khác của preloader (ví dụ: video container, progress text) */
+        /* Bạn có thể để lại trong preloader.css và chỉ inline những gì cần thiết để hiển thị ngay lập tức */
+        /* Tuy nhiên, để đảm bảo tuyệt đối, bạn có thể inline toàn bộ preloader.css tại đây */
+        /* Hoặc chỉ những phần quan trọng nhất để chống FOUC */
+
+        /* Ví dụ về inline các style quan trọng khác nếu cần */
+        .preloader-video-container { /* ví dụ, để video đúng vị trí ngay lập tức */
+            position: absolute;
+            width: 66.66%;
+            height: 100%;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .preloader-video {
+            width: 70vh;
+            height: 70vh;
+            max-width: 60%;
+            max-height: 80%;
+            object-fit: cover;
+            margin: 0;
+            border: none;
+            box-shadow: none;
+            transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
+            overflow: hidden;
+        }
+        .preloader-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.02);
+            transition: transform 0.3s ease-in-out;
+        }
+        /* Style cho % tiến độ và Loading... */
+        .progress-indicator {
+            position: absolute;
+            left: 1vw; 
+            bottom: 5vh;
+            font-size: 20vh;
+            line-height: 1;
+            font-weight: 200;
+            color: #000000;
+            text-shadow: none;
+            transition: bottom 0.3s ease-out, opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
+            z-index: 10000;
+            max-width: 30vw;
+            white-space: nowrap;
+        }
+        .loading-text {
+            position: absolute;
+            left: 1vw; 
+            bottom: 5vh;
+            transform: translateY(100%);
+            color: #000000;
+            font-size: 1.5em;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            z-index: 9999;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.9s ease-in-out;
+        }
+        /* Nút Contact */
+        .contact-button {
+            position: absolute;
+            right: 5vw;
+            bottom: 5vh;
+            padding: 15px 30px;
+            background-color: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.9s ease-in-out;
+            z-index: 10000;
+        }
+        .contact-button:hover {
+            background-color: #1D4ED8;
+            transform: scale(1.1);
+        }
+        /* Media queries cho mobile cũng nên được inline nếu bạn muốn chúng được áp dụng ngay lập tức */
+        @media (max-width: 768px) {
+            .preloader-video-container {
+                width: 100%;
+                height: 70%;
+                top: 0;
+                left: 0;
+                right: auto;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+            .preloader-video {
+                width: 240px;
+                height: 240px;
+                overflow: hidden;
+            }
+            .progress-indicator {
+                left: 5vw;
+                bottom: 12vh;
+                font-size: 20vh;
+            }
+            .loading-text {
+                left: 5vw;
+                bottom: 8vh;
+                transform: none;
+                font-size: 1.1em;
+            }
+            .contact-button {
+                right: 5vw;
+                bottom: 8vh;
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+     
+    </style>
+     <link rel="stylesheet" href="/assets/css/main_theme.css">
+     <link rel="stylesheet" href="/assets/css/preloader.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.177.0/build/three.module.js"
+            }
+        }
+    </script>
+    
+</head>
+<body>
+      <div id="header-placeholder"></div>
+    <main class="main-content">
+        <!-- About Section -->
+        <section id="about" class="py-16 md:py-24 px-6 md:px-12 text-center">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal" data-lang-key="about_heading">Giới Thiệu</h2>
+                <div class="bg-card p-8 rounded-xl shadow-xl mb-12 scroll-reveal delay-150">
+                    <h3 class="text-3xl font-bold text-main mb-6" data-lang-key="about_greeting">Chào bạn, tôi là Mạnh.</h3>
+                    <p class="text-lg text-gray-normal leading-relaxed" data-lang-key="about_intro_paragraph">
+                        Tôi là Mạnh Huỳnh, một 3D Motion Graphic Designer với hơn <strong class="text-accent-strong">5 năm kinh nghiệm</strong> trong lĩnh vực thiết kế đồ họa và sản xuất nội dung số. Tôi chuyên thực hiện video sản phẩm CGI, đặc biệt là các chiến dịch Fake OOH (CGI FOOH) – kết hợp hình ảnh 3D với môi trường thực.<br><br>
+                        Bên cạnh đó, tôi có nhiều kinh nghiệm trong việc sản xuất video 3D ngắn giới thiệu sản phẩm, dựng và render hình ảnh sản phẩm chất lượng cao, cũng như thiết kế các ấn phẩm như POSM, bao bì, key visual phục vụ cho các chiến dịch truyền thông đa kênh.<br><br>
+                        Tôi là một người tư duy sáng tạo và đổi mới, và tôi luôn tìm kiếm những cách thức mới để sử dụng thiết kế nhằm giải quyết vấn đề và truyền đạt ý tưởng một cách rõ ràng và hiệu quả.
+                    </p>
+                </div>
+                <!-- Experience -->
+                <div class="bg-card p-8 rounded-xl shadow-xl mb-12 scroll-reveal delay-600">
+                    <h3 class="text-3xl font-bold text-main mb-6" data-lang-key="experience_heading">Kinh Nghiệm Làm Việc</h3>
+                    <div class="timeline-container">
+                        <!-- Freelance -->
+                        <div class="timeline-item scroll-reveal delay-150">
+                            <p class="timeline-item-date" data-lang-key="exp_freelance_date">Tháng 4 năm 2025 - Hiện tại</p>
+                            <h4 class="timeline-item-title" data-lang-key="exp_freelance_title">Freelance | Graphic Designer | 3D Artist</h4>
+                            <ul class="timeline-item-description space-y-1">
+                                <li data-lang-key="exp_freelance_desc1"><strong class="text-accent-green">3D Product Visualization & Animation:</strong> Mô hình hóa, đổ bóng, chiếu sáng, và hoạt hình sản phẩm chân thực sử dụng Blender & Cycles CGI cho các chiến dịch kỹ thuật số.</li>
+                                <li data-lang-key="exp_freelance_desc2">Kể chuyện bằng hình ảnh cho các sản phẩm chăm sóc da, trang điểm và chăm sóc cá nhân.</li>
+                                <li data-lang-key="exp_freelance_desc3"><strong class="text-accent-green">Motion Design & Compositing:</strong> Đồ họa chuyển động 2D/3D, chuyển cảnh, và hiệu ứng sản phẩm sử dụng After Effects.</li>
+                                <li data-lang-key="exp_freelance_desc4">Graphic & Visual Design: Tài sản sáng tạo cho tiếp thị kỹ thuật số, mạng xã hội, và thương mại điện tử (Photoshop, Illustrator).</li>
+                            </ul>
+                        </div>
+                        <!-- L'Oréal -->
+                        <div class="timeline-item scroll-reveal delay-300">
+                            <p class="timeline-item-date" data-lang-key="exp_loreal_date">Tháng 7 năm 2022 - Tháng 4 năm 2025</p>
+                            <h4 class="timeline-item-title" data-lang-key="exp_loreal_title">L'Oréal | Senior E-Designer</h4>
+                            <ul class="timeline-item-description space-y-1">
+                                <li data-lang-key="exp_loreal_desc1">Thiết kế nội dung và tài sản kỹ thuật số hấp dẫn về hình ảnh cho các chiến dịch và khuyến mãi trực tuyến.</li>
+                                <li data-lang-key="exp_loreal_desc2">Hợp tác với các team để tạo visual e-commerce hiệu quả và thẩm mỹ.</li>
+                                <li data-lang-key="exp_loreal_desc3">Phát triển concept và thiết kế cho các nền tảng mạng xã hội.</li>
+                                <li data-lang-key="exp_loreal_desc4">Sử dụng phần mềm 3D để đẩy nhanh quy trình thiết kế và tạo quảng cáo CGI.</li>
+                            </ul>
+                        </div>
+                        <!-- Soul Specialty Coffee -->
+                        <div class="timeline-item scroll-reveal delay-450">
+                            <p class="timeline-item-date" data-lang-key="exp_soulcoffee_date">Tháng 4 năm 2021 - Tháng 5 năm 2022</p>
+                            <h4 class="timeline-item-title" data-lang-key="exp_soulcoffee_title">Soul Specialty Coffee | Graphic Designer</h4>
+                            <ul class="timeline-item-description space-y-1">
+                                <li data-lang-key="exp_soulcoffee_desc1">Thiết kế bao bì hiệu quả chi phí và hấp dẫn về hình ảnh cho các sản phẩm thương mại khác nhau.</li>
+                                <li data-lang-key="exp_soulcoffee_desc2">Tạo quảng cáo, báo cáo và tài liệu thương hiệu để hỗ trợ các nỗ lực tiếp thị của công ty.</li>
+                                <li data-lang-key="exp_soulcoffee_desc3">Hợp tác với các thành viên trong nhóm về cả các dự án thiết kế quy mô lớn và nhỏ hơn.</li>
+                                <li data-lang-key="exp_soulcoffee_desc4">Giám sát hiệu suất in ấn và duy trì kiểm soát chất lượng in.</li>
+                            </ul>
+                        </div>
+                        <!-- Loyal District LTd.co -->
+                        <div class="timeline-item scroll-reveal delay-600">
+                            <p class="timeline-item-date" data-lang-key="exp_loyal_date">Tháng 3 năm 2019 - Tháng 5 năm 2020</p>
+                            <h4 class="timeline-item-title" data-lang-key="exp_loyal_title">Loyal District LTd.co | Graphic Designer</h4>
+                            <ul class="timeline-item-description space-y-1">
+                                <li data-lang-key="exp_loyal_desc1">Thiết kế mẫu mockup áo thun và đồng phục cho cả sản xuất nội bộ và tùy chỉnh của khách hàng.</li>
+                                <li data-lang-key="exp_loyal_desc2">Quản lý và hướng dẫn thực tập sinh trong bộ phận thiết kế.</li>
+                                <li data-lang-key="exp_loyal_desc3">Tạo quảng cáo, báo cáo và tài liệu thương hiệu để nâng cao nhận diện thương hiệu của công ty.</li>
+                                <li data-lang-key="exp_loyal_desc4">Hợp tác với nhóm trong các dự án thiết kế và tiến hành tư vấn khách hàng.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Software Section -->
+                <div class="hidden md:block">
+                    <div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl shadow-xl bg-card mb-12">
+                        <h3 id="toolsTitle" class="absolute top-6 left-1/2 -translate-x-1/2 text-3xl font-bold text-main cursor-pointer z-20">Tools</h3>
+                        <div id="three-js-container" class="absolute inset-0 z-0"></div>
+                    </div>
+                    <script type="module">
+                        import { initThreeJSViewer } from '/assets/script/threeJsViewer.js';
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+                            if (isDesktop) {
+                                initThreeJSViewer('three-js-container');
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+      
+        <div class="mt-12 scroll-reveal delay-450">
+            <div class="bg-card p-8 rounded-xl shadow-xl max-w-3xl mx-auto">
+            <p class="text-xl font-semibold text-main mb-6" data-lang-key="contact_with_me">Kết nối với tôi:</p>
+            <!-- Contact links: Email, Website, Phone/Zalo -->
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-lg mb-6">
+                <a href="mailto:contact@manhhuynh.work" class="link-primary hover:underline transition duration-300 flex items-center">
+                <i class="fa-solid fa-envelope mr-2"></i>
+                contact@manhhuynh.work
+                </a>
+                <a href="https://manhhuynh.work" target="_blank" rel="noopener noreferrer" class="link-primary hover:underline transition duration-300 flex items-center">
+                <i class="fa-solid fa-globe mr-2"></i>
+                manhhuynh.work
+                </a>
+                <a href="https://zalo.me/84359312806" target="_blank" rel="noopener noreferrer" class="link-primary hover:underline transition duration-300 flex items-center">
+                <img src="/assets/images/Zalo_logo.svg" alt="Zalo" class="mr-2 zalo-icon w-6 h-6">
+                (+84) 359312806
+                </a>
+            </div>
+            <!-- Social media icons -->
+            <div class="flex justify-center items-center gap-6 text-2xl mt-2">
+                <a href="https://www.tiktok.com/@manhhuynh.designer" title="TikTok" target="_blank" rel="noopener noreferrer" class="link-primary hover:text-accent transition duration-300">
+                <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://www.instagram.com/manh.des.98" title="Instagram" target="_blank" rel="noopener noreferrer" class="link-primary hover:text-accent transition duration-300">
+                <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.behance.net/manhhuynh323b3" title="Behance" target="_blank" rel="noopener noreferrer" class="link-primary hover:text-accent transition duration-300">
+                <i class="fab fa-behance"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/manh-huynh-designer" title="LinkedIn" target="_blank" rel="noopener noreferrer" class="link-primary hover:text-accent transition duration-300">
+                <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+            </div>
+        </div>
+      </section>  
+    </main>
+    <footer id="footer-placeholder"></footer>
+
+
+    <script type="module">
+        import { loadAllTemplates } from '/assets/script/loadTemplates.js';
+        loadAllTemplates().catch(error => {
+            console.error('Error loading templates:', error);
+        });
+    </script>
+    <script type="module" src="/assets/script/main.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-  /* CSS Variables for theming */
+/* CSS Variables for theming */
         :root { /* Night Mode Defaults (Blue + Black) */
             --color-bg-primary: #020617; /* slate-950 */
             --color-bg-secondary: #0f172a; /* slate-900 for section background gradient */
@@ -76,10 +76,10 @@
 
         header {
             background-color: var(--color-header-glass-bg-blue); /* Changed to use blue glassmorphism variable */
-            backdrop-filter: blur(10px); /* Glassmorphism effect */
             -webkit-backdrop-filter: blur(10px); /* Safari support */
             box-shadow: var(--color-shadow-header, 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05));
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glass look */
+            backdrop-filter: blur(10px); /* Glassmorphism effect */
         }
 
         /* Explicitly set header logo and footer text color to white */
@@ -98,15 +98,7 @@
             background: linear-gradient(to right, var(--color-header-gradient-from), var(--color-header-gradient-to));
             color: #ffffff; /* Fallback/explicit for clarity */
         }
-        #home {
-            background: linear-gradient(to bottom right, var(--color-gradient-from-1), var(--color-gradient-to-1));
-        }
-        #about, #services {
-            background: linear-gradient(to bottom, var(--color-gradient-from-2), var(--color-gradient-to-2));
-        }
-        #portfolio, #contact {
-            background: linear-gradient(to bottom, var(--color-gradient-from-1), var(--color-gradient-to-1));
-        }
+     
 
         /* Custom classes to replace direct Tailwind colors for dynamic theming */
         .bg-card { /* Replaces bg-gray-800 */
@@ -483,189 +475,89 @@
             }
         }
 
-        /* Services section: Dynamic styles for expand/collapse */
-        /* REMOVED default display:flex and flex-direction from services-cards-container here,
-           now handled by Tailwind grid classes in HTML directly. */
-        #services-cards-container {
-            width: 100%;
-            gap: 2rem;
-            transition: all 0.3s ease-in-out; /* Faster transition */
-        }
+      /* Ensure service-card always shows its content and carousel */
+.service-card .service-details-wrapper,
+.service-card .project-carousel-wrapper {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    transition: none !important;
+    flex-grow: 1; /* Allow them to grow */
+    flex-shrink: 1; /* Allow them to shrink */
+    min-height: 200px; /* Adjust as needed */
+}
 
-        /* When a service is expanded, the container will change its layout for the single active card */
-        #services-cards-container.services-expanded {
-            display: flex; /* Override grid to flex for the expanded state */
-            flex-direction: column; /* Stack on mobile, content within expanded card flows vertically */
-            align-items: center; /* Center the expanded card horizontally */
-            justify-content: center; /* Center the expanded card vertically */
-            gap: 0; /* No gaps when only one card is active */
-            width: 100%; /* Ensure container fills width */
-            margin: 0 auto; /* Center the container itself */
-        }
-        /* No change needed here, as the flex-direction of the *expanded card* itself dictates the internal layout on desktop. */
+/* Make each service-card fill the full width available */
+#services-cards-container .service-card {
+    width: 100%; /* Đảm bảo mỗi thẻ dịch vụ chiếm toàn bộ chiều rộng của container cha */
+    margin-left: 0;
+    margin-right: 0;
+}
 
+.service-card .carousel-container {
+    height: 100%;
+    min-height: 300px;
+    max-height: 450px; /* Có thể điều chỉnh chiều cao tối đa này */
+    width: 100%;
+}
 
-        /* The active service card itself */
-        .service-card {
-            transition: all 0.3s ease-in-out; /* Faster transition */
-            border: 1px solid var(--color-border-main);
-            position: relative;
-            /* REMOVED: padding: 2rem; (now handled by responsive Tailwind classes in HTML) */
-            flex-shrink: 0;
-            flex-grow: 1;
-            width: 100%; /* Ensures it fills its grid cell or flex space */
-        }
+/* Đảm bảo carousel-item chiếm 100% chiều rộng của carousel-inner để cuộn đúng */
+.service-card .carousel-item {
+    flex-shrink: 0; /* Ngăn không cho item bị co lại */
+    width: 100%; /* Quan trọng: mỗi item phải chiếm 100% chiều rộng của .carousel-inner */
+    height: 100%;
+}
 
-        .service-card.expanded {
-            flex-grow: 0; /* Prevent stretching */
-            flex-shrink: 0; /* Prevent shrinking */
-            width: 100%; /* Occupy full width within #services-cards-container.services-expanded */
-            max-width: 100%; /* Ensure it doesn't overflow */
-            box-shadow: var(--color-shadow-card); /* Keep shadow */
-            display: flex; /* Use flex for internal layout of expanded card */
-            flex-direction: column; /* Default to column for mobile */
-            align-items: flex-start; /* Align content to top */
-            justify-content: flex-start; /* Align content to start */
-            min-height: 500px; /* Ensure sufficient height for the layout */
-        }
+.service-card .carousel-item img,
+.service-card .carousel-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.75rem; /* rounded-xl from Tailwind */
+}
 
-        /* Desktop layout for expanded card: content left, carousel right */
-        @media (min-width: 768px) {
-            .service-card.expanded {
-                flex-direction: row; /* Content on left, carousel on right */
-                align-items: stretch; /* Stretch children to fill height */
-                gap: 2rem; /* Add a gap between the two halves of the expanded card */
-            }
-            .service-card.expanded .service-details-wrapper {
-                flex: 1 1 50%; /* Take half width, flex-basis for explicit size */
-                max-width: 50%; /* Ensure it doesn't grow beyond 50% */
-                overflow-y: auto; /* Allow scrolling if content overflows */
-                max-height: 100%; /* Limit height to parent */
-            }
-            .service-card.expanded .project-carousel-wrapper {
-                flex: 1 1 50%; /* Take other half width, flex-basis for explicit size */
-                max-width: 50%; /* Ensure it doesn't grow beyond 50% */
-                padding-top: 0; /* No top padding if side-by-side */
-                display: flex; /* Ensure it's flex for inner carousel layout */
-                flex-direction: column; /* Ensure inner carousel layout */
-            }
-        }
+/* Adjust carousel indicators */
+.carousel-indicators {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 20;
+}
 
-        /* Hide other cards when one is expanded */
-        #services-cards-container.services-expanded .service-card:not(.expanded) {
-            opacity: 0;
-            max-height: 0; /* Collapse height to zero */
-            padding: 0;
-            margin: 0;
-            border: none;
-            pointer-events: none; /* Disable interaction */
-            transform: scale(0.8); /* Shrink slightly */
-            overflow: hidden; /* Hide content */
-            transition: all 0.3s ease-in-out; /* Faster transition */
-        }
+.carousel-indicators .indicator {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5); /* Màu nền mặc định cho indicator */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        /* Move toggle button to bottom-right */
-        .toggle-details {
-            bottom: 1rem;
-            right: 1rem;
-            top: auto;
-            left: auto;
-            transition: transform 0.2s ease-in-out; /* Faster icon transition */
-            z-index: 10; /* Ensure icon is clickable */
-        }
+.carousel-indicators .indicator.active {
+    background-color: #fff; /* Màu trắng cho indicator đang active */
+}
 
-        /* Initial state of project carousel wrapper within card */
-        .project-carousel-wrapper {
-            opacity: 0;
-            max-height: 0; /* Initially collapsed height for smooth transition */
-            overflow: hidden;
-            pointer-events: none;
-            transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, transform 0.3s ease-in-out;
-            transform: translateY(20px);
-            display: flex; /* Keep display flex even when hidden, but rely on max-height/opacity */
-            flex-direction: column; /* Ensure inner carousel layout */
-            width: 100%; /* Take full width of parent within flex column */
-        }
+/* Responsive adjustments */
+@media (max-width: 767px) { /* For screens smaller than md breakpoint */
+    .service-card {
+        flex-direction: column; /* Stack content and carousel vertically */
+    }
 
-        /* Show when carousel is visible within an expanded service card */
-        .project-carousel-wrapper.carousel-visible {
-            opacity: 1;
-            max-height: 600px; /* Sufficient height for visible content */
-            transform: translateY(0);
-            pointer-events: auto;
-            padding-top: 1.5rem; /* Space between text and carousel on mobile */
-            /* display: flex; already defined above */
-        }
+    .service-card .service-details-wrapper,
+    .service-card .project-carousel-wrapper {
+        width: 100%; /* Full width on small screens */
+        padding-left: 0;
+        padding-right: 0;
+    }
 
-        /* Carousel specific styles */
-        .carousel-container {
-            aspect-ratio: 16/9;
-            max-width: 100%;
-            height: auto;
-            background-color: var(--color-bg-secondary);
-            border-radius: 0.75rem;
-            position: relative; /* Needed for carousel inner positioning */
-            overflow: hidden; /* Ensure images don't overflow rounded corners */
-        }
-
-        .carousel-inner {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.3s ease-in-out; /* Faster transition for carousel slide */
-            position: absolute; /* Position within carousel-container */
-            top: 0;
-            left: 0;
-        }
-
-        .carousel-item {
-            flex-shrink: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Changed to cover to fill the div */
-            border-radius: 0.5rem;
-        }
-
-        /* Carousel Indicators */
-        .carousel-indicators {
-            position: absolute; /* Position them absolutely over the image */
-            bottom: 1rem; /* 1rem from the bottom */
-            right: 1rem; /* 1rem from the right */
-            display: flex;
-            justify-content: flex-end; /* Align indicators to the right */
-            align-items: center;
-            gap: 0.5rem; /* Equivalent to Tailwind space-x-2 */
-            z-index: 20; /* Ensure they are above the image */
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
-            padding: 0.5rem 0.75rem; /* Padding around indicators */
-            border-radius: 0.75rem; /* Rounded background */
-        }
-
-        .carousel-indicators span {
-            width: 0.75rem; /* w-3 */
-            height: 0.75rem; /* h-3 */
-            background-color: var(--color-gray-medium); /* bg-gray-400 equivalent */
-            border-radius: 9999px; /* rounded-full */
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .carousel-indicators span.active {
-            background-color: var(--color-button-primary); /* bg-blue-500 equivalent */
-        }
-        .fa-plus {
-            padding-top: 1rem;
-
-        }
+    .service-card .project-carousel-wrapper {
+        margin-top: 1.5rem; /* Add some space above carousel on small screens */
+    }
+}
 
         /* Portfolio specific styles (Moved from standalone and refined) */
         .project-thumbnail-container {
@@ -852,21 +744,42 @@ body.is-loading section:not(#preloader) {
     pointer-events: none;
 }
 
-/* Media query để vô hiệu hóa hiệu ứng scroll-reveal trên mobile */
-@media (max-width: 767px) { /* Áp dụng cho màn hình có chiều rộng tối đa 767px */
-    .scroll-reveal,
-    .scroll-reveal-x {
-        opacity: 1 !important; /* Đảm bảo các phần tử luôn hiển thị */
-        transform: none !important; /* Xóa bỏ mọi biến đổi (transform) */
-        transition: none !important; /* Tắt tất cả các hiệu ứng chuyển đổi */
-        visibility: visible !important; /* Đảm bảo hiển thị */
-    }
+/* Section background gradient for all main sections - seamless effect */
+section {
+    background: none;
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+}
 
-    /* Đảm bảo trạng thái 'visible' cũng không có hiệu ứng */
-    .scroll-reveal.visible,
-    .scroll-reveal-x.visible {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-    }
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        var(--color-gradient-from-1) 0%,
+        var(--color-gradient-to-1) 100%
+    );
+    transition: background 0.5s;
+}
+
+main, .main-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Remove background for special cases if needed */
+section.bg-transparent, section.bg-none {
+    background: none !important;
+}
+
+/* Optional: If you want to keep cards/forms distinct, keep their bg as card */
+.bg-card {
+    background-color: var(--color-bg-card);
 }

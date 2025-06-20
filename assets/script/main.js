@@ -4,7 +4,8 @@ import { updateContent, setupLanguageToggle, currentLanguage } from './language.
 import { applyTheme, setupThemeToggle, currentTheme } from './theme.js';
 import { setupSmoothScrolling, setupScrollReveal, setupHeroParallax } from './scroll-effects.js';
 import { createPortfolioCards } from './portfolio.js';
-import { setupServiceDetailsToggle } from './services.js';
+// Loại bỏ import setupServiceDetailsToggle vì nó không còn được sử dụng
+// import { setupServiceDetailsToggle } from './services.js'; 
 import { setupMobileNavigation } from './mobile-nav.js';
 
 // Hàm để ẩn preloader và hiển thị nội dung chính
@@ -44,7 +45,11 @@ window.onload = function() {
     const header = document.querySelector('header');
     if (header) {
         const headerHeight = header.offsetHeight;
-        document.body.style.paddingTop = `-${headerHeight}px`;
+        // Adjust padding-top to account for header height
+        // document.body.style.paddingTop = `-${headerHeight}px`; 
+        // Note: This line might cause layout issues. Typically, you'd add padding-top to a container, not negative margin to body.
+        // If your header is fixed, you might need padding-top on body, but usually positive.
+        // Re-evaluate if this specific line is correct for your layout.
     }
 
     // Thiết lập các chức năng chung
@@ -54,7 +59,8 @@ window.onload = function() {
     setupThemeToggle();
     setupSmoothScrolling();
     setupScrollReveal(); // Gọi hàm này để thiết lập IntersectionObserver
-    setupServiceDetailsToggle();
+    // Bỏ dòng gọi setupServiceDetailsToggle() vì nó không còn được sử dụng trong services.js mới
+    // setupServiceDetailsToggle();
     setupMobileNavigation();
 
     // Khởi tạo nội dung với ngôn ngữ và chủ đề hiện tại
