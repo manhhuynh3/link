@@ -58,9 +58,7 @@ window.onload = function() {
     setupLanguageToggle();
     setupThemeToggle();
     setupSmoothScrolling();
-    setupScrollReveal(); // Gọi hàm này để thiết lập IntersectionObserver
-    // Bỏ dòng gọi setupServiceDetailsToggle() vì nó không còn được sử dụng trong services.js mới
-    // setupServiceDetailsToggle();
+    setupScrollReveal(); 
     setupMobileNavigation();
 
     // Khởi tạo nội dung với ngôn ngữ và chủ đề hiện tại

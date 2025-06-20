@@ -37,16 +37,28 @@ export function setupMobileNavigation() {
 
     navMenuLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
+            const href = link.getAttribute('href');
+            // Xác định nếu là anchor trong trang hiện tại (bắt đầu bằng # hoặc /# và trang là index)
+            const isInPageAnchor = href && (href.startsWith('#') || href.startsWith('/#'));
+            // Xác định nếu là trang template (không có section target)
+            let canScroll = false;
+            let targetId = null;
+            if (isInPageAnchor) {
+                // Lấy id section, loại bỏ dấu / nếu có
+                targetId = href.replace(/^\/?/, '');
+                if (targetId && targetId.startsWith('#')) {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        canScroll = true;
+                        e.preventDefault();
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
             }
-
-            if (mobileToggle.classList.contains('expanded')) {
+            // Nếu không scroll được (không có section), cho phép chuyển hướng mặc định
+            if (!canScroll && mobileToggle.classList.contains('expanded')) {
+                setToggleState(false);
+            } else if (canScroll && mobileToggle.classList.contains('expanded')) {
                 setToggleState(false);
             }
         });

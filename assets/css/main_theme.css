@@ -26,9 +26,15 @@
             --color-button-text-secondary: #bfdbfe; /* blue-200 */
             --color-3d-object: #3b82f6; /* Three.js Blue - kept for consistency, but not used by 3D object anymore */
             --color-mobile-overlay-rgb: 2, 6, 23; /* RGB for rgba() from slate-950 */
-            --color-header-glass-bg-blue: rgba(59, 130, 246, 0.6); /* blue-500 with 60% transparency for header glassmorphism (Dark Mode) */
+            --color-header-glass-bg-blue: linear-gradient(to right, var(--color-gradient-from-1), var(--color-gradient-to-1)); /* Gradient nhạt cho header (Dark Mode) */
             /* New color for skill tags */
             --color-skill-tag-bg: #475569; /* slate-700 for a muted grey tag */
+            --color-header-bg-dark: #26262694;
+            --color-header-text-dark: #fff;
+            --color-mobile-icon-dark: #fff;
+            --color-header-bg-light: #f8f9fe94;
+            --color-header-text-light: #111;
+            --color-mobile-icon-light: #111;
         }
 
         body[data-theme='light'] { /* Light Mode Overrides (Blue + White) */
@@ -58,7 +64,7 @@
             --color-button-text-secondary: #2563eb; /* blue-600 */
             --color-3d-object: #3b82f6; /* Three.js Blue */
             --color-mobile-overlay-rgb: 255, 255, 255; /* RGB for rgba() from white */
-            --color-header-glass-bg-blue: rgba(37, 99, 235, 0.8); /* blue-600 with 80% transparency for header glassmorphism (Light Mode) */
+            --color-header-glass-bg-blue: linear-gradient(to right, var(--color-gradient-from-1), var(--color-gradient-to-1)); /* Gradient nhạt cho header (Light Mode) */
             /* New color for skill tags */
             --color-skill-tag-bg: #94a3b8; /* slate-400 for a muted grey tag */
         }
@@ -75,15 +81,30 @@
         /* Removed @media (max-width: 767px) { body { padding-left: 3.5rem; } } */
 
         header {
-            background-color: var(--color-header-glass-bg-blue); /* Changed to use blue glassmorphism variable */
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
-            box-shadow: var(--color-shadow-header, 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05));
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glass look */
-            backdrop-filter: blur(10px); /* Glassmorphism effect */
+            color:#1d4ed8 !important;
+            background: #f8f9fe94 !important;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            header {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
         }
 
         /* Explicitly set header logo and footer text color to white */
         header .text-main, /* Applies to Mạnh Huỳnh logo text */
+        header nav ul li a {
+            color: #020617 !important;
+        }
+
         footer .text-main,
         footer p {
             color: #ffffff !important;
@@ -189,7 +210,7 @@
             top: 50%; 
             left: 0;
             transform: translateY(-50%);
-            background-color: var(--color-header-glass-bg-blue);
+            background: rgba(255, 255, 255, 0.491) !important; /* Nền trắng, alpha cao hơn header */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
@@ -227,7 +248,7 @@
 
         /* Icon in toggle button */
         #mobile-toggle > i.fa-solid {
-            color: #ffffff !important;
+            color: #111 !important; /* icon và mũi tên màu đen */
             font-size: 1.5rem; /* text-2xl from menu items */
             transition: transform 0.3s ease;
             cursor: pointer;
@@ -782,4 +803,67 @@ section.bg-transparent, section.bg-none {
 /* Optional: If you want to keep cards/forms distinct, keep their bg as card */
 .bg-card {
     background-color: var(--color-bg-card);
+}
+
+/* Portfolio Card Hover Scale Adjustment */
+#portfolio-grid .bg-card,
+#portfolio-grid .portfolio-card,
+#portfolio-grid .project-card {
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+#portfolio-grid .bg-card:hover,
+#portfolio-grid .portfolio-card:hover,
+#portfolio-grid .project-card:hover {
+    transform: scale(1.03); /* Giảm hiệu ứng scale khi hover */
+    box-shadow: 0 8px 24px 0 rgba(0,0,0,0.10);
+}
+
+/* Header and mobile icon colors based on theme */
+body[data-theme='dark'] header {
+  background: var(--color-header-bg-dark) !important;
+  color: var(--color-header-text-dark) !important;
+}
+body[data-theme='light'] header {
+  background: var(--color-header-bg-light) !important;
+  color: var(--color-header-text-light) !important;
+}
+body[data-theme='dark'] header .text-main,
+body[data-theme='dark'] header nav ul li a {
+  color: var(--color-header-text-dark) !important;
+}
+body[data-theme='light'] header .text-main,
+body[data-theme='light'] header nav ul li a {
+  color: var(--color-header-text-light) !important;
+}
+
+body[data-theme='dark'] #mobile-toggle .menu-item a i,
+body[data-theme='dark'] #mobile-toggle > i.fa-solid {
+  color: var(--color-mobile-icon-dark) !important;
+}
+body[data-theme='light'] #mobile-toggle .menu-item a i,
+body[data-theme='light'] #mobile-toggle > i.fa-solid {
+  color: var(--color-mobile-icon-light) !important;
+}
+
+body[data-theme='dark'] #mobile-toggle {
+  background: var(--color-header-bg-dark) !important;
+}
+
+/* Thêm border sáng cho header và mobile-toggle khi dùng dark theme để nổi bật trên nền tối */
+body[data-theme='dark'] header,
+body[data-theme='dark'] #mobile-toggle {
+  border-bottom: 1px solid #e5e7eb65 !important; /* slate-200 */
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+body[data-theme='dark'] #mobile-toggle {
+  border-left: 1px solid #e5e7eb84 !important;
+  border-bottom: none;
+}
+body[data-theme='dark'] #mobile-toggle {
+  background: var(--color-header-bg-dark) !important;
+}
+body[data-theme='light'] #mobile-toggle {
+  background: var(--color-header-bg-light) !important;
 }

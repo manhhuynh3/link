@@ -233,17 +233,23 @@
     <main class="main-content">
  <!-- Header/Navigation -->
     <header class="shadow-lg py-4 px-6 md:px-12 fixed w-full z-50 rounded-b-lg top-0">
-        <div class="flex items-center justify-between max-w-7xl mx-auto md:ml-auto md:mr-auto">
-            <nav class="flex items-center justify-between w-full md:pl-0">
-                <a href="#home" class="text-3xl font-bold text-main tracking-tight">Mạnh Huỳnh<span class="text-accent-strong">.</span></a>
-                <ul class="hidden md:flex space-x-8">
-                    <li><a href="#home" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_home">Trang Chủ</a></li>
-                    <li><a href="/about" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_about">Giới Thiệu</a></li>
-                    <li><a href="#portfolio" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_portfolio">Dự Án</a></li>
-                    <li><a href="#services" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_services">Dịch Vụ</a></li>
-                    <li><a href="#contact" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_contact">Liên Hệ</a></li>
-                </ul>
-                <div class="flex flex-col sm:flex-row items-center md:space-x-4 space-y-2 sm:space-y-0">
+        <div class="flex items-center justify-between w-full"> <!-- Removed max-w-7xl and mx-auto -->
+            <nav class="flex items-center w-full md:pl-0">
+                <!-- Left: Logo + Navigation links -->
+                <div class="flex items-center">
+                    <a href="#home" class="flex items-center">
+                        <img src="/assets/images/logo.png" alt="Mạnh Huỳnh Logo" class="h-20 md:h-10 w-auto" />
+                    </a>
+                    <ul class="hidden md:flex space-x-8 ml-8">
+                        <li><a href="#home" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_home">Trang Chủ</a></li>
+                        <li><a href="/about" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_about">Giới Thiệu</a></li>
+                        <li><a href="#portfolio" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_portfolio">Dự Án</a></li>
+                        <li><a href="#services" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_services">Dịch Vụ</a></li>
+                        <li><a href="#contact" class="text-main hover:text-accent-strong transition duration-300 text-lg font-medium" data-lang-key="nav_contact">Liên Hệ</a></li>
+                    </ul>
+                </div>
+                <!-- Right: Theme & Language toggle -->
+                <div class="flex flex-col sm:flex-row items-center md:space-x-4 space-y-2 sm:space-y-0 ml-auto">
                     <label class="switch" id="theme-toggle-label">
                         <input type="checkbox" id="theme-toggle-checkbox" title="Toggle theme">
                         <span class="slider round"></span>
@@ -327,10 +333,10 @@
         </section>
 
         <!-- Portfolio Section (Integrated and Dynamic) -->
-        <section id="portfolio" class="py-16 md:py-24 px-6 md:px-12 text-center">
-    <div class="max-w-7xl mx-auto">
+        <section id="portfolio" class="py-16 md:py-24 px-0 text-center">
+    <div class="w-[80vw] max-w-[1800px] mx-auto">
         <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal" data-lang-key="portfolio_heading">Dự Án Nổi Bật</h2>
-        <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
             </div>
         <div class="mt-12">
             <a href="https://www.behance.net/manhhuynh323b3" target="_blank" rel="noopener noreferrer"
@@ -343,8 +349,8 @@
 </section>
 
         <!-- Services Section -->
-      <section id="services" class="py-16 md:py-24 px-6 md:px-12 text-center">
-  <div class="max-w-7xl mx-auto">
+      <section id="services" class="py-16 md:py-24 px-0 text-center">
+  <div class="w-[80vw] max-w-[1800px] mx-auto">
     <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal" data-lang-key="services_heading">Dịch Vụ Cung Cấp</h2>
     <div id="services-cards-container" class="w-full flex flex-col gap-8 transition-all duration-300 ease-in-out">
       <!-- Service Card 1: FOOH -->
@@ -402,9 +408,8 @@
         <!-- Work Process Section -->
 
 
-  <section id="work-process" class="py-16 md:py-24 px-6 md:px-12 text-center scroll-reveal-y">
-  <div class="max-w-7xl mx-auto">
-    
+  <section id="work-process" class="py-16 md:py-24 px-0 text-center scroll-reveal-y">
+  <div class="w-[80vw] max-w-[1800px] mx-auto">
     <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal-y px-6 md:px-12" data-lang-key="work_process_heading">
       Quy Trình Làm Việc
     </h2>
