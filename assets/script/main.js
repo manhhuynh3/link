@@ -52,6 +52,12 @@ window.onload = function() {
         // Re-evaluate if this specific line is correct for your layout.
     }
 
+    const isHome = document.body.classList.contains('home');
+    if (!isHome) {
+        // Nếu không phải trang chủ, bỏ qua preloader
+        document.body.classList.remove('is-loading');
+        return;
+    }
     // Thiết lập các chức năng chung
     setupHeroParallax();
     createPortfolioCards();

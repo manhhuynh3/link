@@ -756,14 +756,16 @@
 
 /* Ensure the preloader hides the content properly initially */
 /* This is already in index.html, but keeping it here for context if moved */
-body.is-loading main.main-content,
-body.is-loading #header,
-body.is-loading #footer,
-body.is-loading section:not(#preloader) {
+/* Đừng ẩn toàn bộ main */
+body.home.is-loading section:not(#preloader),
+body.home.is-loading #header,
+body.home.is-loading #footer {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
 }
+
+
 
 /* Section background gradient for all main sections - seamless effect */
 section {

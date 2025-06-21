@@ -289,7 +289,7 @@ export const portfolioProjects = [
         title_key: 'project_aeon_tet_title',
         desc_key: 'project_aeon_tet_desc',
         skills_key: 'project_aeon_tet_skills',
-        behance_link: 'https://www.behance.net/gallery/221012599/Tt-chn-Aeon-Tt-Vui-trn-vn',
+        behance_link: '/Projects/Aeon-Tet-2025',
         images: [
             { url: 'assets/images/Project/AEON_1.webm', poster: 'assets/images/Project/aeon_poster.webp' },
             { url: 'assets/images/Project/AEON_2.webm', poster: 'assets/images/Project/aeon_poster.webp' },

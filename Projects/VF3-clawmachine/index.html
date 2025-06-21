@@ -217,7 +217,7 @@
     </script>
     
 </head>
-<body>
+<body data-theme="dark">
     <div id="header-placeholder"></div>
 
  <main class="blog-content bg-background text-text-color font-inter">
@@ -370,24 +370,18 @@
                 <a href="mailto:contact@manhhuynh.work" class="text-blue-600 hover:underline font-semibold">contact@manhhuynh.work</a>
             </p>
         </div>
-    </section>
+    </section><div id="footer-placeholder"></div>
 </main>
 
 
-
-
-
-    <footer id="footer-placeholder"></footer>
-
-    
-    <script type="module">
-        import { loadAllTemplates } from '/assets/script/loadTemplates.js';
-        loadAllTemplates().catch(error => {
-            console.error('Error loading templates:', error);
-        });
-    </script>
-    <script type="module" src="/assets/script/preloader.js"></script>
-    <script type="module" src="/assets/script/main.js"></script>
+<script type="module">
+    import { loadAllTemplates } from '/assets/script/loadTemplates.js';
+    loadAllTemplates().catch(error => {
+        console.error('Error loading templates:', error);
+    });
+</script>
+<script type="module" src="/assets/script/preloader.js"></script>
+<script type="module" src="/assets/script/main.js"></script>
     
 </body>
 </html>
