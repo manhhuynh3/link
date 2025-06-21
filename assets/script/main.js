@@ -45,19 +45,17 @@ window.onload = function() {
     const header = document.querySelector('header');
     if (header) {
         const headerHeight = header.offsetHeight;
-        // Adjust padding-top to account for header height
-        // document.body.style.paddingTop = `-${headerHeight}px`; 
-        // Note: This line might cause layout issues. Typically, you'd add padding-top to a container, not negative margin to body.
-        // If your header is fixed, you might need padding-top on body, but usually positive.
-        // Re-evaluate if this specific line is correct for your layout.
+        // Gán margin-top cho main-content bằng chiều cao header, chỉ trên mobile
+        const main = document.getElementById('main-content');
+        if (main) {
+            if (window.innerWidth < 768) { // mobile breakpoint
+                main.style.marginTop = headerHeight + 'px';
+            } else {
+                main.style.marginTop = '';
+            }
+        }
     }
 
-    const isHome = document.body.classList.contains('home');
-    if (!isHome) {
-        // Nếu không phải trang chủ, bỏ qua preloader
-        document.body.classList.remove('is-loading');
-        return;
-    }
     // Thiết lập các chức năng chung
     setupHeroParallax();
     createPortfolioCards();
