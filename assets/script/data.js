@@ -111,8 +111,11 @@ export const languages = {
         'no_projects': 'Không có dự án mẫu nào.',
         'lang_toggle_target': 'EN',
         'contact_with_me': 'Liên hệ với tôi:',
+        'services_cta_quote': 'Nhận báo giá',
+        'services_short_desc': 'Dịch vụ thiết kế 2D, 3D, sản xuất video quảng cáo CGI, modeling, animation chuyên nghiệp cho thương hiệu và sản phẩm của bạn.',
     },
     'en': {
+        'services_cta_quote': 'Get a Quote',
         'contact_with_me': 'Connect with me:',
         'lang_toggle_target': 'VI',
         'title': 'Manh Huynh - Graphic Designer | 3D Artist',
@@ -220,7 +223,8 @@ export const languages = {
         'contact_form_success': 'Thank you for your message! It has been sent.',
         'contact_or_connect': 'Or connect via:',
         'contact_location': 'Location: Ho Chi Minh City, Vietnam',
-        'no_projects': 'No sample projects available.'
+        'no_projects': 'No sample projects available.',
+        'services_short_desc': 'Professional 2D, 3D design, CGI advertising video production, modeling, and animation services for your brand and products.',
     }
 };
 

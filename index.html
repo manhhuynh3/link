@@ -22,6 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome for Social Media Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0PzGcVq/p/rW+9r/h/i6Qn/L1k/yG7CjY0sD4LwFpL+hL2gOQ2/yU2fJ+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
      <style>
         /* Đảm bảo toàn bộ trang bị ẩn cho đến khi preloader sẵn sàng */
         body.is-loading main.main-content {
@@ -351,42 +352,51 @@
         <!-- Services Section -->
       <section id="services" class="py-16 md:py-24 px-0 text-center">
   <div class="w-[80vw] max-w-[1800px] mx-auto">
-    <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 scroll-reveal" data-lang-key="services_heading">Dịch Vụ Cung Cấp</h2>
-    <div id="services-cards-container" class="w-full flex flex-col gap-8 transition-all duration-300 ease-in-out">
+    <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-6 scroll-reveal" data-lang-key="services_heading">
+        Dịch Vụ Cung Cấp
+    </h2>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 mb-6 scroll-reveal">
+    
+      <a href="#contact" class="text-lg md:text-xl text-gray-normal hover:text-accent-strong transition-colors duration-200 whitespace-nowrap ml-2">
+        <span  data-lang-key="services_cta_quote">Nhận báo giá</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="inline align-middle ml-1" style="color:currentColor; fill:currentColor;"><path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z"/></svg>
+      </a>
+    </div>
+    <div id="services-cards-container" class="w-full flex flex-col lg:flex-row gap-8 transition-all duration-300 ease-in-out items-stretch h-auto lg:h-[520px]">
       <!-- Service Card 1: FOOH -->
-      <div id="service-fooh" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex flex-col md:flex-row items-stretch scroll-reveal">
-        <div class="service-details-wrapper md:w-1/2 md:pr-8 flex flex-col justify-center">
+      <div id="service-fooh" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex-1 flex flex-col items-stretch scroll-reveal h-full min-h-[420px]">
+        <div class="service-details-wrapper md:w-full flex flex-col justify-center flex-1">
           <h3 class="text-2xl font-bold text-main mb-4" data-lang-key="service_fooh_title">Sản xuất Video CGI FOOH</h3>
           <ul class="space-y-2">
             <li class="cursor-pointer" data-lang-key="service_fooh_desc"><strong class="text-primary">Sản xuất các video quảng cáo CGI ngắn (15-30 giây)</strong> cho các chiến dịch truyền thông.</li>
           </ul>
         </div>
-        <div class="project-carousel-wrapper md:w-1/2 md:pl-8 mt-8 md:mt-0">
-          <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
+        <div class="project-carousel-wrapper md:w-full mt-8 md:mt-4 flex-1 flex flex-col justify-end">
+          <div class="carousel-container relative w-full h-full min-h-[300px] flex-1 overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
             <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out"></div>
             <div class="carousel-indicators absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10"></div>
           </div>
         </div>
       </div>
       <!-- Service Card 2: 3D Modeling & Animation -->
-      <div id="service-3d-modeling-animation" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex flex-col md:flex-row items-stretch scroll-reveal delay-150">
-        <div class="service-details-wrapper md:w-1/2 md:pr-8 flex flex-col justify-center">
+      <div id="service-3d-modeling-animation" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex-1 flex flex-col items-stretch scroll-reveal delay-150 h-full min-h-[420px]">
+        <div class="service-details-wrapper md:w-full flex flex-col justify-center flex-1">
           <h3 class="text-2xl font-bold text-main mb-4" >3D Modeling & Animation</h3>
           <ul class="space-y-2">
             <li data-lang-key="service_3d_modeling_animation_desc2"><strong class="text-primary">Render hình ảnh sản phẩm 3D</strong> chất lượng cao, chân thực.</li>
             <li data-lang-key="service_3d_modeling_animation_desc3"><strong class="text-primary">Sản xuất video quảng cáo 3D CGI</strong> cho sản phẩm.</li>
           </ul>
         </div>
-        <div class="project-carousel-wrapper md:w-1/2 md:pl-8 mt-8 md:mt-0">
-          <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
+        <div class="project-carousel-wrapper md:w-full mt-8 md:mt-4 flex-1 flex flex-col justify-end">
+          <div class="carousel-container relative w-full h-full min-h-[300px] flex-1 overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
             <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out"></div>
             <div class="carousel-indicators absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10"></div>
           </div>
         </div>
       </div>
       <!-- Service Card 3: 2D Design -->
-      <div id="service-2d-design" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex flex-col md:flex-row items-stretch scroll-reveal delay-300">
-        <div class="service-details-wrapper md:w-1/2 md:pr-8 flex flex-col justify-center">
+      <div id="service-2d-design" class="bg-card p-6 md:p-8 rounded-xl shadow-xl text-left relative flex-1 flex flex-col items-stretch scroll-reveal delay-300 h-full min-h-[420px]">
+        <div class="service-details-wrapper md:w-full flex flex-col justify-center flex-1">
           <h3 class="text-2xl font-bold text-main mb-4" data-lang-key="service_2d_design_title">Thiết kế 2D</h3>
           <ul class="space-y-2">
             <li  data-lang-key="service_2d_design_desc1"><strong class="text-primary">Thiết kế cho thương mại điện tử</strong> (e-commerce).</li>
@@ -395,13 +405,16 @@
             <li  data-lang-key="service_2d_design_desc4">Các dịch vụ thiết kế 2D khác theo yêu cầu.</li>
           </ul>
         </div>
-        <div class="project-carousel-wrapper md:w-1/2 md:pl-8 mt-8 md:mt-0">
-          <div class="carousel-container relative w-full h-full min-h-[300px] overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
+        <div class="project-carousel-wrapper md:w-full mt-8 md:mt-4 flex-1 flex flex-col justify-end">
+          <div class="carousel-container relative w-full h-full min-h-[300px] flex-1 overflow-hidden flex items-center justify-center bg-secondary rounded-xl">
             <div class="carousel-inner flex w-full h-full transition-transform duration-300 ease-in-out"></div>
             <div class="carousel-indicators absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10"></div>
           </div>
         </div>
       </div>
+    </div>
+    
+      
     </div>
   </div>
 </section>
@@ -417,7 +430,7 @@
     <div class="flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0 items-stretch justify-center process-steps-container">
 
       <!-- Step 1 -->
-      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-150 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 1: Tiếp nhận & Phân tích yêu cầu">
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-150 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full min-h-[340px] flex flex-col justify-between" role="group" aria-label="Bước 1: Tiếp nhận & Phân tích yêu cầu">
         <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step1_icon">💡</div>
         <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step1_title">
           1. Tiếp nhận & Phân tích Yêu cầu
@@ -428,7 +441,7 @@
       </div>
 
       <!-- Step 2 -->
-      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-300 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 2: Lên ý tưởng & Phát triển Concept">
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-300 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full min-h-[340px] flex flex-col justify-between" role="group" aria-label="Bước 2: Lên ý tưởng & Phát triển Concept">
         <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step2_icon">✏️</div>
         <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step2_title">
           2. Lên ý tưởng & Phát triển Concept
@@ -439,7 +452,7 @@
       </div>
 
       <!-- Step 3 -->
-      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-450 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 3: Triển khai & Tối ưu">
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-450 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full min-h-[340px] flex flex-col justify-between" role="group" aria-label="Bước 3: Triển khai & Tối ưu">
         <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step3_icon">⚙️</div>
         <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step3_title">
           3. Triển khai & Tối ưu
@@ -450,7 +463,7 @@
       </div>
 
       <!-- Step 4 -->
-      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-600 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full" role="group" aria-label="Bước 4: Giao nhận & Hỗ trợ">
+      <div class="bg-card flex-1 p-6 md:p-8 rounded-xl shadow-xl text-left relative process-step scroll-reveal-x delay-600 transition-transform hover:-translate-y-2 hover:shadow-2xl h-full min-h-[340px] flex flex-col justify-between" role="group" aria-label="Bước 4: Giao nhận & Hỗ trợ">
         <div class="text-4xl text-accent-strong mb-4" data-lang-key="work_process_step4_icon">📦</div>
         <h3 class="text-xl font-semibold text-main mb-2" data-lang-key="work_process_step4_title">
           4. Giao nhận & Hỗ trợ
