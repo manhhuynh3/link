@@ -112,11 +112,11 @@ export const languages = {
         'services_cta_quote': 'Nhận báo giá',
         'services_short_desc': 'Dịch vụ thiết kế 2D, 3D, sản xuất video quảng cáo CGI, modeling, animation chuyên nghiệp cho thương hiệu và sản phẩm của bạn.',
         'download_cv': 'Tải CV của tôi',
-        'about_experience': 'Xin chào,<br><br>Với 2 năm kinh nghiệm chuyên sâu trong sản xuất video CGI, Fake OOH và diễn họa sản phẩm 3D, cùng với 5 năm kinh nghiệm vững chắc trong thiết kế 2D bao gồm thiết kế POSM, bao bì và key visual, tôi tự tin mang đến những giải pháp sáng tạo và hiệu quả cho các dự án của khách hàng.'
+        'about_experience': 'Với 2 năm kinh nghiệm chuyên sâu trong sản xuất video CGI, Fake OOH và diễn họa sản phẩm 3D, cùng với 5 năm kinh nghiệm vững chắc trong thiết kế 2D bao gồm thiết kế POSM, bao bì và key visual, tôi tự tin mang đến những giải pháp sáng tạo và hiệu quả cho các dự án của khách hàng.'
            
     },
     'en': {
-        'about_experience': 'Hello,<br><br>With 2 years of specialized experience in CGI video production, Fake OOH, and 3D product visualization, complemented by 5 years of robust experience in 2D design including POSM, packaging, and key visual development, I am confident in delivering innovative and impactful solutions for client projects.',
+        'about_experience': 'Boasting 2 years of specialized experience in CGI video production, Fake OOH, and 3D product visualization, complemented by 5 years of robust experience in 2D design including POSM, packaging, and key visual development, I am confident in delivering innovative and impactful solutions for client projects.',
         'download_cv': 'Download my CV',
         'services_cta_quote': 'Get a Quote',
         'contact_with_me': 'Connect with me:',
