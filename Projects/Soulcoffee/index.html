@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="title">Vinfast VF3 & Clawmachine animation</title>
+    <!-- Add favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/images/fav_icon.svg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KFPG79L00S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KFPG79L00S');
+    </script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Social Media Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0PzGcVq/p/rW+9r/h/i6Qn/L1k/yG7CjY0sD4LwFpL+hL2gOQ2/yU2fJ+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <style>
+      
+        .lang-btn {
+            border: 1px solid #2563eb;
+            background: #fff;
+            color: #64748b !important;
+            font-weight: 600;
+            transition: background 0.15s, color 0.15s;
+        }
+        .lang-btn.active {
+            background: #2563eb;
+            color: #fff !important;
+            z-index: 1;
+        }
+        .lang-btn:not(.active) {
+            background: #fff;
+            color: #64748b !important;
+        }
+        .lang-btn:focus {
+            outline: 2px solid #2563eb;
+            outline-offset: 1px;
+        }
+        .lang-btn:first-child {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .lang-btn:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+     
+    </style>
+     <link rel="stylesheet" href="/assets/css/main_theme.css">
+  
+    
+</head>
+<body class="home" data-theme="dark">
+
+    <div id="header-placeholder"></div>
+
+ <main class="blog-content bg-background text-text-color font-inter" id="main-content">
+  <!-- Cover Image -->
+  <div class="relative">
+    <img src="soul_coffee_cover.png" alt="Soul Coffee Cover" class="w-full h-auto max-h-[700px] object-cover rounded-xl" />
+  </div>
+  <section class="relative z-10 -mt-3 md:-mt-40 px-4 md:px-8 py-20 md:py-28 max-w-7xl mx-auto bg-card rounded-xl shadow-xl">
+ <div class="flex justify-end mb-3">
+      <button id="section-lang-vi" class="lang-btn px-3 py-1 rounded-l border border-main bg-white/90 dark:bg-background text-main dark:text-main font-semibold focus:outline-none focus:ring-2 focus:ring-main/50 transition-colors duration-150 hover:bg-main hover:text-white dark:hover:bg-main dark:hover:text-white">VI</button>
+      <button id="section-lang-en" class="lang-btn px-3 py-1 rounded-r border border-main bg-white/90 dark:bg-background text-main dark:text-main font-semibold focus:outline-none focus:ring-2 focus:ring-main/50 transition-colors duration-150 hover:bg-main hover:text-white dark:hover:bg-main dark:hover:text-white">EN</button>
+    </div>
+    <!-- Tiêu đề -->
+    <h1 class="text-3xl md:text-4xl font-extrabold text-heading mb-6 text-center scroll-animate">
+      <span class="lang-content lang-vi" lang="vi">Minh họa quy trình chế biến | Soul specialty coffee</span>
+      <span class="lang-content lang-en hidden" lang="en">Coffee processing illustration | Soul specialty coffee</span>
+    </h1>
+    <!-- Mô tả -->
+    <p class="text-base md:text-lg text-caption mb-8 text-center scroll-animate">
+      <span class="lang-content lang-vi" lang="vi">
+        Chế biến cà phê là quá trình loại bỏ các lớp vỏ, thịt, nhớt và vỏ trấu bao quanh hạt cà phê – nguyên liệu thô mà người nông dân sẽ bán. Cách người trồng chọn phương pháp chế biến sẽ ảnh hưởng lớn đến hương vị cuối cùng của cà phê.
+      </span>
+      <span class="lang-content lang-en hidden" lang="en">
+        Processing coffee is the act of removing the layers of skin, pulp, mucilage, and parchment that surround a coffee bean—the raw ingredient that the farmer will sell. How a grower chooses to process the coffee will have a profound impact on how that coffee tastes.
+      </span>
+    </p>
+    <!-- Các bước quy trình -->
+    
+    <!-- Video section -->
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold text-main mb-4 text-center scroll-animate">
+        <span class="lang-content lang-vi" lang="vi">Video quy trình chế biến</span>
+        <span class="lang-content lang-en hidden" lang="en">Processing Videos</span>
+      </h2>
+      <div class="space-y-6">
+        <div class="scroll-animate">
+          <video src="step_1.webm" autoplay loop muted class="w-1/2 mx-auto bg-black video-autoplay" preload="metadata"></video>
+          <div class="mt-2 text-center text-base text-caption w-1/2 mx-auto">
+            <span class="lang-content lang-vi" lang="vi">Bước 1: <br>Thu hoạch và chọn lọc – Quả cà phê được hái chín và chọn lọc kỹ để đảm bảo chỉ những quả tốt nhất được đưa vào sản xuất.</span>
+            <span class="lang-content lang-en hidden" lang="en">Step 1: <br>Picking & Sorting – Coffee cherries first need to be picked ripe and sorted to make sure that only the best cherries are included in production.</span>
+          </div>
+        </div>
+        <div class="scroll-animate">
+          <video src="Step_2.webm" autoplay loop muted class="w-1/2 mx-auto bg-black video-autoplay" preload="metadata"></video>
+          <div class="mt-2 text-center text-base text-caption w-1/2 mx-auto">
+            <span class="lang-content lang-vi" lang="vi">Bước 2: <br>Tách vỏ – Vỏ quả được loại bỏ bằng máy tách vỏ. Quá trình thu hoạch và chế biến luôn được kiểm soát nghiêm ngặt. Soul lấy cảm hứng từ văn hóa Tây Nguyên, sử dụng nguyên liệu bản địa trong chế biến cà phê và thử nghiệm nhiều phương pháp khác nhau.</span>
+            <span class="lang-content lang-en hidden" lang="en">Step 2: <br>Depulping – The cherry skin is removed by depulping machine. The process of harvesting and processing is always guaranteed and strictly controlled in several ways. Inspired by a rich Central Highlands culture, Soul has come up with the idea of using the local ingredients applied in the coffee processing. Then, we have carried out experiments and end up with our own processing method.</span>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 scroll-animate">
+          <div class="flex-1 flex flex-col items-center">
+            <video src="step_3.webm" autoplay loop muted class="w-full md:w-full bg-black video-autoplay" preload="metadata"></video>
+            <div class="mt-2 text-center text-base text-caption">
+              <span class="lang-content lang-vi" lang="vi">Bước 3: <br>Lên men với rượu cần Tây Nguyên</span>
+              <span class="lang-content lang-en hidden" lang="en">Step 3: <br>Fermentation – Fermentation with local rice wine (Ruou can Tay Nguyen)</span>
+            </div>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <video src="step_3-1.webm" autoplay loop muted class="w-full md:w-full bg-black video-autoplay" preload="metadata"></video>
+            <div class="mt-2 text-center text-base text-caption">
+              <span class="lang-content lang-vi" lang="vi">Bước 3: <br>Lên men với trái cây bản địa: chuối, táo, dứa...</span>
+              <span class="lang-content lang-en hidden" lang="en">Step 3:<br>Fermentation with native fruits such as bananas, apples, pineapples</span>
+            </div>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <video src="step_3_0.webm" autoplay loop muted class="w-full md:w-full bg-black video-autoplay" preload="metadata"></video>
+            <div class="mt-2 text-center text-base text-caption">
+              <span class="lang-content lang-vi" lang="vi">Bước 3: <br> Lên men với bia thủ công Đắk Lắk</span>
+              <span class="lang-content lang-en hidden" lang="en">Step 3: <br> Fermentation with Dak Lak craft beer</span>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-animate">
+          <video src="step_4.webm" autoplay loop muted class="w-1/2 mx-auto bg-black video-autoplay" preload="metadata"></video>
+          <div class="mt-2 text-center text-base text-caption w-1/2 mx-auto">
+            <span class="lang-content lang-vi" lang="vi">Bước 4: <br> Phơi – Phơi hạt trên giàn</span>
+            <span class="lang-content lang-en hidden" lang="en">Step 4: <br>Drying – Coffee beans are dried on the rig</span>
+          </div>
+        </div>
+        <div class="scroll-animate">
+          <video src="step_5_1.webm" autoplay loop muted class="w-1/2 mx-auto bg-black video-autoplay" preload="metadata"></video>
+          <div class="mt-2 text-center text-base text-caption w-1/2 mx-auto">
+            <span class="lang-content lang-vi" lang="vi">Bước 5: <br>Xay xát – Sau khi phơi khô, cà phê được chuyển đến nhà máy xay xát, nơi hạt và vỏ quả được tách ra bằng máy xay xát sử dụng ma sát để loại bỏ lớp vỏ trấu.</span>
+            <span class="lang-content lang-en hidden" lang="en">Step 5: <br>Milling & Finishing – After the fruit dry, it's transferred to the dry mill, when the coffee and its cherry will be run through a hulling machine which uses friction to remove the fruit and parchment layer.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Gallery section -->
+    <div class="mb-10 scroll-animate">
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <img src="Gallery_0.png" alt="Gallery 0" class="w-full h-auto object-cover" />
+        <img src="gallery_1.webp" alt="Gallery 1" class="w-full h-auto object-cover" />
+        <img src="Gallery_2.png" alt="Gallery 2" class="w-full h-auto object-cover" />
+        <img src="Gallery_3.png" alt="Gallery 3" class="w-full h-auto object-cover" />
+        <img src="Gallery_4.png" alt="Gallery 4" class="w-full h-auto object-cover" />
+        <img src="Gallery_4-1.png" alt="Gallery 4-1" class="w-full h-auto object-cover" />
+        <img src="Gallery_4-2.png" alt="Gallery 4-2" class="w-full h-auto object-cover" />
+        <img src="Gallery_end.png" alt="Gallery end" class="w-full h-auto object-cover" />
+      </div>
+    </div>
+    <!-- Mockup section -->
+    <div class="mb-10 scroll-animate">
+      
+      <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+        <img src="mockup.png" alt="Mockup 1" class="w-full h-auto object-cover" />
+        <img src="mockup_2.png" alt="Mockup 2" class="w-full h-auto object-cover" />
+      </div>
+    </div>
+
+    <!-- Sticker section -->
+    <div class="mb-10 flex flex-col items-center justify-center scroll-animate">
+      <div class="grid grid-cols-2 md:grid-cols-2 gap-8 w-full max-w-3xl">
+      <div class="flex flex-col">
+        <img src="sticker_1.png" alt="Sticker 1" class="w-full h-auto object-contain aspect-[1/1] rounded-xl" />
+      </div>
+      <div class="flex flex-col">
+        <img src="sticker_2.png" alt="Sticker 2" class="w-full h-auto object-contain aspect-[1/1] rounded-xl" />
+      </div>
+      </div>
+    </div>
+    
+    <div class="flex justify-center scroll-animate">
+      <a href="https://www.behance.net/gallery/143434651/Coffee-processing-illustration-Soul-specialty-coffee" target="_blank" rel="noopener" class="mt-8 inline-flex items-center px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-full shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+        <i class="fab fa-behance mr-3 text-xl"></i> <span class="lang-content lang-vi" lang="vi">Xem trên Behance</span><span class="lang-content lang-en hidden" lang="en">View on Behance</span>
+      </a>
+    </div>
+    <div class="p-6 md:p-8 text-center mt-10 border-t border-gray-200 pt-8 scroll-animate">
+      <p class="text-2xl md:text-3xl font-extrabold text-main mb-4">Thank for watching!</p>
+      <p class="text-lg md:text-xl text-caption">
+        Contact for works:
+        <a href="mailto:contact@manhhuynh.work" class="text-blue-600 hover:underline font-semibold">contact@manhhuynh.work</a>
+      </p>
+    </div>
+  </section>
+  <div id="footer-placeholder"></div>
+</main>
+
+
+
+<script type="module">
+    import { loadAllTemplates } from '/assets/script/loadTemplates.js';
+    loadAllTemplates().catch(error => {
+        console.error('Error loading templates:', error);
+    });
+</script>
+
+<script type="module" src="/assets/script/main.js"></script>
+<script type="module" src="/assets/script/theme.js"></script>
+<script>
+(function() {
+  function setActiveBtn(lang) {
+    var viBtn = document.getElementById('section-lang-vi');
+    var enBtn = document.getElementById('section-lang-en');
+    if (lang === 'vi') {
+      viBtn.classList.add('active');
+      enBtn.classList.remove('active');
+    } else {
+      enBtn.classList.add('active');
+      viBtn.classList.remove('active');
+    }
+  }
+  function showLang(lang) {
+    document.querySelectorAll('.lang-vi').forEach(function(el) {
+      el.classList.toggle('hidden', lang !== 'vi');
+    });
+    document.querySelectorAll('.lang-en').forEach(function(el) {
+      el.classList.toggle('hidden', lang !== 'en');
+    });
+    setActiveBtn(lang);
+  }
+  function getCurrentLang() {
+    return localStorage.getItem('lang') || 'vi';
+  }
+  document.getElementById('section-lang-vi').onclick = function() {
+    localStorage.setItem('lang', 'vi');
+    showLang('vi');
+    window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: 'vi' } }));
+  };
+  document.getElementById('section-lang-en').onclick = function() {
+    localStorage.setItem('lang', 'en');
+    showLang('en');
+    window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: 'en' } }));
+  };
+  window.addEventListener('lang-changed', function(e) {
+    if (e.detail && e.detail.lang) {
+      showLang(e.detail.lang);
+      localStorage.setItem('lang', e.detail.lang);
+    }
+  });
+  showLang(getCurrentLang());
+})();
+</script>
+<script>
+// Fallback: ensure all .video-autoplay videos try to play on load (for browsers that block autoplay)
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('video.video-autoplay').forEach(function(video) {
+    video.muted = true;
+    var playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(function() {
+        // Try to play again on user interaction if blocked
+        var tryPlay = function() {
+          video.play();
+          window.removeEventListener('click', tryPlay);
+        };
+        window.addEventListener('click', tryPlay);
+      });
+    }
+  });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const animatedElements = document.querySelectorAll('.scroll-animate');
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -50px 0px' // Bắt đầu animation sớm hơn một chút
+    });
+
+    animatedElements.forEach(el => {
+      observer.observe(el);
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -237,7 +237,7 @@ export const portfolioProjects = [
         title_key: 'project_cgi_fooh_title',
         desc_key: 'project_cgi_fooh_desc',
         skills_key: 'project_cgi_fooh_skills',
-        behance_link: '/Projects/FOOH/index.html',
+        behance_link: '/Projects/FOOH/',
         images: [
             { url: 'assets/images/Project/FOOH_1.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
             { url: 'assets/images/Project/FOOH_2.webm', poster: 'assets/images/Project/fooh_1_poster.webp' },
@@ -303,7 +303,7 @@ export const portfolioProjects = [
         title_key: 'project_coffee_illustration_title',
         desc_key: 'project_coffee_illustration_desc',
         skills_key: 'project_coffee_illustration_skills',
-        behance_link: 'https://www.behance.net/gallery/143434651/Coffee-processing-illustration-Soul-specialty-coffee',
+        behance_link: 'Projects/Soulcoffee',
         images: [
             { url: 'assets/images/Project/soul_1.webm', poster: 'assets/images/Project/soul_1_poster.webp' },
             { url: 'assets/images/Project/soul_2.webm', poster: 'assets/images/Project/soul_1_poster.webp' },
