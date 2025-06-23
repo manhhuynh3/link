@@ -718,30 +718,30 @@
 /* ========================================= */
 
 /* Initial state for elements to be revealed */
-.scroll-reveal, .scroll-reveal-x {
+., .-x {
     opacity: 0;
     transform: translateY(20px); /* Move down slightly */
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 /* Initial state for elements to be revealed from left/right */
-.scroll-reveal-x {
+.-x {
     transform: translateX(-50px); /* Example: start from left */
 }
 
 /* State when 'visible' class is added */
-.scroll-reveal.visible, .scroll-reveal-x.visible {
+..visible, .-x.visible {
     opacity: 1;
     transform: translateY(0); /* Return to original position */
 }
 
-/* Specific for .scroll-reveal-x when 'visible' */
-.scroll-reveal-x.visible {
+/* Specific for .-x when 'visible' */
+.-x.visible {
     transform: translateX(0); /* Return to original position */
 }
 
 
-/* Delay effects (can be combined with scroll-reveal) */
+/* Delay effects (can be combined with ) */
 .delay-150 { transition-delay: 0.15s; }
 .delay-300 { transition-delay: 0.3s; }
 .delay-450 { transition-delay: 0.45s; }

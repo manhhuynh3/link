@@ -478,9 +478,19 @@ export function initThreeJSViewer(containerId) {
     }
 
     let lastTime = performance.now();
-    const timeStep = 1 / 60;
+    const targetFPS = 30; // FPS mục tiêu mới
+    const interval = 1000 / targetFPS; // Khoảng thời gian giữa các khung hình (ms)
+    let lastFrameTime = 0; // Thời gian khung hình được hiển thị lần cuối
+    const timeStep = 1 / targetFPS; // timeStep cho vật lý được điều chỉnh theo FPS mục tiêu
+
     function animate(currentTime) {
         requestAnimationFrame(animate);
+
+        // Logic giới hạn FPS hiển thị
+        if (currentTime - lastFrameTime < interval) {
+            return; // Đợi cho đến khi đủ thời gian cho khung hình tiếp theo
+        }
+        lastFrameTime = currentTime; // Cập nhật thời gian khung hình cuối cùng
 
         if (appConfig.enablePhysics && world) {
             const dt = (currentTime - lastTime) / 1000;
