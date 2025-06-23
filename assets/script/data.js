@@ -18,8 +18,6 @@ export const languages = {
         'hero_cta_portfolio': 'Xem Portfolio',
         'hero_cta_contact': 'Liên Hệ',
         'about_heading': 'Giới Thiệu',
-        'about_greeting': 'Chào bạn, tôi là Mạnh.',
-        'about_intro_paragraph': 'Tôi là Mạnh Huỳnh, một 3D Motion Graphic Designer với hơn <strong class="text-accent-strong">5 năm kinh nghiệm</strong> trong lĩnh vực thiết kế đồ họa và sản xuất nội dung số. Tôi chuyên thực hiện video sản phẩm CGI, đặc biệt là các chiến dịch Fake OOH (CGI FOOH) – kết hợp hình ảnh 3D với môi trường thực.<br><br>Bên cạnh đó, tôi có nhiều kinh nghiệm trong việc sản xuất video 3D ngắn giới thiệu sản phẩm, dựng và render hình ảnh sản phẩm chất lượng cao, cũng như thiết kế các ấn phẩm như POSM, bao bì, key visual phục vụ cho các chiến dịch truyền thông đa kênh.<br><br>Tôi là một người tư duy sáng tạo và đổi mới, và tôi luôn tìm kiếm những cách thức mới để sử dụng thiết kế nhằm giải quyết vấn đề và truyền đạt ý tưởng một cách rõ ràng và hiệu quả.',
         'software_heading': 'Software', // New key
         'work_process_heading': 'Quy Trình Làm Việc',
         'work_process_step1_title': '1. Tiếp nhận & Phân tích Yêu cầu',
@@ -113,8 +111,13 @@ export const languages = {
         'contact_with_me': 'Liên hệ với tôi:',
         'services_cta_quote': 'Nhận báo giá',
         'services_short_desc': 'Dịch vụ thiết kế 2D, 3D, sản xuất video quảng cáo CGI, modeling, animation chuyên nghiệp cho thương hiệu và sản phẩm của bạn.',
+        'download_cv': 'Tải CV của tôi',
+        'about_experience': 'Xin chào,<br><br>Với 2 năm kinh nghiệm chuyên sâu trong sản xuất video CGI, Fake OOH và diễn họa sản phẩm 3D, cùng với 5 năm kinh nghiệm vững chắc trong thiết kế 2D bao gồm thiết kế POSM, bao bì và key visual, tôi tự tin mang đến những giải pháp sáng tạo và hiệu quả cho các dự án của khách hàng.'
+           
     },
     'en': {
+        'about_experience': 'Hello,<br><br>With 2 years of specialized experience in CGI video production, Fake OOH, and 3D product visualization, complemented by 5 years of robust experience in 2D design including POSM, packaging, and key visual development, I am confident in delivering innovative and impactful solutions for client projects.',
+        'download_cv': 'Download my CV',
         'services_cta_quote': 'Get a Quote',
         'contact_with_me': 'Connect with me:',
         'lang_toggle_target': 'VI',
@@ -133,8 +136,6 @@ export const languages = {
         'hero_cta_portfolio': 'View Portfolio',
         'hero_cta_contact': 'Contact Me',
         'about_heading': 'About',
-        'about_greeting': 'Hello, I\'m Manh.',
-        'about_intro_paragraph': 'I am Manh Huỳnh, a 3D Motion Graphic Designer with over <strong class="text-accent-strong">5 years of experience</strong> in graphic design and digital content production. I specialize in CGI product videos, especially Fake OOH (CGI FOOH) campaigns – blending 3D visuals with real environments.<br><br>In addition, I have extensive experience producing short 3D product introduction videos, building and rendering high-quality product images, as well as designing materials such as POSM, packaging, and key visuals for multi-channel communication campaigns.<br><br>I am a creative and innovative thinker, always seeking new ways to use design to solve problems and communicate ideas clearly and effectively.',
         'software_heading': 'Software', // New key
         'work_process_heading': 'Work Process',
         'work_process_step1_title': '1. Requirement Reception & Analysis',
@@ -225,6 +226,7 @@ export const languages = {
         'contact_location': 'Location: Ho Chi Minh City, Vietnam',
         'no_projects': 'No sample projects available.',
         'services_short_desc': 'Professional 2D, 3D design, CGI advertising video production, modeling, and animation services for your brand and products.',
+        
     }
 };
 

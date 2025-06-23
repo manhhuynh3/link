@@ -13,6 +13,11 @@ export function loadTemplate(url, elementId) {
             const element = document.getElementById(elementId);
             if (element) {
                 element.innerHTML = html;
+                // Dispatch a custom event after header is loaded
+                if (elementId === 'header-placeholder') {
+                    const event = new CustomEvent('headerLoaded');
+                    document.dispatchEvent(event);
+                }
             } else {
                 console.error(`Element with ID '${elementId}' not found.`);
             }

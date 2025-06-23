@@ -180,6 +180,30 @@
                 padding: 10px 20px;
                 font-size: 0.9em;
             }
+            .project-header-actions {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.5rem;
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                z-index: 30;
+            }
+            .project-header-actions > * {
+                margin: 0 !important;
+            }
+        }
+        @media (min-width: 769px) {
+            .project-header-actions {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+                position: static;
+                top: auto;
+                right: auto;
+            }
         }
 
         /* Sticky footer layout */
@@ -217,10 +241,23 @@
 
 <main class="blog-content bg-background text-text-color font-inter" id="main-content">  
     <div class="relative">
-    <img src="/Projects/Lifter-gloss/LG_cover.png"
-         alt="Project Cover Image"
-         class="w-full h-auto max-h-[700px] object-cover" />
-  </div>
+        <img src="/Projects/Lifter-gloss/LG_cover.png"
+             alt="Project Cover Image"
+             class="w-full h-auto max-h-[700px] object-cover" />
+        <div class="project-header-actions">
+            <button data-lang-key="lang_toggle_target" id="lang-toggle-button" class="bg-primary-button hover:bg-primary-button text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 transform hover:scale-105 text-sm">
+                EN
+            </button>
+            <div class="flex items-center">
+                <i class="fa-solid fa-file-arrow-down text-primary mr-2"></i>
+                <a href="/assets/HUYNHDUMANH_designer_CV.pdf" download
+                   class="text-primary hover:underline font-semibold transition duration-300 text-sm"
+                   data-lang-key="download_cv">
+                    Tải CV của tôi
+                </a>
+            </div>
+        </div>
+    </div>
     <section class="relative z-10 -mt-3 md:-mt-40 px-4 md:px-8 py-20 md:py-28 max-w-7xl mx-auto bg-card rounded-xl shadow-xl">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-heading mb-6 text-center">
            [Maybelline] LIFTER GLOSS: POSM & Digital Design
@@ -283,12 +320,13 @@
 
 
 <script type="module">
-    import { loadAllTemplates } from '/assets/script/loadTemplates.js';
+    import { loadAllTemplates } from '../../assets/script/loadTemplates.js';
     loadAllTemplates().catch(error => {
         console.error('Error loading templates:', error);
     });
 </script>
-<script type="module" src="/assets/script/preloader.js"></script>
-<script type="module" src="/assets/script/main.js"></script>
+<script type="module" src="../../assets/script/preloader.js"></script>
+<script type="module" src="../../assets/script/main.js"></script>
+<script type="module" src="/assets/script/theme.js"></script>
     </body>
 </html>
