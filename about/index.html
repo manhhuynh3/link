@@ -371,10 +371,7 @@
                     <script type="module">
                         import { initThreeJSViewer } from '/assets/script/threeJsViewer.js';
                         document.addEventListener('DOMContentLoaded', () => {
-                            const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-                            if (isDesktop) {
-                                initThreeJSViewer('three-js-container');
-                            }
+                            initThreeJSViewer('three-js-container');
                         });
                     </script>
                 </div></section>
