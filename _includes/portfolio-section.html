@@ -1,0 +1,130 @@
+{% assign lang = site.active_lang | default: "en" %}
+{% assign translations = site.data.languages[lang] %}
+
+<section id="portfolio" class="py-16 md:py-24 px-0 text-center">
+  <section id="portfolio" class="py-16 md:py-24 px-0 text-center">
+  <div class="w-[80vw] max-w-[1440px] mx-auto">
+    <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12" data-lang-key="portfolio_heading">
+      {{ translations.portfolio_heading }}
+    </h2>
+
+    <div id="portfolio-grid" class="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+      {% for project in site.data.portfolio_projects %}
+        <a id="project-card-{{ project.id }}"
+           href="{{ project.behance_link }}" rel="noopener noreferrer"
+           class="group block relative overflow-hidden rounded-xl shadow-xl bg-card transform transition-all duration-500 hover:scale-105 hover:shadow-2xl scroll-reveal aspect-w-16 aspect-h-9 cursor-pointer {{ project.card_layout_classes }}"
+           style="transition-delay: {{ forloop.index0 | times: 100 }}ms;">
+
+          <div class="relative w-full h-full overflow-hidden">
+            <img src="{{ project.thumbnail_image | relative_url }}"
+                 alt="Project Thumbnail {{ project.title_key }}"
+                 class="project-thumbnail h-full w-full object-cover aspect-video transition-opacity duration-300 ease-in-out group-hover:opacity-0">
+
+            <div class="carousel-content-wrapper absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+              <div class="flex flex-row h-full flex-nowrap transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                {% for media in project.carousel_media %}
+                  {% assign is_video = false %}
+                  {% assign media_url = '' %}
+                  {% assign media_poster = '' %}
+
+                  {% if media.sources %}
+                    {% assign is_video = true %}
+                    {% if media.poster %}{% assign media_poster = media.poster %}{% endif %}
+                  {% elsif media.url %}
+                    {% assign is_video = true %}
+                    {% assign media_url = media.url %}
+                    {% if media.poster %}{% assign media_poster = media.poster %}{% endif %}
+                  {% else %} 
+                    {% assign is_video = false %}
+                    {% assign media_url = media %}
+                  {% endif %}
+
+                  {% if is_video %}
+                    <video class="media-item h-full w-full object-cover aspect-video flex-shrink-0 basis-full"
+                           loop muted playsinline preload="none" {% if media_poster %}poster="{{ media_poster | relative_url }}"{% endif %}>
+                      {% if media.sources %}
+                        {% for source in media.sources %}
+                          <source src="{{ source.url | relative_url }}" type="{{ source.type }}">
+                        {% endfor %}
+                      {% else %}
+                        {% assign ext = media_url | split: '.' | last | downcase %}
+                        <source src="{{ media_url | relative_url }}" type="video/{{ ext }}">
+                      {% endif %}
+                      Your browser does not support the video tag.
+                    </video>
+                  {% else %}
+                    <img src="{{ media_url | relative_url }}"
+                         alt="Project Media {{ forloop.index }}"
+                         class="media-item h-full w-full object-cover aspect-video flex-shrink-0 basis-full">
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              {% if project.carousel_media.size > 1 %}
+                <div class="absolute top-0 left-0 w-full z-20 flex items-center justify-center gap-2 px-4 py-1">
+                  <div class="flex gap-1 w-full max-w-xs shadow-lg">
+                    {% for _ in project.carousel_media %}
+                      <div class="progress-dot h-1 flex-1 rounded-full transition-all duration-300 bg-white shadow-md" data-media-index="{{ forloop.index0 }}"></div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="view-details-button absolute z-30 text-gray-800 px-4 py-2 rounded-full shadow-lg text-sm font-semibold whitespace-nowrap transition-all duration-100 ease-out opacity-0 group-hover:opacity-100 pointer-events-none w-24 h-24 flex items-center justify-center">
+            View
+          </div>
+
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
+
+          <div class="project-info absolute bottom-0 left-0 right-0 p-4 text-left pointer-events-none">
+            <h3 class="text-lg sm:text-xl font-bold text-white mb-2 project-title" data-lang-key="{{ project.title_key }}">
+              {{ translations[project.title_key] | default: project.title_key }}
+            </h3>
+            <p class="text-white text-sm mb-4 project-description hidden md:block" data-lang-key="{{ project.desc_key }}">
+              {{ translations[project.desc_key] | default: project.desc_key }}
+            </p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+  <!--Mobile-->
+
+<div id="portfolio-mobile-grid" class="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+      {% for project in site.data.portfolio_projects %}
+        <div id="mobile-project-card-{{ project.id }}" 
+             class="group relative overflow-hidden rounded-xl shadow-xl bg-card transform transition-all duration-500 scroll-reveal aspect-w-16 aspect-h-9 cursor-pointer {{ project.card_layout_classes }}">
+          
+          <a href="{{ project.behance_link }}" rel="noopener noreferrer" class="absolute inset-0 z-30 pointer-events-auto">
+            <span class="absolute bottom-2 right-2 text-white/80 font-light text-sm z-40">View →</span>
+          </a>
+
+          <div class="relative w-full h-full overflow-hidden">
+            <img src="{{ project.thumbnail_image | relative_url }}"
+                 alt="Project Thumbnail {{ project.title_key }}"
+                 class="w-full h-full object-cover aspect-video flex-shrink-0"
+            />
+          </div>
+
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col items-start justify-end p-2 sm:p-6 pb-1 sm:pb-1 text-left opacity-100 pointer-events-none">
+            <div class="w-full h-full flex flex-col justify-end relative opacity-100 pointer-events-none">
+              <h3 class="text-sm sm:text-lg font-bold text-white mb-2 project-title" data-lang-key="{{ project.title_key }}">
+                {{ translations[project.title_key] | default: project.title_key }}
+              </h3>
+              </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+ 
+  </div>
+  <div class="mt-12">
+      <a href="https://www.behance.net/manhhuynh323b3" target="_blank" rel="noopener noreferrer"
+         class="bg-primary-button hover:bg-primary-button text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105"
+         data-lang-key="portfolio_view_all_projects">
+        {{ translations.portfolio_view_all_projects }} 
+      </a>
+    </div>
+</section>

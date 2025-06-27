@@ -1,0 +1,19 @@
+---
+layout: null
+permalink: /assets/data/blog.json
+---
+
+[
+  {% for post in site.posts %}
+    {
+      "title": {{ post.title | jsonify }},
+      "url": "{{ post.url | relative_url }}",
+      "date": "{{ post.date | date: '%Y-%m-%d' }}",
+      "author": {{ post.author | default: "Ẩn danh" | jsonify }},
+      "excerpt": {{ post.excerpt | strip_html | truncate: 180 | jsonify }},
+      "thumbnail": "{{ post.thumbnail }}",
+      "categories": {{ post.categories | jsonify }},
+      "tags": {{ post.tags | jsonify }}
+    }{% if forloop.last == false %},{% endif %}
+  {% endfor %}
+]

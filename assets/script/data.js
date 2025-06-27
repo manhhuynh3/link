@@ -293,8 +293,8 @@ export const portfolioProjects = [
         skills_key: 'project_aeon_tet_skills',
         behance_link: '/Projects/Aeon-Tet-2025',
         images: [
-            { url: 'assets/images/Project/AEON_1.webm', poster: 'assets/images/Project/aeon_poster.webp' },
-            { url: 'assets/images/Project/AEON_2.webm', poster: 'assets/images/Project/aeon_poster.webp' },
+            { url: '/assets/images/Project/AEON_1.webm', poster: 'assets/images/Project/aeon_poster.webp' },
+            { url: '/assets/images/Project/AEON_2.webm', poster: 'assets/images/Project/aeon_poster.webp' },
         ],
         card_layout_classes: 'lg:col-span-1 lg:row-span-2',
     },

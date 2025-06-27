@@ -1,0 +1,150 @@
+---
+layout: default
+title: BÀI VIẾT MỚI NHẤT
+---
+
+<section class="max-w-7xl mx-auto px-4 md:px-8 py-16 mt-20">
+  <h1 class="text-4xl font-extrabold text-center mb-4 scroll-reveal">
+    {{ page.title }}
+  </h1>
+
+  <p id="post-count" class="text-center text-gray-medium mb-12"></p>
+
+  <div id="category-filters" class="flex flex-wrap justify-center gap-2 mb-10"></div>
+
+  <ul id="post-list" class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8"></ul>
+
+  <div id="pagination" class="flex justify-center mt-12 space-x-2"></div>
+</section>
+
+<script>
+const POSTS_PER_PAGE = 6;
+let allPosts = [], filteredPosts = [], currentCategory = "all", currentPage = 1;
+
+fetch("/assets/data/blog.json")
+  .then(res => res.json())
+  .then(posts => {
+    allPosts = posts;
+    renderCategoryFilters(posts);
+    applyFilter("all");
+  });
+
+function renderCategoryFilters(posts) {
+  const container = document.getElementById("category-filters");
+  const categories = Array.from(new Set(posts.flatMap(p => p.categories))).sort();
+  const all = ["all", ...categories];
+
+  container.innerHTML = "";
+
+  all.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat === "all" ? "Tất cả" : cat;
+    btn.dataset.category = cat;
+    // CSS cơ bản được xử lý bởi .filter-btn trong main_theme.css
+    btn.className = `filter-btn transition`; 
+    
+    // Thêm class active nếu là "all" mặc định
+    if (cat === "all") {
+      btn.classList.add("bg-primary-button", "text-white");
+    }
+    
+    btn.onclick = () => {
+      applyFilter(cat);
+      highlightActive(btn);
+    };
+    container.appendChild(btn);
+  });
+}
+
+function highlightActive(activeBtn) {
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    // Loại bỏ các class active từ tất cả các nút
+    btn.classList.remove("bg-primary-button", "text-white");
+  });
+  // Thêm các class active vào nút được nhấn
+  activeBtn.classList.add("bg-primary-button", "text-white");
+}
+
+function applyFilter(category) {
+  currentCategory = category;
+  currentPage = 1;
+  filteredPosts = category === "all"
+    ? allPosts
+    : allPosts.filter(p => p.categories.includes(category));
+  renderPosts();
+  renderPagination();
+  updatePostCount();
+}
+
+function updatePostCount() {
+  const container = document.getElementById("post-count");
+  const total = filteredPosts.length;
+  const categoryButton = document.querySelector(`.filter-btn[data-category="${currentCategory}"]`);
+  const categoryDisplayName = categoryButton ? categoryButton.textContent : "";
+
+  if (currentCategory === "all") {
+    container.textContent = `Hiển thị tất cả ${total} bài viết.`;
+  } else {
+    container.textContent = `Tìm thấy ${total} bài viết trong danh mục "${categoryDisplayName}".`;
+  }
+}
+
+function renderPosts() {
+  const container = document.getElementById("post-list");
+  container.innerHTML = "";
+
+  const start = (currentPage - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+  const postsToShow = filteredPosts.slice(start, end);
+
+  postsToShow.forEach(post => {
+    const li = document.createElement("li");
+    li.className = "post-card bg-card p-1 rounded-xl shadow-md border border-main";
+
+    li.innerHTML = `
+      ${post.thumbnail ? `<a href="${post.url}" class="block post-thumbnail-list overflow-hidden rounded-t-xl">
+        <img src="${post.thumbnail}" alt="${post.title}" class="post-thumbnail-img">
+      </a>` : ""}
+      <h2 class="text-accent-strong text-2xl font-bold mb-2 pt-6 px-6">
+        <a href="${post.url}">${post.title}</a>
+      </h2>
+      <p class="text-sm text-gray-medium mb-2 px-6">
+        ${post.date} &middot; ${post.author}
+      </p>
+      <p class="text-gray-normal text-base mb-4 px-6">${post.excerpt}</p>
+      <div class="flex justify-between items-center px-6 pb-6">
+        <div class="flex flex-wrap gap-2">${post.categories.map(cat => `<span class="skill-tag">${cat}</span>`).join("")}</div>
+        <a href="${post.url}" class="link-primary font-semibold ml-4 flex-shrink-0">Đọc thêm &rarr;</a>
+      </div>
+    `;
+    container.appendChild(li);
+  });
+}
+
+function renderPagination() {
+  const container = document.getElementById("pagination");
+  container.innerHTML = "";
+
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  if (totalPages <= 1) return;
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    // CSS cơ bản được xử lý bởi #pagination button trong main_theme.css
+    btn.className = `px-4 py-2 rounded-lg font-bold border transition`;
+      
+    if (i === currentPage) {
+        btn.classList.add("bg-primary-button", "text-white");
+    }
+    
+    btn.onclick = () => {
+      currentPage = i;
+      renderPosts();
+      renderPagination();
+      document.getElementById("post-list").scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    container.appendChild(btn);
+  }
+}
+</script>

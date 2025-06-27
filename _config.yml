@@ -1,0 +1,40 @@
+# _config.yml
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that.
+
+title: Mạnh Huỳnh - Graphic Designer | 3D Artist
+email: contact@manhhuynh.work
+description: "Portfolio của Mạnh Huỳnh, một Graphic Designer và 3D Artist chuyên nghiệp."
+url: "https://manhhuynh.work" # Your website URL
+baseurl: "" # Leave empty if hosted at root domain
+permalink: /blog/:title/ # Permalink structure for posts
+
+# 1. Enable Plugins
+plugins:
+  - jekyll-paginate # Replaced jekyll-paginate-v2 with jekyll-paginate for GitHub Pages
+  - jekyll-archives
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# 2. Pagination Configuration (jekyll-paginate)
+# Ref: https://jekyllrb.com/docs/pagination/
+paginate: 6 # Number of posts per page
+paginate_path: "/blog/page/:num/" # URL structure for pagination pages
+
+# 3. Archives Configuration (jekyll-archives)
+# Ref: https://github.com/jekyll/jekyll-archives
+jekyll-archives:
+  enabled:
+    - tags
+    - categories
+    - year
+    - month
+  layout: 'archive' # Layout to render archive pages
+  permalinks:
+    tag: '/blog/tags/:name/' # URL for tag page
+    category: '/blog/categories/:name/' # URL for category page
+    year: '/:year/' # URL for year page
+    month: '/:year/:month/' # URL for month page

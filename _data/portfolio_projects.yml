@@ -1,0 +1,94 @@
+- id: "cgi-fooh-videos"
+  title_key: "project_cgi_fooh_title"
+  desc_key: "project_cgi_fooh_desc"
+  skills_key: "project_cgi_fooh_skills"
+  behance_link: "/Projects/FOOH/"
+  thumbnail_image: "assets/images/Project/fooh_1_poster.webp" # Lấy từ poster của FOOH_1.webm
+  carousel_media:
+    - url: "assets/images/Project/FOOH_1.webm"
+      poster: "assets/images/Project/fooh_1_poster.webp"
+      sources:
+        - url: "assets/images/Project/FOOH_1.webm"
+          type: "video/webm"
+        - url: "assets/images/Project/FOOH_1.mp4"
+          type: "video/mp4"
+   
+  card_layout_classes: "lg:col-span-1 lg:row-span-2"
+
+- id: "project-vf3"
+  title_key: "vf3_title"
+  desc_key: "vf3_desc"
+  behance_link: "/Projects/VF3-clawmachine"
+  thumbnail_image: "assets/images/Project/VF3_1_poster.webp" # Poster trống, dùng link video làm thumbnail tạm thời
+  carousel_media:
+    - url: "assets/images/Project/VF3_1.webm"
+      poster: "" # Poster trống
+      sources:
+        - url: "assets/images/Project/VF3_1.webm"
+          type: "video/webm"
+        - url: "assets/images/Project/VF3_1.mp4"
+          type: "video/mp4"
+    
+  card_layout_classes: "lg:col-span-2 lg:row-span-1"
+
+- id: "dove-tvc"
+  title_key: "project_dove_tvc_title"
+  desc_key: "project_dove_tvc_desc"
+  skills_key: "project_dove_tvc_skills"
+  behance_link: "/Projects/Dove-deodorant"
+  thumbnail_image: "assets/images/Project/dove_poster.webp" # Lấy từ poster của DOVE_1.webm
+  carousel_media:
+    - url: "assets/images/Project/DOVE_1.webm"
+      poster: "assets/images/Project/dove_poster.webp"
+      sources:
+        - url: "assets/images/Project/DOVE_1.webm"
+          type: "video/webm"
+        - url: "assets/images/Project/DOVE_1.mp4"
+          type: "video/mp4"
+    
+  card_layout_classes: "lg:col-span-2 lg:row-span-1"
+
+- id: "maybelline-lifter-gloss"
+  title_key: "project_maybelline_lifter_title"
+  desc_key: "project_maybelline_lifter_desc"
+  skills_key: "project_maybelline_lifter_skills"
+  behance_link: "/Projects/Lifter-gloss/"
+  thumbnail_image: "assets/images/Project/MBL_1.jpg" # Lấy từ link ảnh đầu tiên
+  carousel_media:
+    - "assets/images/Project/MBL_1.jpg"
+    - "assets/images/Project/MBL_2.jpg"
+    - "assets/images/Project/MBL_3.jpg"
+  card_layout_classes: "lg:col-span-2 lg:row-span-1"
+
+- id: "aeon-tet"
+  title_key: "project_aeon_tet_title"
+  desc_key: "project_aeon_tet_desc"
+  skills_key: "project_aeon_tet_skills"
+  behance_link: "/Projects/Aeon-Tet-2025"
+  thumbnail_image: "assets/images/Project/aeon_poster.webp" # Lấy từ poster của AEON_1.webm
+  carousel_media:
+    - url: "/assets/images/Project/AEON_1.webm"
+      poster: "assets/images/Project/aeon_poster.webp"
+      sources:
+        - url: "/assets/images/Project/AEON_1.webm"
+          type: "video/webm"
+        - url: "/assets/images/Project/AEON_1.mp4"
+          type: "video/mp4"
+    
+  card_layout_classes: "lg:col-span-1 lg:row-span-2"
+
+- id: "coffee-illustration"
+  title_key: "project_coffee_illustration_title"
+  desc_key: "project_coffee_illustration_desc"
+  skills_key: "project_coffee_illustration_skills"
+  behance_link: "Projects/Soulcoffee"
+  thumbnail_image: "assets/images/Project/soul_1_poster.webp" # Lấy từ poster của soul_1.webm
+  carousel_media:
+    - url: "assets/images/Project/soul_1.webm"
+      poster: "assets/images/Project/soul_1_poster.webp"
+      sources:
+        - url: "assets/images/Project/soul_1.webm"
+          type: "video/webm"
+        - url: "assets/images/Project/soul_1.mp4"
+          type: "video/mp4"
+  card_layout_classes: "lg:col-span-2 lg:row-span-1"

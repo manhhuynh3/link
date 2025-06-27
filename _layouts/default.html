@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tiêu đề sẽ được lấy từ Front Matter của mỗi trang, hoặc từ _config.yml nếu không có -->
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/fav_icon.svg' | relative_url }}">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KFPG79L00S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KFPG79L00S');
+    </script>
+    <!-- External CSS/Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Inline styles for preloader -->
+    
+
+    <!-- Internal CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/main_theme.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/preloader.css' | relative_url }}">
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden home" data-theme="dark">
+  <div id="preloader" class="preloader-wrapper">
+        <!-- ... Giữ nguyên HTML của preloader ... -->
+  </div>
+
+  <!-- Header/Navigation -->
+  {% include header.html %}
+
+  <!-- Mobile Toggle Button and Menu -->
+  {% include mobile_menu.html %}
+
+  <!-- Đây là nơi nội dung của từng trang sẽ được chèn vào -->
+  <!-- Wrapper for main content and footer to handle z-index and sticky footer -->
+  <div class="main-content flex-grow flex flex-col">
+    <main class="flex-grow">
+      {{ content }}
+    </main>
+    <!-- Footer -->
+    {% include footer.html %}
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // ... Giữ nguyên script của bạn ...
+  </script>
+  
+  <script type="module" src="{{ '/assets/script/theme.js' | relative_url }}"></script>
+  <script type="module" src="{{ '/assets/script/main.js' | relative_url }}"></script>
+  
+</body>
+</html>

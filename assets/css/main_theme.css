@@ -28,11 +28,11 @@
             --color-mobile-overlay-rgb: 2, 6, 23; /* RGB for rgba() from slate-950 */
             --color-header-glass-bg-blue: linear-gradient(to right, var(--color-gradient-from-1), var(--color-gradient-to-1)); /* Gradient nhạt cho header (Dark Mode) */
             /* New color for skill tags */
-            --color-skill-tag-bg: #475569; /* slate-700 for a muted grey tag */
+            --color-skill-tag-bg: #14396d6c; /* slate-700 for a muted grey tag */
             --color-header-bg-dark: #26262694;
             --color-header-text-dark: #fff;
             --color-mobile-icon-dark: #fff;
-            --color-header-bg-light: #f8f9fe94;
+            --color-header-bg-light: #f8f9fe46;
             --color-header-text-light: #111;
             --color-mobile-icon-light: #111;
         }
@@ -66,7 +66,7 @@
             --color-mobile-overlay-rgb: 255, 255, 255; /* RGB for rgba() from white */
             --color-header-glass-bg-blue: linear-gradient(to right, var(--color-gradient-from-1), var(--color-gradient-to-1)); /* Gradient nhạt cho header (Light Mode) */
             /* New color for skill tags */
-            --color-skill-tag-bg: #94a3b8; /* slate-400 for a muted grey tag */
+            --color-skill-tag-bg: #00275e6b; /* slate-400 for a muted grey tag */
         }
 
         
@@ -869,3 +869,406 @@ body[data-theme='dark'] #mobile-toggle {
 body[data-theme='light'] #mobile-toggle {
   background: var(--color-header-bg-light) !important;
 }
+
+
+/* blog*/
+/* Thêm vào cuối file main_theme.css của bạn */
+
+/* Styling for single post thumbnail */
+.post-thumbnail-single img {
+    width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+    height: auto; /* Chiều cao tự động để duy trì tỷ lệ */
+    max-height: 400px; /* Giới hạn chiều cao tối đa */
+    object-fit: contain; /* Đảm bảo toàn bộ ảnh hiển thị, có thể có khoảng trắng */
+    /* Nếu bạn muốn ảnh luôn lấp đầy không gian và bị cắt, dùng object-fit: cover; */
+}
+
+/* Styling for list post thumbnails */
+.post-thumbnail-list {
+    width: 100%;
+    height: 250px; /* Đặt chiều cao cố định để tạo sự nhất quán trong lưới bài viết */
+    /* Tỷ lệ 600x400px tương đương 3:2, nếu chiều rộng 100%, chiều cao sẽ là (2/3) * width.
+       Ở đây tôi đặt chiều cao cố định để dễ quản lý trong bố cục lưới.
+       Nếu bạn muốn tỷ lệ chính xác, bạn có thể dùng aspect-ratio trên div cha nếu CSS hiện đại được hỗ trợ,
+       hoặc dùng padding-bottom hack.
+    */
+}
+
+.post-thumbnail-list img.post-thumbnail-img {
+    width: 100%;
+    height: 100%; /* Lấp đầy chiều cao của container */
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy không gian và được cắt nếu cần, duy trì tỷ lệ */
+    transition: transform 0.3s ease-in-out; /* Thêm hiệu ứng hover */
+}
+
+.post-thumbnail-list a:hover img.post-thumbnail-img {
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+/* Điều chỉnh lại padding của card bài viết nếu cần thiết */
+.post-list li.bg-card {
+    padding: 0; /* Loại bỏ padding gốc để ảnh có thể chiếm full width ở trên */
+    overflow: hidden; /* Đảm bảo ảnh bo tròn theo card */
+}
+
+.post-list li.bg-card > h2,
+.post-list li.bg-card > .post-meta,
+.post-list li.bg-card > p,
+.post-list li.bg-card > .flex,
+.post-list li.bg-card > a.link-primary {
+    padding-left: 1.5rem; /* px-6 */
+    padding-right: 1.5rem; /* px-6 */
+}
+
+.post-list li.bg-card > h2 {
+    padding-top: 1.5rem; /* pt-6 */
+}
+
+.post-list li.bg-card > a.link-primary {
+    padding-bottom: 1.5rem; /* pb-6 */
+}
+/* CSS Variables for theming */
+/* --- Styles for All Buttons (Category Filters & Pagination) --- */
+
+/* Base styles that apply to ALL filter and pagination buttons */
+.filter-btn,
+#pagination button {
+    padding: 0.375rem 1rem; /* px-4 py-1.5 */
+    border-radius: 9999px; /* rounded-full / rounded-lg */
+    font-size: 0.875rem; /* text-sm */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- Styles for Inactive Buttons --- */
+
+/* Inactive button styles (Night Mode default) */
+/* These styles apply when the button does NOT have 'bg-primary-button' class */
+.filter-btn:not(.bg-primary-button),
+#pagination button:not(.bg-primary-button) {
+    background-color: #1e293b; /* slate-800 */
+    color: #f8fafc; /* slate-50 (white/light text) */
+    border: 1px solid #334155; /* slate-700 */
+}
+
+/* Inactive button hover styles (Night Mode) */
+.filter-btn:not(.bg-primary-button):hover,
+#pagination button:not(.bg-primary-button):hover {
+    background-color: #3b83f68a; /* blue-500 */
+    color: #f8fafc; /* slate-50 */
+    border-color: #3b82f6;
+}
+
+/* --- Styles for Active Buttons --- */
+
+/* Active button styles (Night Mode) */
+/* These styles apply when the button HAS 'bg-primary-button' class */
+.filter-btn.bg-primary-button,
+#pagination button.bg-primary-button {
+    background-color: #3b82f6; /* blue-500 */
+    color: #f8fafc; /* slate-50 (white/light text) */
+    border: 1px solid #3b82f6; /* Ensure border matches active background */
+}
+
+/* --- Light Mode overrides --- */
+
+/* Light Mode specific base styles (no color here, inherited or overridden below) */
+body[data-theme='light'] .filter-btn,
+body[data-theme='light'] #pagination button {
+    /* No direct color property here, they are defined in inactive/active states below */
+}
+
+/* Inactive button styles (Light Mode) */
+body[data-theme='light'] .filter-btn:not(.bg-primary-button),
+body[data-theme='light'] #pagination button:not(.bg-primary-button) {
+    background-color: #ffffff; /* white */
+    color: #1e293b !important; /* slate-800 (dark text) */
+    border-color: #e2e8f0; /* slate-200 */
+}
+
+/* Inactive button hover styles (Light Mode) */
+body[data-theme='light'] .filter-btn:not(.bg-primary-button):hover,
+body[data-theme='light'] #pagination button:not(.bg-primary-button):hover {
+    background-color: #d3e0fc8e; /* blue-600 */
+    color: #ffffff ; /* white */
+    border-color: #2563eb;
+}
+
+/* Active button styles (Light Mode) */
+body[data-theme='light'] .filter-btn.bg-primary-button,
+body[data-theme='light'] #pagination button.bg-primary-button {
+    background-color: #2563eb; /* blue-600 */
+    color: #ffffff; /* white */
+    border: 1px solid #2563eb; /* Ensure border matches active background */
+}
+.bg-secondary {
+  background-color: var(--color-bg-secondary);
+}
+/* assets/css/custom-post-styles.css (hoặc tệp CSS chính của bạn) */
+
+/* --- Định dạng chung cho nội dung bài viết --- */
+.post-content h1 {
+    font-size: 2.5rem; /* Kích thước lớn cho tiêu đề chính trong nội dung */
+    font-weight: 700; /* Rất đậm */
+    color: var(--color-text-heading); /* Sử dụng màu tiêu đề của theme */
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.post-content h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-text-heading);
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+}
+
+.post-content h3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--color-text-heading);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.post-content h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-heading);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+/* Định dạng cho các thẻ `code` inline */
+.post-content code {
+    background-color: #e8eaed;
+    color: #c53929;
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    border-radius: 6px;
+}
+
+.post-content h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-heading);
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.post-content h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-heading);
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+/* --- Các lớp tiện ích (lấy cảm hứng từ Bootstrap) --- */
+.my-4 { margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 0.25rem !important; }
+.text-center { text-align: center !important; }
+.fst-italic { font-style: italic !important; }
+.small { font-size: .875em; }
+.rounded { border-radius: 0.25rem !important; }
+.shadow-sm { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important; }
+
+/* --- Các thành phần tùy chỉnh --- */
+
+/* Hộp thông báo (Alert) cho tóm tắt và ghi chú */
+.alert {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+}
+.alert-heading {
+    color: inherit;
+    font-size: 1.25rem;
+}
+.alert-secondary {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-color: #d6d8db;
+}
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+.alert-primary hr {
+    border-top-color: #9fcdff;
+}
+.alert ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+/* Khung hình ảnh (Figure) */
+.figure {
+    display: inline-block;
+}
+.figure-img {
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+.figure-caption {
+    font-size: 90%;
+    color: #6c757d;
+}
+
+/* Khung video responsive */
+.ratio {
+    position: relative;
+    width: 100%;
+}
+.ratio::before {
+    display: block;
+    padding-top: var(--bs-aspect-ratio);
+    content: "";
+}
+.ratio > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.ratio-16x9 {
+    --bs-aspect-ratio: 56.25%; /* 9 / 16 */
+}
+
+/* --- Social Share Sidebar --- */
+.social-share-sidebar {
+    position: absolute;
+    top: 8rem; /* Vertical position from the top of the card */
+    left: 100%;
+    margin-left: 1.5rem; /* 24px space from the card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem; /* 12px */
+    z-index: 10;
+}
+
+.social-share-sidebar .share-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    color: var(--color-gray-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.social-share-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #fff !important; /* Ensure icon color is white */
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.social-share-icon:hover {
+    transform: scale(1.15);
+}
+
+/* Brand colors */
+.social-share-icon.facebook { background-color: #1877F2; }
+.social-share-icon.twitter { background-color: #1DA1F2; }
+.social-share-icon.linkedin { background-color: #0A66C2; }
+.social-share-icon.email { background-color: #7f8c8d; } /* A neutral color for email */
+
+/* Responsive: On smaller screens, move it to the bottom of the article content */
+@media (max-width: 1280px) { /* xl breakpoint */
+    .social-share-sidebar {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 2rem 0 0 0; /* mt-8, remove left margin */
+        padding-top: 2rem; /* pt-8 */
+        border-top: 1px solid var(--color-border-main);
+    }
+
+    .social-share-sidebar .share-text {
+        writing-mode: horizontal-tb; /* Reset writing mode */
+        margin-bottom: 0;
+        margin-right: 1rem; /* Add space to the right */
+    }
+}
+
+/* --- Back to Top Button --- */
+.back-to-top {
+    position: fixed;
+    bottom: 20px; /* Khoảng cách từ đáy màn hình */
+    right: 20px; /* Khoảng cách từ cạnh phải màn hình */
+    background-color: var(--color-button-primary); /* Sử dụng màu nút chính của theme */
+    color: #fff; /* Màu icon trắng */
+    border: none;
+    border-radius: 50%; /* Hình tròn */
+    width: 50px; /* Kích thước nút */
+    height: 50px; /* Kích thước nút */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem; /* Kích thước icon */
+    cursor: pointer;
+    opacity: 0; /* Ẩn ban đầu */
+    visibility: hidden; /* Ẩn ban đầu */
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.2s ease-in-out;
+    z-index: 999; /* Đảm bảo nút nằm trên cùng */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ */
+}
+
+/* Hiển thị nút khi có class 'show' */
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hiệu ứng khi di chuột qua nút */
+.back-to-top:hover {
+    background-color: var(--color-button-primary-hover); /* Màu đậm hơn khi hover */
+    transform: translateY(-3px); /* Nâng nhẹ nút lên */
+}
+.view-button {
+  position: absolute;
+  z-index: 30; /* z-30 */
+  border-radius: 9999px; /* rounded-full */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+  width: 96px; /* w-24 (24 * 4px = 96px) */
+  height: 96px; /* h-24 (24 * 4px = 96px) */
+  color: #fff; /* text-white */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* border border-solid border-[rgba(255,255,255,0.2)] */
+  font-size: 1rem; /* text-base (16px) */
+  font-weight: 600; /* font-semibold */
+  opacity: 0; /* opacity-0 */
+  pointer-events: none; /* pointer-events-none */
+  background-color: rgba(236, 236, 236, 0.1) !important; /* background-color từ inline style */
+  backdrop-filter: blur(10px); /* backdrop-filter từ inline style */
+
+}
+

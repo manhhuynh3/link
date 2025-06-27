@@ -1,0 +1,65 @@
+---
+layout: default
+title: Lưu trữ bài viết
+---
+
+<section class="max-w-4xl mx-auto px-4 md:px-8 py-16 mt-20">
+  <h1 id="archive-title" class="text-4xl font-extrabold text-center mb-12 scroll-reveal uppercase">Tất cả bài viết</h1>
+  <ul id="post-list" class="rounded-xl overflow-hidden divide-y divide-main shadow-lg">
+    {% assign posts = site.posts | sort: 'date' | reverse %}
+    {% if page.tag %}
+      {% assign posts = site.tags[page.tag] | sort: 'date' | reverse %}
+    {% elsif page.category %}
+      {% assign posts = site.categories[page.category] | sort: 'date' | reverse %}
+    {% endif %}
+    {% for post in posts %}
+      <li class="p-4 md:p-6 flex items-center justify-between transition {% cycle 'bg-card', 'bg-secondary' %} scroll-reveal delay-{{ forloop.index0 | times: 100 }}">
+        <a href="{{ post.url | relative_url }}" class="text-heading text-base md:text-lg font-semibold link-primary hover:link-hover">{{ post.title | escape }}</a>
+        <span class="text-sm text-gray-medium whitespace-nowrap ml-4 js-date" data-date="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d/%m/%Y" }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+<div class="flex justify-center">
+          <a href="{{ site.baseurl }}/blog/"
+             class="bg-primary-button hover:bg-primary-button text-white hover:text-white px-6 py-3 rounded-lg flex items-center">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Quay lại Blog
+          </a>
+        </div>
+
+<script>
+  // Hàm định dạng ngày tháng sang tiếng Việt
+  function formatVietnameseDate(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date)) return 'Ngày không hợp lệ';
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `Ngày ${day} tháng ${month}, ${year}`;
+  }
+
+  // Cập nhật định dạng ngày cho các phần tử có class 'js-date'
+  document.querySelectorAll('.js-date').forEach(span => {
+    const dateString = span.getAttribute('data-date');
+    span.textContent = formatVietnameseDate(dateString);
+  });
+
+  // Cập nhật tiêu đề trang dựa trên URL
+  const url = new URL(window.location.href);
+  const pathParts = url.pathname.split('/');
+  let filterType = null;
+  let filterValue = null;
+
+  if (pathParts[2] === 'tags' && pathParts[3]) {
+    filterType = 'tags';
+    filterValue = decodeURIComponent(pathParts[3]);
+  } else if (pathParts[2] === 'categories' && pathParts[3]) {
+    filterType = 'categories';
+    filterValue = decodeURIComponent(pathParts[3]);
+  }
+
+  const titleElement = document.getElementById('archive-title');
+  if (filterType && filterValue) {
+    titleElement.textContent = `${filterType === 'tags' ? 'Tag' : 'Category'}: ${filterValue}`;
+  }
+</script>
