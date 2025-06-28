@@ -12,8 +12,9 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
+    transition: opacity 3s ease-in-out, visibility 3s ease-in-out; /* Đã đổi từ 0.9s thành 3s */
     opacity: 1; /* Mặc định hiển thị */
+    visibility: visible; /* Đảm bảo hiển thị ban đầu */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border: none;
@@ -259,4 +260,10 @@
         padding: 8px 18px;
         font-size: 0.8em;
     }
+}
+/* Thay vì chỉ .preloader-hidden, dùng selector mạnh hơn: */
+.preloader-wrapper.preloader-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none;
 }

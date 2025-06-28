@@ -1,0 +1,84 @@
+<section
+  id="home"
+  class="mt-24 md:mt-2 lg:min-h-screen min-h-1/2 px-4 sm:px-6 md:px-12 lg:px-24 pt-8 pb-12
+         flex flex-col lg:flex-row
+         items-center justify-center lg:justify-between gap-2 lg:gap-1 overflow-hidden"
+>
+  <div class="w-full lg:w-2/3 order-1 lg:order-2">
+    <div class="relative w-full overflow-hidden shadow-2xl rounded-xl lg:rounded-3xl aspect-video">
+      <video id="heroVideo" autoplay muted loop playsinline class="w-full h-full object-cover scale-105">
+        <source src="{{site.baseurl}}/assets/videos/cover.webm" type="video/webm" />
+        <source src="{{site.baseurl}}/assets/videos/cover.mp4" type="video/mp4" />
+      </video>
+
+      <button
+        id="videoControlBtn"
+        class="absolute bottom-4 right-4 bg-gray-800 bg-opacity-60 text-white p-3 rounded-full
+               hover:bg-opacity-80 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+        aria-label="Play/Pause Video"
+      >
+        <svg id="pauseIcon" class="w-5 h-5" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="5" width="4" height="14" rx="1"/>
+          <rect x="14" y="5" width="4" height="14" rx="1"/>
+        </svg>
+        <svg id="playIcon" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+          <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="w-full lg:w-1/3 order-2 lg:order-1 mt-8 lg:mt-0">
+    <div class="max-w-xl mx-auto text-center lg:mx-0 lg:text-left">
+      <h1 class="lg:text-left text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight tracking-tight text-main animate-fade-in-up">
+        Mạnh Huỳnh<span class="text-heading">.</span>
+      </h1>
+      <p class="lg:text-left lg:text-2xl text-xl text-gray-normal md:mt-6 mt-2 mb-4 md:mb-10 animate-fade-in-up delay-150">
+        3D Motion Graphic Designer
+      </p>
+
+      <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 animate-fade-in-up delay-300">
+        <a
+          data-lang-key="hero_cta_portfolio"
+          href="#portfolio"
+          class="bg-primary-button hover:bg-primary-button-hover text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 text-center"
+        >
+          Xem Portfolio
+        </a>
+        <a
+          data-lang-key="hero_cta_contact"
+          href="#contact"
+          class="border-2 border-primary-button text-secondary-button-color hover:bg-primary-button hover:text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 text-center"
+        >
+          Liên Hệ
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('heroVideo');
+    const videoControlBtn = document.getElementById('videoControlBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+
+    if (!video || !videoControlBtn || !playIcon || !pauseIcon) {
+      console.error("One or more required elements were not found. Check IDs.");
+      return;
+    }
+
+    videoControlBtn.addEventListener('click', function() {
+      if (video.paused) {
+        video.play();
+        playIcon.classList.add('hidden'); // Ẩn icon Play
+        pauseIcon.classList.remove('hidden'); // Hiện icon Pause
+      } else {
+        video.pause();
+        playIcon.classList.remove('hidden'); // Hiện icon Play
+        pauseIcon.classList.add('hidden'); // Ẩn icon Pause
+      }
+    });
+  });
+</script>

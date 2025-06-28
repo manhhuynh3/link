@@ -1,8 +1,8 @@
 {% assign lang = site.active_lang | default: "en" %}
 {% assign translations = site.data.languages[lang] %}
 
-<section id="portfolio" class="py-16 md:py-24 px-0 text-center">
-  <section id="portfolio" class="py-16 md:py-24 px-0 text-center">
+<section id="portfolio" class="py-16 md:py-24 px-0 text-center scroll-reveal">
+  
   <div class="w-[80vw] max-w-[1440px] mx-auto">
     <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12" data-lang-key="portfolio_heading">
       {{ translations.portfolio_heading }}
@@ -92,7 +92,7 @@
 
   <!--Mobile-->
 
-<div id="portfolio-mobile-grid" class="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+    <div id="portfolio-mobile-grid" class="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
       {% for project in site.data.portfolio_projects %}
         <div id="mobile-project-card-{{ project.id }}" 
              class="group relative overflow-hidden rounded-xl shadow-xl bg-card transform transition-all duration-500 scroll-reveal aspect-w-16 aspect-h-9 cursor-pointer {{ project.card_layout_classes }}">

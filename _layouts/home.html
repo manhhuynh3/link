@@ -17,196 +17,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-     <style>
-        
-        /* CSS cốt lõi cho preloader phải ở đây */
-        .preloader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh; /* Sử dụng 100vh mặc định */
-            height: var(--app-height, 100vh); /* Biến này sẽ được JS cập nhật */
-            background-color: #F6F6F6; /* Màu nền preloader */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.9s ease-in-out, visibility 0.9s ease-in-out;
-            opacity: 1; 
-            -webkit-backdrop-filter: none;
-            backdrop-filter: none;
-            border: none;
-            /* Thêm các style để đảm bảo nó che phủ hoàn toàn */
-            margin: 0;
-            padding: 0;
-            
-        }
-
-        .preloader-hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        /* Các style khác của preloader (ví dụ: video container, progress text) */
-        /* Bạn có thể để lại trong preloader.css và chỉ inline những gì cần thiết để hiển thị ngay lập tức */
-        /* Tuy nhiên, để đảm bảo tuyệt đối, bạn có thể inline toàn bộ preloader.css tại đây */
-        /* Hoặc chỉ những phần quan trọng nhất để chống FOUC */
-
-        /* Ví dụ về inline các style quan trọng khác nếu cần */
-        .preloader-video-container { /* ví dụ, để video đúng vị trí ngay lập tức */
-            position: absolute;
-            width: 66.66%;
-            height: 100%;
-            right: 0;
-            top: 0;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            z-index: 999;
-            overflow: hidden;
-        }
-        .preloader-video {
-            width: 70vh;
-            height: 70vh;
-            max-width: 60%;
-            max-height: 80%;
-            object-fit: cover;
-            margin: 0;
-            border: none;
-            box-shadow: none;
-            transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
-            overflow: hidden;
-        }
-        .preloader-video img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.02);
-            transition: transform 0.3s ease-in-out;
-        }
-        /* Style cho % tiến độ và Loading... */
-        .progress-indicator {
-            position: absolute;
-            left: 1vw; 
-            bottom: 5vh;
-            font-size: 20vh;
-            line-height: 1;
-            font-weight: 200;
-            color: #000000;
-            text-shadow: none;
-            transition: bottom 0.3s ease-out, opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
-            z-index: 10000;
-            max-width: 30vw;
-            white-space: nowrap;
-        }
-        .loading-text {
-            position: absolute;
-            left: 1vw; 
-            bottom: 5vh;
-            transform: translateY(100%);
-            color: #000000;
-            font-size: 1.5em;
-            font-weight: 300;
-            letter-spacing: 0.05em;
-            z-index: 9999;
-            white-space: nowrap;
-            opacity: 1;
-            transition: opacity 0.9s ease-in-out;
-        }
-        /* Nút Contact */
-        .contact-button {
-            position: absolute;
-            right: 5vw;
-            bottom: 5vh;
-            padding: 15px 30px;
-            background-color: #2563EB;
-            color: white;
-            border: none;
-            border-radius: 9999px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 1.1em;
-            transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.9s ease-in-out;
-            z-index: 10000;
-        }
-        .contact-button:hover {
-            background-color: #1D4ED8;
-            transform: scale(1.1);
-        }
-        /* Media queries cho mobile cũng nên được inline nếu bạn muốn chúng được áp dụng ngay lập tức */
-        @media (max-width: 768px) {
-            .preloader-video-container {
-                width: 100%;
-                height: 70%;
-                top: 0;
-                left: 0;
-                right: auto;
-                justify-content: center;
-                align-items: center;
-                overflow: hidden;
-            }
-            .preloader-video {
-                width: 240px;
-                height: 240px;
-                overflow: hidden;
-            }
-            .progress-indicator {
-                left: 5vw;
-                bottom: 12vh;
-                font-size: 20vh;
-            }
-            .loading-text {
-                left: 5vw;
-                bottom: 8vh;
-                transform: none;
-                font-size: 1.1em;
-            }
-            .contact-button {
-                right: 5vw;
-                bottom: 8vh;
-                padding: 10px 20px;
-                font-size: 0.9em;
-            }
-        }
-        .ease-out-cubic {
-            transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-        }
-     
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
      <link rel="stylesheet" href="assets/css/main_theme.css">
      <link rel="stylesheet" href="assets/css/preloader.css">
 
 </head>
-<body class="overflow-x-hidden home" data-theme="dark">
-  <div id="preloader" class="preloader-wrapper">
-        <div class="preloader-video-container">
-            <div class="preloader-video">
-                <video id="loadingAnimationVideo" autoplay loop muted webkit-playsinline>
-                    <source src="/assets/videos/loading-animation.webm" type="video/webm">
-                    Your browser does not support the video tag.
-                </video>
-                <script>
-                    // Ensure playsinline is set for all browsers (including Firefox)
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var loadingVideo = document.getElementById('loadingAnimationVideo');
-                        if (loadingVideo) {
-                            loadingVideo.setAttribute('playsinline', '');
-                        }
-                    });
-                </script>
-            </div>
-            </div>
-
-        <div id="progressText" class="progress-indicator">0%</div>
-
-        <div class="loading-text">Loading<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
-
-        <button id="contactButton" class="contact-button">Contact Now</button>
-    </div>
-
-    <main class="main-content">
+<body class="overflow-x-hidden home flex flex-col min-h-screen" data-theme="dark">
+  
+    <main class="main-content flex-grow">
  <header class="shadow-lg py-4 px-6 md:px-12 fixed w-full z-50 rounded-b-lg top-0">
         <div class="flex items-center justify-between w-full"> <nav class="flex items-center w-full md:pl-0">
                 <div class="flex items-center">
@@ -273,38 +92,7 @@
     </div>
 
    
-        <section id="home" class="relative min-h-screen flex flex-col justify-center items-center text-center p-6 overflow-hidden">
-            <video id="backgroundVideo" autoplay loop muted webkit-playsinline class="absolute inset-0 w-full h-full object-cover">
-    <source src="{{site.baseurl}}/assets/videos/cover.webm" type="video/webm">
-    Your browser does not support the video tag.
-</video>
-<script>
-    // Ensure playsinline is set for all browsers (including Firefox)
-    document.addEventListener('DOMContentLoaded', function() {
-        var bgVideo = document.getElementById('backgroundVideo');
-        if (bgVideo) {
-            bgVideo.setAttribute('playsinline', '');
-        }
-    });
-</script>
-            <div id="hero-text-content" class="relative z-10 p-8 rounded-xl shadow-2xl  hero-text-parallax">
-                <h1 class="text-5xl md:text-7xl font-extrabold text-main leading-tight mb-4 animate-fade-in-up">
-                    Mạnh Huỳnh<span class="text-heading">.</span>
-                </h1>
-                <p class="text-2xl md:text-3xl text-secondary-button font-semibold mb-8 animate-fade-in-up delay-150" data-lang-key="hero_tagline">
-                    Graphic Designer | 3D Artist
-                </p>
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 justify-center animate-fade-in-up delay-300">
-                    <a href="#portfolio" class="bg-primary-button hover:bg-primary-button text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105" data-lang-key="hero_cta_portfolio">
-                        Xem Portfolio
-                    </a>
-                    <a href="#contact" class="bg-transparent border-2 border-primary-button text-secondary-button-color hover:bg-primary-button hover:text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105" data-lang-key="hero_cta_contact">
-                        Liên Hệ
-                    </a>
-                </div>
-            </div>
-        </section>
-
+{% include home-section.html %}       
  {% include portfolio-section.html %}     
  {% include blog-section.html %}
 
@@ -374,7 +162,7 @@
   </div>
 </section>
         <section id="work-process" class="py-16 md:py-24 px-0 text-center -y">
-  <div class="w-[80vw] max-w-[1800px] mx-auto">
+  <div class="w-[80vw] max-w-[1440px] mx-auto">
     <h2 class="text-4xl md:text-5xl font-extrabold text-heading mb-12 -y px-6 md:px-12 scroll-reveal" data-lang-key="work_process_heading">
       Quy Trình Làm Việc
     </h2>
@@ -501,38 +289,13 @@
                 </div>
             </div>
         </section>
-         <footer class="py-8 px-6 md:px-12 text-center rounded-t-lg">
-        <p data-lang-key="footer_copyright">&copy; 2025 Mạnh Huỳnh. Tất cả quyền được bảo lưu.</p>
-    </footer>
     </main>
+    
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const backgroundVideo = document.getElementById('backgroundVideo');
-
-            if (backgroundVideo) {
-                const playPromise = backgroundVideo.play();
-
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        // Video đã bắt đầu phát thành công
-                        console.log('Background video started successfully.');
-                    }).catch(error => {
-                        // Tự động phát bị ngăn chặn hoặc bị ngắt quãng
-                        if (error.name === "NotAllowedError" || error.name === "AbortError") {
-                            console.warn("Background video autoplay prevented or interrupted:", error.name, error.message);
-                         
-                        } else {
-                            console.error("Background video play failed unexpectedly:", error);
-                        }
-                    });
-                }
-            }
-        });
-    </script>
+    
   <script src="assets/script/services.js" defer></script>
 <script type="module" src="/assets/script/theme.js"></script>
     <script type="module" src="assets/script/main.js"></script>
-    <script src="assets/script/preloader.js"></script>
+   
 </body>
 </html>
