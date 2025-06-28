@@ -3,6 +3,7 @@
 // Language data
 export const languages = {
     'vi': {
+        'hero_greeting': 'Xin chào!',
         'blog': 'Xem tất cả bài viết',
         'title': 'Mạnh Huỳnh - Graphic Designer | 3D Artist',
         'nav_home': 'Trang Chủ',
@@ -117,6 +118,7 @@ export const languages = {
         
     },
     'en': {
+        'hero_greeting': 'Hi there!',
         'blog': 'See all blog posts',
         'about_experience': 'Boasting 2 years of specialized experience in CGI video production, Fake OOH, and 3D product visualization, complemented by 5 years of robust experience in 2D design including POSM, packaging, and key visual development, I am confident in delivering innovative and impactful solutions for client projects.',
         'download_cv': 'Download my CV',
