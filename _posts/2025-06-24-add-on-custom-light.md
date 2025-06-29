@@ -19,7 +19,7 @@ excerpt: >
 
 
 ## I. Tổng quan
-Chào mọi người! Mình muốn chia sẻ một addon nho nhỏ mà mình tự làm, tên là Custom Lighting. Về cơ bản, nó giúp bạn tạo nhanh các loại đèn đơn giản trong Blender, kết hợp với giao diện quản lý đèn, giúp bạn tiết kiệm chút thời gian cho việc thiết lập ánh sáng.
+Chào mọi người! Mình muốn chia sẻ một addon nho nhỏ mà mình dùng chatGPT và một số AI khác để code, tên là Custom Light. Về cơ bản, nó giúp bạn tạo nhanh các loại đèn đơn giản trong Blender, kết hợp với giao diện quản lý đèn, giúp bạn tiết kiệm chút thời gian cho việc thiết lập ánh sáng.
 
 <div class="text-center my-8">
   <a href="https://manhdesigns.gumroad.com/l/customlights" target="_blank" rel="noopener noreferrer" class="bg-primary-button hover:bg-primary-button text-white hover:text-white px-8 py-4 rounded-lg inline-flex items-center text-lg font-bold shadow-lg transform hover:scale-105 transition-transform duration-300">
