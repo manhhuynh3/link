@@ -11,7 +11,7 @@
     <div id="portfolio-grid" class="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
       {% for project in site.data.portfolio_projects %}
         <a id="project-card-{{ project.id }}"
-           href="{{ project.behance_link }}" rel="noopener noreferrer"
+           href="{{ site.baseurl }}/{{ project.behance_link }}" rel="noopener noreferrer"
            class="group block relative overflow-hidden rounded-xl shadow-xl bg-card transform transition-all duration-500 hover:scale-105 hover:shadow-2xl scroll-reveal aspect-w-16 aspect-h-9 cursor-pointer {{ project.card_layout_classes }}"
            style="transition-delay: {{ forloop.index0 | times: 100 }}ms;">
 
