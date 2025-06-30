@@ -812,6 +812,7 @@ section.bg-transparent, section.bg-none {
 #portfolio-grid .portfolio-card,
 #portfolio-grid .project-card {
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1);
+    
 }
 #portfolio-grid .bg-card:hover,
 #portfolio-grid .portfolio-card:hover,
